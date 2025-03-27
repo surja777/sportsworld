@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Bill - SPORTS WORLD Shop</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #acb6e5);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #2c3e50;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #34495e;
+      margin-bottom: 15px;
+    }
+    input, button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    input:focus, button:hover {
+      border-color: #74ebd5;
+      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
+    }
+    button {
+      background: #74ebd5;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background: #acb6e5;
+    }
+    .return-btn {
+      background: #e74c3c;
+      padding: 5px 10px;
+      font-size: 12px;
+      width: auto;
+    }
+    .return-btn:hover {
+      background: #c0392b;
+    }
+    .return-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #34495e;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+    tr:hover {
+      background: #f1f1f1;
+    }
+    .nav-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .nav-link a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 10px;
+    }
+    .nav-link a:hover {
+      color: #74ebd5;
+    }
+  </style>
+</head>
+<body>
+  <h1>View Bill - SPORTS WORLD Shop</h1>
+  <div class="container">
+    <h2>Enter Serial Number</h2>
+    <input id="serial" placeholder="Enter 10-digit Serial Number">
+    <button onclick="fetchBill()">View Bill</button>
+    <div id="bill-details"></div>
+  </div>
+  <div class="nav-link">
+    <a href="/index.html">Back to Billing</a> | 
+    <a href="/add-item.html">Add/Edit Items</a> | 
+    <a href="/history.html">Bill History</a>
+  </div>
+  <script>
+    let currentBill = null;
+
+    async function fetchBill() {
+      const serial = document.getElementById('serial').value;
+      if (!serial || serial.length !== 10 || isNaN(serial)) {
+        alert('Please enter a valid 10-digit serial number!');
+        return;
+      }
+
+      try {
+        console.log('Fetching bill with serial:', serial);
+        const res = await fetch(`/bill/${serial}`);
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
+        }
+        const bill = await res.json();
+        console.log('Fetched bill:', bill);
+
+        const div = document.getElementById('bill-details');
+        div.innerHTML = '';
+        if (!bill) {
+          div.innerHTML = '<p>No bill found with this serial number.</p>';
+          return;
+        }
+
+        if (!bill.items || !Array.isArray(bill.items)) {
+          throw new Error('Invalid bill data: items array is missing or invalid');
+        }
+
+        currentBill = bill;
+
+        div.innerHTML += `<p>Serial Number: ${bill.serialNumber}</p>`;
+        div.innerHTML += `<p>Customer: ${bill.customer || 'N/A'}</p>`;
+        if (bill.phone) div.innerHTML += `<p>Phone: ${bill.phone}</p>`;
+        div.innerHTML += `<p>Date: ${new Date(bill.date).toLocaleString()}</p>`;
+        if (bill.returned) {
+          div.innerHTML += `<p style="color: red;">Status: Returned</p>`;
+        } else {
+          div.innerHTML += `<p style="color: green;">Status: Active</p>`;
+        }
+        const table = document.createElement('table');
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bill.items.map((item, index) => `
+              <tr>
+                <td>${item.name || 'N/A'}</td>
+                <td>${item.qty || 'N/A'}</td>
+                <td>${item.price || 'N/A'}</td>
+                <td>${item.price && item.qty ? item.price * item.qty : 'N/A'}</td>
+                <td>
+                  ${item.returned ? 
+                    '<button class="return-btn" disabled>Returned</button>' : 
+                    `<button class="return-btn" onclick="returnItem(${index})">Return</button>`
+                  }
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+        div.appendChild(table);
+        const total = bill.items.reduce((sum, item) => sum + (item.price && item.qty ? item.price * item.qty : 0), 0);
+        div.innerHTML += `<p>Total: ${total}</p>`;
+      } catch (e) {
+        console.error('Error fetching bill:', e.message);
+        alert(`Failed to fetch bill: ${e.message}. Check the console for details.`);
+      }
+    }
+
+    async function returnItem(itemIndex) {
+      if (!currentBill) {
+        alert('No bill loaded to return!');
+        return;
+      }
+
+      if (currentBill.items[itemIndex].returned) {
+        alert('This item has already been returned!');
+        return;
+      }
+
+      try {
+        console.log(`Processing return for item at index ${itemIndex} in bill:`, currentBill.serialNumber);
+
+        // Send request to return the specific item
+        const markReturnedRes = await fetch(`/bill/${currentBill.serialNumber}/return`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ itemIndex })
+        });
+        if (!markReturnedRes.ok) {
+          const errorText = await markReturnedRes.text();
+          throw new Error(`Failed to mark item as returned: HTTP error! Status: ${markReturnedRes.status}, Details: ${errorText}`);
+        }
+
+        alert('Item returned successfully! Stock updated.');
+        fetchBill(); // Refresh the bill details
+      } catch (e) {
+        console.error('Error during return:', e.message);
+        alert(`Failed to process return: ${e.message}. Check the console for details.`);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPORTS WORLD Shop</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #acb6e5);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .inventory, .billing {
+      flex: 1;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #2c3e50;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #34495e;
+      margin-bottom: 15px;
+    }
+    input, button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    input:focus, button:hover {
+      border-color: #74ebd5;
+      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
+    }
+    button {
+      background: #74ebd5;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background: #acb6e5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #34495e;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+    tr:hover {
+      background: #f1f1f1;
+    }
+    .nav-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .nav-link a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 10px;
+    }
+    .nav-link a:hover {
+      color: #74ebd5;
+    }
+  </style>
+</head>
+<body>
+  <h1>SPORTS WORLD Shop</h1>
+  <div class="container">
+    <div class="inventory">
+      <h2>Inventory</h2>
+      <table id="items">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="billing">
+      <h2>Billing</h2>
+      <input id="customer" placeholder="Customer Name">
+      <input id="phone" placeholder="Customer Phone Number (Optional)">
+      <input id="search" placeholder="Search Items">
+      <div id="results"></div>
+      <input id="qty" type="number" placeholder="Quantity">
+      <button onclick="addToBill()">Add to Bill</button>
+      <div id="bill"></div>
+      <button onclick="printBill()">Print</button>
+    </div>
+  </div>
+  <div class="nav-link">
+    <a href="/add-item.html">Add/Edit Items</a> | 
+    <a href="/view-bill.html">View Bill by Serial</a> | 
+    <a href="/history.html">Bill History</a>
+  </div>
+  <script>
+    let bill = [];
+    let printer = null;
+
+    async function fetchInventory() {
+      try {
+        console.log('Fetching inventory from: /items');
+        const res = await fetch('/items', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        const items = await res.json();
+        console.log('Fetched items:', items);
+        const tbody = document.querySelector('#items tbody');
+        tbody.innerHTML = '';
+        items.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.price}</td>
+            <td>${item.stock}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error('Error fetching inventory:', e.message);
+        alert(`Failed to fetch inventory: ${e.message}. Check the console for details. If the server is down, please ensure it is running in Replit.`);
+      }
+    }
+
+    document.getElementById('search').oninput = async () => {
+      const query = document.getElementById('search').value.toLowerCase();
+      try {
+        const res = await fetch('/items');
+        const items = await res.json();
+        const results = items.filter(item =>
+          item.name.toLowerCase().includes(query)
+        );
+        const div = document.getElementById('results');
+        div.innerHTML = '';
+        results.forEach(item => {
+          const p = document.createElement('p');
+          p.textContent = `${item.name} (Stock: ${item.stock})`;
+          p.onclick = () => {
+            document.getElementById('search').value = `${item.name} (Stock: ${item.stock})`;
+            div.innerHTML = '';
+            selectedItem = item;
+          };
+          div.appendChild(p);
+        });
+      } catch (e) {
+        console.error('Error searching items:', e.message);
+      }
+    };
+
+    let selectedItem = null;
+    async function addToBill() {
+      if (!selectedItem) {
+        console.log('No item selected to add to bill');
+        return;
+      }
+      const qty = Number(document.getElementById('qty').value);
+      if (qty <= 0) {
+        console.log('Invalid quantity:', qty);
+        alert('Quantity must be greater than 0!');
+        return;
+      }
+      if (qty > selectedItem.stock) {
+        console.log(`Not enough stock for ${selectedItem.name}. Requested: ${qty}, Available: ${selectedItem.stock}`);
+        alert('Not enough stock!');
+        return;
+      }
+      bill.push({ ...selectedItem, qty });
+      console.log(`Added item to bill: ${selectedItem.name}, Qty: ${qty}. Current bill:`, bill);
+      document.getElementById('search').value = '';
+      document.getElementById('qty').value = '';
+      selectedItem = null;
+      updateBill();
+    }
+
+    function updateBill() {
+      const div = document.getElementById('bill');
+      div.innerHTML = '';
+      if (bill.length === 0) return;
+      const customer = document.getElementById('customer').value;
+      const phone = document.getElementById('phone').value;
+      div.innerHTML += `<p>Customer: ${customer || 'N/A'}</p>`;
+      if (phone) div.innerHTML += `<p>Phone: ${phone}</p>`;
+      const table = document.createElement('table');
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${bill.map(item => `
+            <tr>
+              <td>${item.name}</td>
+              <td>${item.qty}</td>
+              <td>${item.price}</td>
+              <td>${item.price * item.qty}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+      div.appendChild(table);
+      const total = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
+      div.innerHTML += `<p>Total: ${total}</p>`;
+    }
+
+    async function connectToPrinter() {
+      if (!navigator.bluetooth) return alert('Use Chrome for Bluetooth!');
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
+          optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb']
+        });
+        const server = await device.gatt.connect();
+        const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
+        const char = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
+        return { device, char };
+      } catch (e) {
+        alert('Printer error: ' + e);
+        return null;
+      }
+    }
+
+    function generateSerialNumber() {
+      const min = 1000000000;
+      const max = 9999999999;
+      return Math.floor(min + Math.random() * (max - min + 1)).toString();
+    }
+
+    function encodeBill(bill, customer, phone, serialNumber) {
+      console.log('encodeBill called with bill:', bill);
+      if (!Array.isArray(bill) || bill.length === 0) {
+        console.error('Bill array is invalid or empty:', bill);
+        return "Error: No items in bill\n";
+      }
+
+      // Decorative header
+      let text = "============================\n";
+      text += "       SPORTS WORLD       \n";
+      text += "============================\n";
+      text += "\n";
+
+      // Bill details
+      text += `Customer: ${customer.padEnd(20, ' ')}\n`;
+      if (phone) text += `Phone: ${phone.padEnd(20, ' ')}\n`;
+      text += `Date: ${new Date().toLocaleString().padEnd(20, ' ')}\n`;
+      text += `Serial No: ${serialNumber.padEnd(20, ' ')}\n`;
+      text += "----------------------------\n";
+
+      // Items table header
+      text += "Qnty Particulars    Rate Amount\n";
+      text += "----------------------------\n";
+
+      // Item list
+      bill.forEach(item => {
+        console.log('Processing item:', item);
+        const qty = item.qty.toString().padStart(4, ' '); // 4 characters for quantity
+        const itemName = item.name.padEnd(12, ' ').slice(0, 12); // 12 characters for item name
+        const rate = item.price.toString().padStart(6, ' '); // 6 characters for rate
+        const amount = (item.price * item.qty).toString().padStart(6, ' '); // 6 characters for amount
+        text += `${qty} ${itemName} ${rate} ${amount}\n`;
+      });
+
+      // Separator
+      text += "----------------------------\n";
+
+      // Total (aligned under Amount column)
+      const total = bill.reduce((sum, item) => {
+        const itemTotal = (item.price || 0) * (item.qty || 0);
+        console.log(`Calculating total: item.price=${item.price}, item.qty=${item.qty}, itemTotal=${itemTotal}`);
+        return sum + itemTotal;
+      }, 0);
+      console.log('Calculated total:', total);
+      text += `                TOTAL ${total.toString().padStart(6, ' ')}\n`;
+      console.log('Added total to text:', text);
+
+      // Footer
+      text += "----------------------------\n";
+      text += "Address: Swarupganj Bus Stand\n";
+      text += "Nabadwip, Nadia - 741301\n";
+      text += "Phone: 7679554458\n";
+      text += "----------------------------\n";
+      text += "     Thank You! Visit Again!     \n";
+      text += "============================\n";
+      text += "\n\n";
+
+      console.log('Final bill text:', text);
+      return text;
+    }
+
+    async function printBill() {
+      if (!printer || !printer.device.gatt.connected) {
+        printer = await connectToPrinter();
+      }
+      if (!printer) return;
+
+      if (bill.length === 0) {
+        alert('No items in the bill to print!');
+        return;
+      }
+
+      console.log('Bill array before printing:', bill);
+
+      const customer = document.getElementById('customer').value;
+      const phone = document.getElementById('phone').value;
+      const serialNumber = generateSerialNumber();
+
+      try {
+        console.log('Fetching inventory before stock update');
+        const res = await fetch('/items');
+        if (!res.ok) throw new Error(`Failed to fetch inventory: HTTP error! Status: ${res.status}`);
+        const items = await res.json();
+        console.log('Inventory before update:', items);
+
+        for (const billItem of bill) {
+          const inventoryItem = items.find(item => item._id === billItem._id);
+          if (!inventoryItem) {
+            console.error(`Item ${billItem.name} not found in inventory`);
+            alert(`Item ${billItem.name} not found in inventory!`);
+            return;
+          }
+          if (inventoryItem.stock < billItem.qty) {
+            console.error(`Not enough stock for ${billItem.name}. Available: ${inventoryItem.stock}, Required: ${billItem.qty}`);
+            alert(`Not enough stock for ${billItem.name}! Available: ${inventoryItem.stock}, Required: ${billItem.qty}`);
+            return;
+          }
+        }
+
+        for (const billItem of bill) {
+          const inventoryItem = items.find(item => item._id === billItem._id);
+          console.log(`Updating stock for ${billItem.name}. Current stock: ${inventoryItem.stock}, Reducing by: ${billItem.qty}`);
+          inventoryItem.stock -= billItem.qty;
+          console.log(`New stock for ${billItem.name}: ${inventoryItem.stock}`);
+
+          const updateRes = await fetch(`/items/${billItem._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inventoryItem)
+          });
+          if (!updateRes.ok) {
+            const errorText = await updateRes.text();
+            throw new Error(`Failed to update stock for ${billItem.name}: HTTP error! Status: ${updateRes.status}, Details: ${errorText}`);
+          }
+          console.log(`Stock updated successfully for ${billItem.name}`);
+        }
+
+        const billData = {
+          items: bill,
+          customer: customer,
+          phone: phone || null,
+          date: new Date().toISOString(),
+          serialNumber: serialNumber
+        };
+
+        const billText = encodeBill(bill, customer, phone, serialNumber);
+        console.log('Generated bill text:', billText);
+
+        const initCommand = new Uint8Array([0x1B, 0x40]);
+        console.log('Sending printer initialization command');
+        await printer.char.writeValue(initCommand);
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const encoder = new TextEncoder();
+        const fullData = encoder.encode(billText);
+        console.log(`Total bill data size: ${fullData.length} bytes`);
+
+        const chunkSize = 128;
+        for (let i = 0; i < fullData.length; i += chunkSize) {
+          const chunk = fullData.slice(i, i + chunkSize);
+          console.log(`Sending chunk ${i / chunkSize + 1} of size ${chunk.length} bytes`);
+          await printer.char.writeValue(chunk);
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        const finalNewline = encoder.encode('\n\n');
+        console.log('Sending final newline to flush printer buffer');
+        await printer.char.writeValue(finalNewline);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const formFeed = new Uint8Array([0x0C]);
+        console.log('Sending form feed command');
+        await printer.char.writeValue(formFeed);
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const billRes = await fetch('/bill', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(billData)
+        });
+        if (!billRes.ok) throw new Error(`Failed to save bill: HTTP error! Status: ${billRes.status}`);
+
+        alert(`Bill saved successfully! Serial Number: ${serialNumber}`);
+        bill = [];
+        document.getElementById('customer').value = '';
+        document.getElementById('phone').value = '';
+        fetchInventory();
+        updateBill();
+      } catch (e) {
+        console.error('Error during printBill:', e.message);
+        alert(`Failed to print bill: ${e.message}. Check the console for details.`);
+      }
+    }
+
+    fetchInventory();
+  </script>
+</body>
+</html>

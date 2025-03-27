@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bill History - SPORTS WORLD Shop</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #acb6e5);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #2c3e50;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #34495e;
+      margin-bottom: 15px;
+    }
+    input, button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    input:focus, button:hover {
+      border-color: #74ebd5;
+      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
+    }
+    button {
+      background: #74ebd5;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background: #acb6e5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #34495e;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+    tr:hover {
+      background: #f1f1f1;
+    }
+    .bill-details {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #fafafa;
+    }
+    .delete-btn {
+      background: #e74c3c;
+      padding: 5px 10px;
+      font-size: 12px;
+      width: auto;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background: #c0392b;
+    }
+    .nav-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .nav-link a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 10px;
+    }
+    .nav-link a:hover {
+      color: #74ebd5;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bill History - SPORTS WORLD Shop</h1>
+  <div class="container">
+    <h2>Access Bill History</h2>
+    <input id="password" type="password" placeholder="Enter Password">
+    <button onclick="checkPassword()">View History</button>
+    <div id="history-section" style="display: none;">
+      <h2>All Bills</h2>
+      <table id="bills">
+        <thead>
+          <tr>
+            <th>Serial Number</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Date & Time</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="nav-link">
+    <a href="/index.html">Back to Billing</a> | 
+    <a href="/add-item.html">Add/Edit Items</a> | 
+    <a href="/view-bill.html">View Bill by Serial</a>
+  </div>
+  <script>
+    const correctPassword = "gourab009";
+
+    function checkPassword() {
+      const password = document.getElementById('password').value;
+      if (password === correctPassword) {
+        document.getElementById('history-section').style.display = 'block';
+        document.getElementById('password').style.display = 'none';
+        document.querySelector('button[onclick="checkPassword()"]').style.display = 'none';
+        fetchBills();
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    async function fetchBills() {
+      try {
+        console.log('Fetching all bills from: /bills');
+        const res = await fetch('/bills', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        const bills = await res.json();
+        console.log('Fetched bills:', bills);
+        const tbody = document.querySelector('#bills tbody');
+        tbody.innerHTML = '';
+        bills.forEach(bill => {
+          const total = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${bill.serialNumber}</td>
+            <td>${bill.customer || 'N/A'}</td>
+            <td>${bill.phone || 'N/A'}</td>
+            <td>${new Date(bill.date).toLocaleString()}</td>
+            <td>${total}</td>
+            <td style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</td>
+            <td>
+              <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete</button>
+            </td>
+          `;
+          tr.style.cursor = 'pointer';
+          tr.onclick = (e) => {
+            // Prevent the delete button click from triggering the row click
+            if (e.target.className !== 'delete-btn') {
+              showBillDetails(bill);
+            }
+          };
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error('Error fetching bills:', e.message);
+        alert(`Failed to fetch bills: ${e.message}. Check the console for details.`);
+      }
+    }
+
+    async function deleteBill(serialNumber) {
+      if (!confirm(`Are you sure you want to delete the bill with Serial Number ${serialNumber}?`)) return;
+
+      try {
+        console.log('Deleting bill with serial:', serialNumber);
+        const res = await fetch(`/bill/${serialNumber}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
+        }
+        alert(`Bill with Serial Number ${serialNumber} deleted successfully!`);
+        fetchBills(); // Refresh the bill history
+      } catch (e) {
+        console.error('Error deleting bill:', e.message);
+        alert(`Failed to delete bill: ${e.message}. Check the console for details.`);
+      }
+    }
+
+    function showBillDetails(bill) {
+      const existingDetails = document.querySelector('.bill-details');
+      if (existingDetails) existingDetails.remove();
+
+      const total = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const div = document.createElement('div');
+      div.className = 'bill-details';
+      div.innerHTML = `
+        <h3>Bill Details (Serial: ${bill.serialNumber})</h3>
+        <p>Customer: ${bill.customer || 'N/A'}</p>
+        ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ''}
+        <p>Date: ${new Date(bill.date).toLocaleString()}</p>
+        <p style="color: ${bill.returned ? 'red' : 'green'}">Status: ${bill.returned ? 'Returned' : 'Active'}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bill.items.map(item => `
+              <tr>
+                <td>${item.name}</td>
+                <td>${item.qty}</td>
+                <td>${item.price}</td>
+                <td>${item.price * item.qty}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <p><strong>Total: ${total}</strong></p>
+      `;
+      document.querySelector('.container').appendChild(div);
+    }
+  </script>
+</body>
+</html>
