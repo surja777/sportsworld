@@ -123,9 +123,11 @@ connectDB().then(() => {
         existing = await db.collection('bills').findOne({ serialNumber: newSerialNumber });
       }
 
-      // Initialize each item with a `returned` field set to `false`
+      // Initialize each item with a `returned` field set to `false` and `originalQty`
       const itemsWithReturnStatus = items.map(item => ({
         ...item,
+        originalQty: item.qty, // Store the original quantity for reference
+        returnedQty: 0, // Track how many have been returned
         returned: false
       }));
 
@@ -162,11 +164,11 @@ connectDB().then(() => {
     }
   });
 
-  // PUT /bill/:serial/return - Mark a specific item as returned
+  // PUT /bill/:serial/return - Mark a specific item as returned (with partial return support)
   app.put('/bill/:serial/return', async (req, res) => {
     try {
       const { serial } = req.params;
-      const { itemIndex } = req.body; // Index of the item to return
+      const { itemIndex, returnQty } = req.body; // Index of the item to return and quantity to return
 
       if (itemIndex === undefined || itemIndex < 0) {
         return res.status(400).send('Invalid item index');
@@ -178,35 +180,51 @@ connectDB().then(() => {
         return res.status(404).send('Bill not found');
       }
 
-      // Check if the item exists and hasn't been returned yet
+      // Check if the item exists
       if (itemIndex >= bill.items.length) {
         return res.status(400).send('Item index out of range');
       }
 
-      if (bill.items[itemIndex].returned) {
-        return res.status(400).send('Item already returned');
+      const billItem = bill.items[itemIndex];
+
+      // Initialize returnedQty if it doesn't exist (for backward compatibility)
+      if (!billItem.hasOwnProperty('returnedQty')) {
+        billItem.returnedQty = 0;
+      }
+
+      // Check if the item is already fully returned
+      if (billItem.returned) {
+        return res.status(400).send('Item already fully returned');
+      }
+
+      // Determine the quantity to return
+      const qtyToReturn = returnQty !== undefined && returnQty !== null ? returnQty : billItem.qty;
+
+      // Validate the return quantity
+      if (qtyToReturn <= 0 || qtyToReturn > billItem.qty - billItem.returnedQty) {
+        return res.status(400).send(`Invalid return quantity. You can return between 1 and ${billItem.qty - billItem.returnedQty} items.`);
       }
 
       // Update stock for the returned item
-      const billItem = bill.items[itemIndex];
       const inventoryItem = await db.collection('items').findOne({ _id: new ObjectId(billItem._id) });
       if (!inventoryItem) {
         return res.status(404).send(`Item ${billItem.name} not found in inventory`);
       }
 
-      inventoryItem.stock += billItem.qty;
+      inventoryItem.stock += qtyToReturn;
       await db.collection('items').updateOne(
         { _id: new ObjectId(billItem._id) },
         { $set: { stock: inventoryItem.stock } }
       );
 
-      // Mark the item as returned
-      bill.items[itemIndex].returned = true;
+      // Update the bill item
+      billItem.returnedQty += qtyToReturn;
+      billItem.returned = billItem.returnedQty >= billItem.qty; // Mark as fully returned if all items are returned
 
-      // Check if all items are returned
+      // Check if all items in the bill are fully returned
       const allItemsReturned = bill.items.every(item => item.returned);
 
-      // Update the bill with the new items array and overall returned status
+      // Update the bill in the database
       const result = await db.collection('bills').updateOne(
         { serialNumber: serial },
         {
