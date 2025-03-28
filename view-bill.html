@@ -1,179 +1,222 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>View Bill - SPORTS WORLD Shop</title>
-    <style>
-      body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #74ebd5, #acb6e5);
-        margin: 0;
-        padding: 20px;
-        color: #333;
-      }
-      .container {
-        max-width: 600px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      }
-      h1 {
-        font-family: "Montserrat", sans-serif;
-        text-align: center;
-        color: #2c3e50;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-      h2 {
-        font-family: "Roboto", sans-serif;
-        color: #34495e;
-        margin-bottom: 15px;
-      }
-      input,
-      button {
-        font-family: "Open Sans", sans-serif;
-        padding: 10px;
-        margin: 5px 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        width: 100%;
-        box-sizing: border-box;
-        transition: all 0.3s ease;
-      }
-      input[type="number"] {
-        width: 60px; /* Smaller width for quantity input */
-      }
-      input:focus,
-      button:hover {
-        border-color: #74ebd5;
-        box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
-      }
-      button {
-        background: #74ebd5;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-      button:hover {
-        background: #acb6e5;
-      }
-      .return-btn {
-        background: #e74c3c;
-        padding: 5px 10px;
-        font-size: 12px;
-        width: auto;
-      }
-      .return-btn:hover {
-        background: #c0392b;
-      }
-      .return-btn:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        background: #fff;
-        border-radius: 5px;
-        overflow: hidden;
-      }
-      th,
-      td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      th {
-        background: #34495e;
-        color: #fff;
-        font-family: "Roboto", sans-serif;
-      }
-      tr:hover {
-        background: #f1f1f1;
-      }
-      .nav-link {
-        text-align: center;
-        margin-top: 20px;
-      }
-      .nav-link a {
-        color: #2c3e50;
-        text-decoration: none;
-        font-weight: 600;
-        font-family: "Roboto", sans-serif;
-        margin: 0 10px;
-      }
-      .nav-link a:hover {
-        color: #74ebd5;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>View Bill - SPORTS WORLD Shop</h1>
-    <div class="container">
-      <h2>Enter Serial Number</h2>
-      <input id="serial" placeholder="Enter 10-digit Serial Number" />
-      <button onclick="fetchBill()">View Bill</button>
-      <div id="bill-details"></div>
-    </div>
-    <div class="nav-link">
-      <a href="/index.html">Back to Billing</a> |
-      <a href="/add-item.html">Add/Edit Items</a> |
-      <a href="/history.html">Bill History</a>
-    </div>
-    <script>
-      let currentBill = null;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Bill - SPORTS WORLD Shop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      async function fetchBill() {
-        const serial = document.getElementById("serial").value;
-        if (!serial || serial.length !== 10 || isNaN(serial)) {
-          alert("Please enter a valid 10-digit serial number!");
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #00b7ff;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #80d4ff;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    input, button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #404040;
+      border-radius: 5px;
+      width: 100%;
+      transition: all 0.3s ease;
+      background: #333;
+      color: #e0e0e0;
+    }
+
+    input[type="number"] {
+      width: 60px;
+    }
+
+    input:focus {
+      border-color: #00b7ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
+    }
+
+    button {
+      background: #00b7ff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    button:hover {
+      background: #008ecf;
+    }
+
+    .return-btn {
+      background: #ff4d4d;
+      padding: 5px 10px;
+      font-size: 12px;
+      width: auto;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .return-btn:hover {
+      background: #e60000;
+    }
+
+    .return-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #2a2a2a;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #404040;
+    }
+
+    th {
+      background: #004d73;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    tr:hover {
+      background: #333;
+    }
+
+    .nav-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .nav-link a {
+      color: #80d4ff;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link a:hover {
+      color: #00b7ff;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      input, button {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 8px;
+        font-size: 0.85rem;
+      }
+
+      .nav-link a {
+        display: block;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>View Bill - SPORTS WORLD Shop</h1>
+  <div class="container">
+    <h2>Enter Serial Number</h2>
+    <input id="serial" placeholder="Enter 10-digit Serial Number" />
+    <button onclick="fetchBill()">View Bill</button>
+    <div id="bill-details"></div>
+  </div>
+  <div class="nav-link">
+    <a href="/index.html">Back to Billing</a> |
+    <a href="/add-item.html">Add/Edit Items</a> |
+    <a href="/history.html">Bill History</a>
+  </div>
+  <script>
+    let currentBill = null;
+
+    async function fetchBill() {
+      const serial = document.getElementById("serial").value;
+      if (!serial || serial.length !== 10 || isNaN(serial)) {
+        alert("Please enter a valid 10-digit serial number!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`/bill/${serial}`);
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        const bill = await res.json();
+        const div = document.getElementById("bill-details");
+        div.innerHTML = "";
+        if (!bill) {
+          div.innerHTML = "<p>No bill found with this serial number.</p>";
           return;
         }
 
-        try {
-          console.log("Fetching bill with serial:", serial);
-          const res = await fetch(`/bill/${serial}`);
-          if (!res.ok) {
-            const errorText = await res.text();
-            throw new Error(
-              `HTTP error! Status: ${res.status}, Details: ${errorText}`,
-            );
-          }
-          const bill = await res.json();
-          console.log("Fetched bill:", bill);
+        if (!bill.items || !Array.isArray(bill.items)) {
+          throw new Error("Invalid bill data: items array is missing or invalid");
+        }
 
-          const div = document.getElementById("bill-details");
-          div.innerHTML = "";
-          if (!bill) {
-            div.innerHTML = "<p>No bill found with this serial number.</p>";
-            return;
-          }
+        currentBill = bill;
 
-          if (!bill.items || !Array.isArray(bill.items)) {
-            throw new Error(
-              "Invalid bill data: items array is missing or invalid",
-            );
-          }
-
-          currentBill = bill;
-
-          div.innerHTML += `<p>Serial Number: ${bill.serialNumber}</p>`;
-          div.innerHTML += `<p>Customer: ${bill.customer || "N/A"}</p>`;
-          if (bill.phone) div.innerHTML += `<p>Phone: ${bill.phone}</p>`;
-          div.innerHTML += `<p>Date: ${new Date(bill.date).toLocaleString()}</p>`;
-          if (bill.returned) {
-            div.innerHTML += `<p style="color: red;">Status: Returned</p>`;
-          } else {
-            div.innerHTML += `<p style="color: green;">Status: Active</p>`;
-          }
-          const table = document.createElement("table");
-          table.innerHTML = `
+        div.innerHTML += `<p>Serial Number: ${bill.serialNumber}</p>`;
+        div.innerHTML += `<p>Customer: ${bill.customer || "N/A"}</p>`;
+        if (bill.phone) div.innerHTML += `<p>Phone: ${bill.phone}</p>`;
+        div.innerHTML += `<p>Date: ${new Date(bill.date).toLocaleString()}</p>`;
+        if (bill.returned) {
+          div.innerHTML += `<p style="color: red;">Status: Returned</p>`;
+        } else {
+          div.innerHTML += `<p style="color: green;">Status: Active</p>`;
+        }
+        const table = document.createElement("table");
+        table.innerHTML = `
           <thead>
             <tr>
               <th>Name</th>
@@ -185,118 +228,78 @@
             </tr>
           </thead>
           <tbody>
-            ${bill.items
-              .map((item, index) => {
-                // Ensure returnedQty exists (for backward compatibility)
-                const returnedQty = item.returnedQty || 0;
-                const remainingQty = item.qty - returnedQty;
-                return `
+            ${bill.items.map((item, index) => {
+              const returnedQty = item.returnedQty || 0;
+              const remainingQty = item.qty - returnedQty;
+              return `
                 <tr>
                   <td>${item.name || "N/A"}</td>
                   <td>${remainingQty} (Originally: ${item.qty}, Returned: ${returnedQty})</td>
                   <td>${item.price || "N/A"}</td>
                   <td>${item.price && remainingQty ? item.price * remainingQty : "N/A"}</td>
                   <td>
-                    ${
-                      item.returned
-                        ? "Returned"
-                        : `<input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" />`
-                    }
+                    ${item.returned ? "Returned" : `<input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" />`}
                   </td>
                   <td>
-                    ${
-                      item.returned
-                        ? '<button class="return-btn" disabled>Returned</button>'
-                        : `<button class="return-btn" onclick="returnItem(${index})">Return</button>`
-                    }
+                    ${item.returned ? '<button class="return-btn" disabled>Returned</button>' : `<button class="return-btn" onclick="returnItem(${index})">Return</button>`}
                   </td>
                 </tr>
               `;
-              })
-              .join("")}
+            }).join("")}
           </tbody>
         `;
-          div.appendChild(table);
-          const total = bill.items.reduce((sum, item) => {
-            const returnedQty = item.returnedQty || 0;
-            const remainingQty = item.qty - returnedQty;
-            return (
-              sum + (item.price && remainingQty ? item.price * remainingQty : 0)
-            );
-          }, 0);
-          div.innerHTML += `<p>Total: ${total}</p>`;
-        } catch (e) {
-          console.error("Error fetching bill:", e.message);
-          alert(
-            `Failed to fetch bill: ${e.message}. Check the console for details.`,
-          );
-        }
+        div.appendChild(table);
+        const total = bill.items.reduce((sum, item) => {
+          const returnedQty = item.returnedQty || 0;
+          const remainingQty = item.qty - returnedQty;
+          return sum + (item.price && remainingQty ? item.price * remainingQty : 0);
+        }, 0);
+        div.innerHTML += `<p>Total: ${total}</p>`;
+      } catch (e) {
+        console.error("Error fetching bill:", e.message);
+        alert(`Failed to fetch bill: ${e.message}`);
+      }
+    }
+
+    async function returnItem(itemIndex) {
+      if (!currentBill) {
+        alert("No bill loaded to return!");
+        return;
       }
 
-      async function returnItem(itemIndex) {
-        if (!currentBill) {
-          alert("No bill loaded to return!");
-          return;
-        }
-
-        if (currentBill.items[itemIndex].returned) {
-          alert("This item has already been returned!");
-          return;
-        }
-
-        const returnQtyInput = document.getElementById(
-          `return-qty-${itemIndex}`,
-        );
-        const returnQty = returnQtyInput ? Number(returnQtyInput.value) : null;
-        const item = currentBill.items[itemIndex];
-        const returnedQty = item.returnedQty || 0;
-        const remainingQty = item.qty - returnedQty;
-
-        // Validate the return quantity
-        if (
-          returnQty !== null &&
-          (isNaN(returnQty) || returnQty <= 0 || returnQty > remainingQty)
-        ) {
-          alert(
-            `Please enter a valid quantity to return (between 1 and ${remainingQty})!`,
-          );
-          return;
-        }
-
-        try {
-          console.log(
-            `Processing return for item at index ${itemIndex} in bill:`,
-            currentBill.serialNumber,
-          );
-
-          // Send request to return the specific item with the specified quantity
-          const markReturnedRes = await fetch(
-            `/bill/${currentBill.serialNumber}/return`,
-            {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                itemIndex,
-                returnQty: returnQty || remainingQty, // If no quantity is specified, return the remaining quantity
-              }),
-            },
-          );
-          if (!markReturnedRes.ok) {
-            const errorText = await markReturnedRes.text();
-            throw new Error(
-              `Failed to mark item as returned: HTTP error! Status: ${markReturnedRes.status}, Details: ${errorText}`,
-            );
-          }
-
-          alert("Item returned successfully! Stock updated.");
-          fetchBill(); // Refresh the bill details
-        } catch (e) {
-          console.error("Error during return:", e.message);
-          alert(
-            `Failed to process return: ${e.message}. Check the console for details.`,
-          );
-        }
+      if (currentBill.items[itemIndex].returned) {
+        alert("This item has already been returned!");
+        return;
       }
-    </script>
-  </body>
+
+      const returnQtyInput = document.getElementById(`return-qty-${itemIndex}`);
+      const returnQty = returnQtyInput ? Number(returnQtyInput.value) : null;
+      const item = currentBill.items[itemIndex];
+      const returnedQty = item.returnedQty || 0;
+      const remainingQty = item.qty - returnedQty;
+
+      if (returnQty !== null && (isNaN(returnQty) || returnQty <= 0 || returnQty > remainingQty)) {
+        alert(`Please enter a valid quantity to return (between 1 and ${remainingQty})!`);
+        return;
+      }
+
+      try {
+        const markReturnedRes = await fetch(`/bill/${currentBill.serialNumber}/return`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            itemIndex,
+            returnQty: returnQty || remainingQty
+          }),
+        });
+        if (!markReturnedRes.ok) throw new Error(`HTTP error! Status: ${markReturnedRes.status}`);
+        alert("Item returned successfully! Stock updated.");
+        fetchBill();
+      } catch (e) {
+        console.error("Error during return:", e.message);
+        alert(`Failed to process return: ${e.message}`);
+      }
+    }
+  </script>
+</body>
 </html>
