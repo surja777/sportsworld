@@ -5,113 +5,176 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Item - SPORTS WORLD Shop</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ebd5, #acb6e5);
-      margin: 0;
+      background: #1a1a1a;
+      color: #e0e0e0;
       padding: 20px;
-      color: #333;
+      line-height: 1.6;
     }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
+
     h1 {
       font-family: 'Montserrat', sans-serif;
       text-align: center;
-      color: #2c3e50;
+      color: #00b7ff;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
     }
+
     h2 {
       font-family: 'Roboto', sans-serif;
-      color: #34495e;
+      color: #80d4ff;
       margin-bottom: 15px;
+      font-size: 1.4rem;
     }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
     input, button {
       font-family: 'Open Sans', sans-serif;
       padding: 10px;
       margin: 5px 0;
-      border: 1px solid #ddd;
+      border: 1px solid #404040;
       border-radius: 5px;
       width: 100%;
-      box-sizing: border-box;
       transition: all 0.3s ease;
+      background: #333;
+      color: #e0e0e0;
     }
-    input:focus, button:hover {
-      border-color: #74ebd5;
-      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
+
+    input:focus {
+      border-color: #00b7ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
     }
+
     button {
-      background: #74ebd5;
+      background: #00b7ff;
       color: #fff;
       border: none;
       cursor: pointer;
       font-weight: 600;
       text-transform: uppercase;
     }
+
     button:hover {
-      background: #acb6e5;
+      background: #008ecf;
     }
+
     button:disabled {
-      background: #ccc;
+      background: #555;
       cursor: not-allowed;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
-      background: #fff;
+      background: #2a2a2a;
       border-radius: 5px;
       overflow: hidden;
     }
+
     th, td {
-      padding: 10px;
+      padding: 12px;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #404040;
     }
+
     th {
-      background: #34495e;
+      background: #004d73;
       color: #fff;
       font-family: 'Roboto', sans-serif;
     }
+
     tr:hover {
-      background: #f1f1f1;
+      background: #333;
     }
+
     .edit-btn {
-      background: #f39c12;
+      background: #ffaa00;
       padding: 5px 10px;
       font-size: 12px;
       margin-right: 5px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
     }
+
     .edit-btn:hover {
-      background: #e67e22;
+      background: #e69900;
     }
+
     .remove-btn {
-      background: #e74c3c;
+      background: #ff4d4d;
       padding: 5px 10px;
       font-size: 12px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
     }
+
     .remove-btn:hover {
-      background: #c0392b;
+      background: #e60000;
     }
+
     .nav-link {
       text-align: center;
       margin-top: 20px;
     }
+
     .nav-link a {
-      color: #2c3e50;
+      color: #80d4ff;
       text-decoration: none;
       font-weight: 600;
       font-family: 'Roboto', sans-serif;
-      margin: 0 10px;
+      margin: 0 15px;
+      transition: color 0.3s ease;
     }
+
     .nav-link a:hover {
-      color: #74ebd5;
+      color: #00b7ff;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      input, button {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 8px;
+        font-size: 0.85rem;
+      }
+
+      .nav-link a {
+        display: block;
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
@@ -148,7 +211,7 @@
   <script>
     let editingItemId = null;
     const correctPassword = "gourab009";
-    let allItems = []; // Store the full list of items
+    let allItems = [];
 
     function checkPassword() {
       const password = document.getElementById('password').value;
@@ -164,18 +227,16 @@
 
     async function fetchInventory() {
       try {
-        console.log('Fetching inventory from: /items');
         const res = await fetch('/items', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        allItems = await res.json(); // Store the full list of items
-        console.log('Fetched items:', allItems);
-        displayItems(allItems); // Display all items initially
+        allItems = await res.json();
+        displayItems(allItems);
       } catch (e) {
         console.error('Error fetching inventory:', e.message);
-        alert(`Failed to fetch inventory: ${e.message}. Check the console for details.`);
+        alert(`Failed to fetch inventory: ${e.message}`);
       }
     }
 
@@ -197,7 +258,6 @@
       });
     }
 
-    // Add search functionality
     document.getElementById('search').oninput = () => {
       const query = document.getElementById('search').value.toLowerCase();
       const filteredItems = allItems.filter(item =>
@@ -207,7 +267,6 @@
     };
 
     function editItem(id, name, price, stock) {
-      console.log('Editing item:', id);
       editingItemId = id;
       document.getElementById('name').value = name;
       document.getElementById('price').value = price;
@@ -218,7 +277,6 @@
     }
 
     async function saveItem() {
-      console.log('Saving item:', editingItemId);
       if (!editingItemId) {
         alert('No item selected for editing!');
         return;
@@ -238,10 +296,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item)
         });
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         editingItemId = null;
         const addBtn = document.getElementById('add');
         addBtn.textContent = 'Add';
@@ -252,12 +307,11 @@
         fetchInventory();
       } catch (e) {
         console.error('Error saving item:', e.message);
-        alert(`Failed to save item: ${e.message}. Check the console for details.`);
+        alert(`Failed to save item: ${e.message}`);
       }
     }
 
     async function removeItem(id, name) {
-      console.log('Removing item:', id);
       if (!confirm(`Are you sure you want to remove "${name}"?`)) return;
       try {
         await fetch(`/items/${id}`, {
@@ -266,56 +320,44 @@
         fetchInventory();
       } catch (e) {
         console.error('Error removing item:', e.message);
-        alert(`Failed to remove item: ${e.message}. Check the console for details.`);
+        alert(`Failed to remove item: ${e.message}`);
       }
     }
 
     async function addItem() {
       const addButton = document.getElementById('add');
       addButton.disabled = true;
-      console.log('Add button clicked');
       const item = {
         name: document.getElementById('name').value,
         price: Number(document.getElementById('price').value),
         stock: Number(document.getElementById('stock').value)
       };
-      console.log('Item to add:', item);
       if (!item.name || !item.price || !item.stock) {
-        console.log('Validation failed: Missing fields');
         alert('Please fill in all fields!');
         addButton.disabled = false;
         return;
       }
       try {
-        console.log('Sending POST request to: /items');
         const res = await fetch('/items', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item)
         });
-        console.log('Response status:', res.status);
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         document.getElementById('name').value = '';
         document.getElementById('price').value = '';
         document.getElementById('stock').value = '';
         fetchInventory();
       } catch (e) {
         console.error('Error adding item:', e.message);
-        alert(`Failed to add item: ${e.message}. Check the console for details.`);
+        alert(`Failed to add item: ${e.message}`);
       } finally {
         addButton.disabled = false;
       }
     }
 
     const addButton = document.getElementById('add');
-    addButton.removeEventListener('click', addItem);
-    addButton.addEventListener('click', () => {
-      console.log('Add button event listener triggered');
-      addItem();
-    });
+    addButton.addEventListener('click', addItem);
   </script>
 </body>
 </html>
