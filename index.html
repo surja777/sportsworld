@@ -5,125 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPORTS WORLD Shop</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ebd5, #acb6e5);
-      margin: 0;
+      background: #1a1a1a;
+      color: #e0e0e0;
       padding: 20px;
-      color: #333;
+      line-height: 1.6;
     }
-    .container {
-      display: flex;
-      gap: 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-    .inventory, .billing {
-      flex: 1;
-      padding: 20px;
-      border-radius: 10px;
-      background: #f9f9f9;
-    }
-    /* Add a wrapper for the inventory table to enable scrolling */
-    .inventory-table-wrapper {
-      max-height: 400px; /* Set a fixed height for the inventory box */
-      overflow-y: auto; /* Enable vertical scrolling */
-      border: 1px solid #ddd; /* Optional: Add a border for better visibility */
-      border-radius: 5px;
-    }
+
     h1 {
       font-family: 'Montserrat', sans-serif;
       text-align: center;
-      color: #2c3e50;
+      color: #00b7ff;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
     }
+
     h2 {
       font-family: 'Roboto', sans-serif;
-      color: #34495e;
+      color: #80d4ff;
       margin-bottom: 15px;
+      font-size: 1.4rem;
     }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .inventory, .billing {
+      flex: 1;
+      min-width: 300px;
+      padding: 15px;
+      background: #252525;
+      border-radius: 8px;
+      border: 1px solid #404040;
+    }
+
+    .inventory-table-wrapper {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #404040;
+      border-radius: 5px;
+    }
+
     input, button {
       font-family: 'Open Sans', sans-serif;
       padding: 10px;
       margin: 5px 0;
-      border: 1px solid #ddd;
+      border: 1px solid #404040;
       border-radius: 5px;
       width: 100%;
-      box-sizing: border-box;
       transition: all 0.3s ease;
+      background: #333;
+      color: #e0e0e0;
     }
-    input:focus, button:hover {
-      border-color: #74ebd5;
-      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
+
+    input:focus {
+      border-color: #00b7ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
     }
+
     button {
-      background: #74ebd5;
+      background: #00b7ff;
       color: #fff;
       border: none;
       cursor: pointer;
       font-weight: 600;
       text-transform: uppercase;
     }
+
     button:hover {
-      background: #acb6e5;
+      background: #008ecf;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
-      background: #fff;
+      background: #2a2a2a;
       border-radius: 5px;
       overflow: hidden;
     }
+
     th, td {
-      padding: 10px;
+      padding: 12px;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #404040;
     }
+
     th {
-      background: #34495e;
+      background: #004d73;
       color: #fff;
       font-family: 'Roboto', sans-serif;
-      position: sticky; /* Make the table header sticky */
-      top: 0; /* Stick to the top of the scrollable area */
-      z-index: 1; /* Ensure the header stays above the rows */
+      position: sticky;
+      top: 0;
+      z-index: 1;
     }
+
     tr:hover {
-      background: #f1f1f1;
+      background: #333;
     }
+
     .nav-link {
       text-align: center;
       margin-top: 20px;
     }
+
     .nav-link a {
-      color: #2c3e50;
+      color: #80d4ff;
       text-decoration: none;
       font-weight: 600;
       font-family: 'Roboto', sans-serif;
-      margin: 0 10px;
+      margin: 0 15px;
+      transition: color 0.3s ease;
     }
+
     .nav-link a:hover {
-      color: #74ebd5;
+      color: #00b7ff;
     }
-    /* Optional: Style the scrollbar for better aesthetics */
+
     .inventory-table-wrapper::-webkit-scrollbar {
       width: 8px;
     }
+
     .inventory-table-wrapper::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: #333;
       border-radius: 5px;
     }
+
     .inventory-table-wrapper::-webkit-scrollbar-thumb {
-      background: #74ebd5;
+      background: #00b7ff;
       border-radius: 5px;
     }
+
     .inventory-table-wrapper::-webkit-scrollbar-thumb:hover {
-      background: #acb6e5;
+      background: #008ecf;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .inventory, .billing {
+        min-width: 100%;
+      }
+
+      .nav-link a {
+        display: block;
+        margin: 10px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      input, button {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 8px;
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
@@ -132,7 +200,7 @@
   <div class="container">
     <div class="inventory">
       <h2>Inventory</h2>
-      <div class="inventory-table-wrapper"> <!-- Add a wrapper div for the table -->
+      <div class="inventory-table-wrapper">
         <table id="items">
           <thead>
             <tr>
@@ -189,7 +257,7 @@
         });
       } catch (e) {
         console.error('Error fetching inventory:', e.message);
-        alert(`Failed to fetch inventory: ${e.message}. Check the console for details. If the server is down, please ensure it is running in Replit.`);
+        alert(`Failed to fetch inventory: ${e.message}. Check the console for details.`);
       }
     }
 
@@ -220,25 +288,20 @@
 
     let selectedItem = null;
     async function addToBill() {
-      if (!selectedItem) {
-        console.log('No item selected to add to bill');
-        return;
-      }
+      if (!selectedItem) return;
       const qty = Number(document.getElementById('qty').value);
       if (qty <= 0) {
-        console.log('Invalid quantity:', qty);
         alert('Quantity must be greater than 0!');
         return;
       }
       if (qty > selectedItem.stock) {
-        console.log(`Not enough stock for ${selectedItem.name}. Requested: ${qty}, Available: ${selectedItem.stock}`);
         alert('Not enough stock!');
         return;
       }
       bill.push({ ...selectedItem, qty });
-      console.log(`Added item to bill: ${selectedItem.name}, Qty: ${qty}. Current bill:`, bill);
       document.getElementById('search').value = '';
       document.getElementById('qty').value = '';
+      document.getElementById('results').innerHTML = '';
       selectedItem = null;
       updateBill();
     }
@@ -301,158 +364,112 @@
     }
 
     function encodeBill(bill, customer, phone, serialNumber) {
-      console.log('encodeBill called with bill:', bill);
-      if (!Array.isArray(bill) || bill.length === 0) {
-        console.error('Bill array is invalid or empty:', bill);
-        return "Error: No items in bill\n";
-      }
-
-      // Decorative header
       let text = "============================\n";
       text += "       SPORTS WORLD       \n";
       text += "============================\n";
       text += "\n";
-
-      // Bill details
       text += `Customer: ${customer.padEnd(20, ' ')}\n`;
       if (phone) text += `Phone: ${phone.padEnd(20, ' ')}\n`;
       text += `Date: ${new Date().toLocaleString().padEnd(20, ' ')}\n`;
       text += `Serial No: ${serialNumber.padEnd(20, ' ')}\n`;
       text += "----------------------------\n";
-
-      // Items table header
       text += "Qnty Particulars    Rate Amount\n";
       text += "----------------------------\n";
-
-      // Item list
       bill.forEach(item => {
-        console.log('Processing item:', item);
-        const qty = item.qty.toString().padStart(4, ' '); // 4 characters for quantity
-        const itemName = item.name.padEnd(12, ' ').slice(0, 12); // 12 characters for item name
-        const rate = item.price.toString().padStart(6, ' '); // 6 characters for rate
-        const amount = (item.price * item.qty).toString().padStart(6, ' '); // 6 characters for amount
+        const qty = item.qty.toString().padStart(4, ' ');
+        const itemName = item.name.padEnd(12, ' ').slice(0, 12);
+        const rate = item.price.toString().padStart(6, ' ');
+        const amount = (item.price * item.qty).toString().padStart(6, ' ');
         text += `${qty} ${itemName} ${rate} ${amount}\n`;
       });
-
-      // Separator
       text += "----------------------------\n";
-
-      // Total (aligned under Amount column)
-      const total = bill.reduce((sum, item) => {
-        const itemTotal = (item.price || 0) * (item.qty || 0);
-        console.log(`Calculating total: item.price=${item.price}, item.qty=${item.qty}, itemTotal=${itemTotal}`);
-        return sum + itemTotal;
-      }, 0);
-      console.log('Calculated total:', total);
+      const total = bill.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0);
       text += `                TOTAL ${total.toString().padStart(6, ' ')}\n`;
-      console.log('Added total to text:', text);
-
-      // Footer
       text += "----------------------------\n";
       text += "Address: Swarupganj Bus Stand\n";
       text += "Nabadwip, Nadia - 741301\n";
       text += "Phone: 7679554458\n";
       text += "----------------------------\n";
       text += "     Thank You! Visit Again!     \n";
-      text += "     3 Day Return Policy     \n"; // Added 3 Day Return Policy as per previous request
+      text += "     3 Day Return Policy     \n";
       text += "============================\n";
       text += "\n\n";
-
-      console.log('Final bill text:', text);
       return text;
     }
 
     async function printBill() {
-      if (!printer || !printer.device.gatt.connected) {
-        printer = await connectToPrinter();
-      }
-      if (!printer) return;
-
-      if (bill.length === 0) {
-        alert('No items in the bill to print!');
-        return;
-      }
-
-      console.log('Bill array before printing:', bill);
-
-      const customer = document.getElementById('customer').value;
-      const phone = document.getElementById('phone').value;
-      const serialNumber = generateSerialNumber();
+      const printBtn = document.querySelector('button[onclick="printBill()"]');
+      printBtn.disabled = true;
+      printBtn.textContent = 'Printing...';
 
       try {
-        console.log('Fetching inventory before stock update');
+        if (!printer || !printer.device.gatt.connected) {
+          printer = await connectToPrinter();
+        }
+        if (!printer) throw new Error('Printer not connected');
+
+        if (bill.length === 0) throw new Error('No items in the bill to print');
+
+        const customer = document.getElementById('customer').value;
+        const phone = document.getElementById('phone').value;
+        const serialNumber = generateSerialNumber();
+
         const res = await fetch('/items');
         if (!res.ok) throw new Error(`Failed to fetch inventory: HTTP error! Status: ${res.status}`);
         const items = await res.json();
-        console.log('Inventory before update:', items);
 
+        // Check stock availability (allow qty to equal stock)
         for (const billItem of bill) {
           const inventoryItem = items.find(item => item._id === billItem._id);
           if (!inventoryItem) {
-            console.error(`Item ${billItem.name} not found in inventory`);
-            alert(`Item ${billItem.name} not found in inventory!`);
-            return;
+            throw new Error(`Item ${billItem.name} not found in inventory!`);
           }
           if (inventoryItem.stock < billItem.qty) {
-            console.error(`Not enough stock for ${billItem.name}. Available: ${inventoryItem.stock}, Required: ${billItem.qty}`);
-            alert(`Not enough stock for ${billItem.name}! Available: ${inventoryItem.stock}, Required: ${billItem.qty}`);
-            return;
+            throw new Error(`Not enough stock for ${billItem.name}! Available: ${inventoryItem.stock}, Required: ${billItem.qty}`);
           }
         }
 
+        // Update stock (allow stock to go to 0)
         for (const billItem of bill) {
           const inventoryItem = items.find(item => item._id === billItem._id);
-          console.log(`Updating stock for ${billItem.name}. Current stock: ${inventoryItem.stock}, Reducing by: ${billItem.qty}`);
-          inventoryItem.stock -= billItem.qty;
-          console.log(`New stock for ${billItem.name}: ${inventoryItem.stock}`);
-
+          const updatedStock = inventoryItem.stock - billItem.qty;
+          const updatedItem = {
+            name: inventoryItem.name,
+            price: inventoryItem.price,
+            stock: updatedStock
+          };
           const updateRes = await fetch(`/items/${billItem._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(inventoryItem)
+            body: JSON.stringify(updatedItem)
           });
           if (!updateRes.ok) {
             const errorText = await updateRes.text();
             throw new Error(`Failed to update stock for ${billItem.name}: HTTP error! Status: ${updateRes.status}, Details: ${errorText}`);
           }
-          console.log(`Stock updated successfully for ${billItem.name}`);
         }
 
-        const billData = {
-          items: bill,
-          customer: customer,
-          phone: phone || null,
-          date: new Date().toISOString(),
-          serialNumber: serialNumber
-        };
-
+        const billData = { items: bill, customer, phone: phone || null, date: new Date().toISOString(), serialNumber };
         const billText = encodeBill(bill, customer, phone, serialNumber);
-        console.log('Generated bill text:', billText);
 
         const initCommand = new Uint8Array([0x1B, 0x40]);
-        console.log('Sending printer initialization command');
         await printer.char.writeValue(initCommand);
         await new Promise(resolve => setTimeout(resolve, 100));
 
         const encoder = new TextEncoder();
         const fullData = encoder.encode(billText);
-        console.log(`Total bill data size: ${fullData.length} bytes`);
-
         const chunkSize = 128;
         for (let i = 0; i < fullData.length; i += chunkSize) {
           const chunk = fullData.slice(i, i + chunkSize);
-          console.log(`Sending chunk ${i / chunkSize + 1} of size ${chunk.length} bytes`);
           await printer.char.writeValue(chunk);
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
         const finalNewline = encoder.encode('\n\n');
-        console.log('Sending final newline to flush printer buffer');
         await printer.char.writeValue(finalNewline);
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         const formFeed = new Uint8Array([0x0C]);
-        console.log('Sending form feed command');
         await printer.char.writeValue(formFeed);
         await new Promise(resolve => setTimeout(resolve, 100));
 
@@ -472,6 +489,9 @@
       } catch (e) {
         console.error('Error during printBill:', e.message);
         alert(`Failed to print bill: ${e.message}. Check the console for details.`);
+      } finally {
+        printBtn.disabled = false;
+        printBtn.textContent = 'Print';
       }
     }
 
