@@ -31,7 +31,6 @@ async function connectDB() {
 }
 
 connectDB().then(() => {
-  // GET /items - Fetch all items
   app.get('/items', async (req, res) => {
     try {
       const items = await db.collection('items').find().toArray();
@@ -42,12 +41,11 @@ connectDB().then(() => {
     }
   });
 
-  // POST /items - Add a new item
   app.post('/items', async (req, res) => {
     try {
       const { name, price, stock } = req.body;
-      if (!name || !price || !stock) {
-        return res.status(400).send('All fields are required');
+      if (!name || price === undefined || stock === undefined) {
+        return res.status(400).send('All fields (name, price, stock) are required');
       }
 
       const existing = await db.collection('items').findOne({ name });
@@ -63,24 +61,40 @@ connectDB().then(() => {
     }
   });
 
-  // PUT /items/:id - Update an item
   app.put('/items/:id', async (req, res) => {
     try {
       const { id } = req.params;
       const { name, price, stock } = req.body;
 
-      if (!name || !price || !stock) {
-        return res.status(400).send('All fields are required');
+      // Fetch the existing item to get current values
+      const existingItem = await db.collection('items').findOne({ _id: new ObjectId(id) });
+      if (!existingItem) {
+        return res.status(404).send('Item not found');
       }
 
-      const duplicate = await db.collection('items').findOne({ name, _id: { $ne: new ObjectId(id) } });
-      if (duplicate) {
-        return res.status(409).send(`Item with name "${name}" already exists`);
+      // Prepare the update object with existing values as defaults
+      const updateData = {
+        name: name !== undefined ? name : existingItem.name,
+        price: price !== undefined ? price : existingItem.price,
+        stock: stock !== undefined ? stock : existingItem.stock
+      };
+
+      // Validate that all fields are now present
+      if (!updateData.name || updateData.price === undefined || updateData.stock === undefined) {
+        return res.status(400).send('All fields (name, price, stock) must be provided or unchanged');
+      }
+
+      // Check for duplicate name if name is being updated
+      if (name && name !== existingItem.name) {
+        const duplicate = await db.collection('items').findOne({ name, _id: { $ne: new ObjectId(id) } });
+        if (duplicate) {
+          return res.status(409).send(`Item with name "${name}" already exists`);
+        }
       }
 
       const result = await db.collection('items').updateOne(
         { _id: new ObjectId(id) },
-        { $set: { name, price, stock } }
+        { $set: updateData }
       );
 
       if (result.matchedCount === 0) {
@@ -94,7 +108,6 @@ connectDB().then(() => {
     }
   });
 
-  // DELETE /items/:id - Remove an item
   app.delete('/items/:id', async (req, res) => {
     try {
       const { id } = req.params;
@@ -111,7 +124,6 @@ connectDB().then(() => {
     }
   });
 
-  // POST /bill - Save a new bill
   app.post('/bill', async (req, res) => {
     try {
       const { items, customer, phone, date, serialNumber } = req.body;
@@ -123,11 +135,10 @@ connectDB().then(() => {
         existing = await db.collection('bills').findOne({ serialNumber: newSerialNumber });
       }
 
-      // Initialize each item with a `returned` field set to `false` and `originalQty`
       const itemsWithReturnStatus = items.map(item => ({
         ...item,
-        originalQty: item.qty, // Store the original quantity for reference
-        returnedQty: 0, // Track how many have been returned
+        originalQty: item.qty,
+        returnedQty: 0,
         returned: false
       }));
 
@@ -147,7 +158,6 @@ connectDB().then(() => {
     }
   });
 
-  // GET /bill/:serial - Fetch a bill by serial number
   app.get('/bill/:serial', async (req, res) => {
     try {
       const { serial } = req.params;
@@ -164,48 +174,40 @@ connectDB().then(() => {
     }
   });
 
-  // PUT /bill/:serial/return - Mark a specific item as returned (with partial return support)
   app.put('/bill/:serial/return', async (req, res) => {
     try {
       const { serial } = req.params;
-      const { itemIndex, returnQty } = req.body; // Index of the item to return and quantity to return
+      const { itemIndex, returnQty } = req.body;
 
       if (itemIndex === undefined || itemIndex < 0) {
         return res.status(400).send('Invalid item index');
       }
 
-      // Fetch the bill
       const bill = await db.collection('bills').findOne({ serialNumber: serial });
       if (!bill) {
         return res.status(404).send('Bill not found');
       }
 
-      // Check if the item exists
       if (itemIndex >= bill.items.length) {
         return res.status(400).send('Item index out of range');
       }
 
       const billItem = bill.items[itemIndex];
 
-      // Initialize returnedQty if it doesn't exist (for backward compatibility)
       if (!billItem.hasOwnProperty('returnedQty')) {
         billItem.returnedQty = 0;
       }
 
-      // Check if the item is already fully returned
       if (billItem.returned) {
         return res.status(400).send('Item already fully returned');
       }
 
-      // Determine the quantity to return
       const qtyToReturn = returnQty !== undefined && returnQty !== null ? returnQty : billItem.qty;
 
-      // Validate the return quantity
       if (qtyToReturn <= 0 || qtyToReturn > billItem.qty - billItem.returnedQty) {
         return res.status(400).send(`Invalid return quantity. You can return between 1 and ${billItem.qty - billItem.returnedQty} items.`);
       }
 
-      // Update stock for the returned item
       const inventoryItem = await db.collection('items').findOne({ _id: new ObjectId(billItem._id) });
       if (!inventoryItem) {
         return res.status(404).send(`Item ${billItem.name} not found in inventory`);
@@ -217,14 +219,11 @@ connectDB().then(() => {
         { $set: { stock: inventoryItem.stock } }
       );
 
-      // Update the bill item
       billItem.returnedQty += qtyToReturn;
-      billItem.returned = billItem.returnedQty >= billItem.qty; // Mark as fully returned if all items are returned
+      billItem.returned = billItem.returnedQty >= billItem.qty;
 
-      // Check if all items in the bill are fully returned
       const allItemsReturned = bill.items.every(item => item.returned);
 
-      // Update the bill in the database
       const result = await db.collection('bills').updateOne(
         { serialNumber: serial },
         {
@@ -246,7 +245,6 @@ connectDB().then(() => {
     }
   });
 
-  // DELETE /bill/:serial - Delete a bill by serial number
   app.delete('/bill/:serial', async (req, res) => {
     try {
       const { serial } = req.params;
@@ -263,7 +261,6 @@ connectDB().then(() => {
     }
   });
 
-  // GET /bills - Fetch all bills
   app.get('/bills', async (req, res) => {
     try {
       const bills = await db.collection('bills').find().sort({ date: -1 }).toArray();
