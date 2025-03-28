@@ -28,6 +28,13 @@
       border-radius: 10px;
       background: #f9f9f9;
     }
+    /* Add a wrapper for the inventory table to enable scrolling */
+    .inventory-table-wrapper {
+      max-height: 400px; /* Set a fixed height for the inventory box */
+      overflow-y: auto; /* Enable vertical scrolling */
+      border: 1px solid #ddd; /* Optional: Add a border for better visibility */
+      border-radius: 5px;
+    }
     h1 {
       font-family: 'Montserrat', sans-serif;
       text-align: center;
@@ -82,6 +89,9 @@
       background: #34495e;
       color: #fff;
       font-family: 'Roboto', sans-serif;
+      position: sticky; /* Make the table header sticky */
+      top: 0; /* Stick to the top of the scrollable area */
+      z-index: 1; /* Ensure the header stays above the rows */
     }
     tr:hover {
       background: #f1f1f1;
@@ -100,6 +110,21 @@
     .nav-link a:hover {
       color: #74ebd5;
     }
+    /* Optional: Style the scrollbar for better aesthetics */
+    .inventory-table-wrapper::-webkit-scrollbar {
+      width: 8px;
+    }
+    .inventory-table-wrapper::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 5px;
+    }
+    .inventory-table-wrapper::-webkit-scrollbar-thumb {
+      background: #74ebd5;
+      border-radius: 5px;
+    }
+    .inventory-table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #acb6e5;
+    }
   </style>
 </head>
 <body>
@@ -107,16 +132,18 @@
   <div class="container">
     <div class="inventory">
       <h2>Inventory</h2>
-      <table id="items">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Stock</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="inventory-table-wrapper"> <!-- Add a wrapper div for the table -->
+        <table id="items">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
     <div class="billing">
       <h2>Billing</h2>
@@ -301,7 +328,7 @@
       bill.forEach(item => {
         console.log('Processing item:', item);
         const qty = item.qty.toString().padStart(4, ' '); // 4 characters for quantity
-        const itemName = item.name.padEnd(1212, ' ').slice(0, 12); // 12 characters for item name
+        const itemName = item.name.padEnd(12, ' ').slice(0, 12); // 12 characters for item name
         const rate = item.price.toString().padStart(6, ' '); // 6 characters for rate
         const amount = (item.price * item.qty).toString().padStart(6, ' '); // 6 characters for amount
         text += `${qty} ${itemName} ${rate} ${amount}\n`;
@@ -327,7 +354,7 @@
       text += "Phone: 7679554458\n";
       text += "----------------------------\n";
       text += "     Thank You! Visit Again!     \n";
-      text += "     3 Day Return Policy     \n"; // Added 3 Day Return Policy
+      text += "     3 Day Return Policy     \n"; // Added 3 Day Return Policy as per previous request
       text += "============================\n";
       text += "\n\n";
 
