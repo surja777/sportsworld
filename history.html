@@ -5,88 +5,112 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bill History - SPORTS WORLD Shop</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ebd5, #acb6e5);
-      margin: 0;
+      background: #1a1a1a;
+      color: #e0e0e0;
       padding: 20px;
-      color: #333;
+      line-height: 1.6;
     }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
+
     h1 {
       font-family: 'Montserrat', sans-serif;
       text-align: center;
-      color: #2c3e50;
+      color: #00b7ff;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
     }
+
     h2 {
       font-family: 'Roboto', sans-serif;
-      color: #34495e;
+      color: #80d4ff;
       margin-bottom: 15px;
+      font-size: 1.4rem;
     }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
     input, button {
       font-family: 'Open Sans', sans-serif;
       padding: 10px;
       margin: 5px 0;
-      border: 1px solid #ddd;
+      border: 1px solid #404040;
       border-radius: 5px;
       width: 100%;
-      box-sizing: border-box;
       transition: all 0.3s ease;
+      background: #333;
+      color: #e0e0e0;
     }
-    input:focus, button:hover {
-      border-color: #74ebd5;
-      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
+
+    input:focus {
+      border-color: #00b7ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
     }
+
     button {
-      background: #74ebd5;
+      background: #00b7ff;
       color: #fff;
       border: none;
       cursor: pointer;
       font-weight: 600;
       text-transform: uppercase;
     }
+
     button:hover {
-      background: #acb6e5;
+      background: #008ecf;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
-      background: #fff;
+      background: #2a2a2a;
       border-radius: 5px;
       overflow: hidden;
     }
+
     th, td {
-      padding: 10px;
+      padding: 12px;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #404040;
     }
+
     th {
-      background: #34495e;
+      background: #004d73;
       color: #fff;
       font-family: 'Roboto', sans-serif;
     }
+
     tr:hover {
-      background: #f1f1f1;
+      background: #333;
     }
+
     .bill-details {
       margin-top: 20px;
       padding: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #404040;
       border-radius: 5px;
-      background: #fafafa;
+      background: #252525;
     }
+
     .delete-btn {
-      background: #e74c3c;
+      background: #ff4d4d;
       padding: 5px 10px;
       font-size: 12px;
       width: auto;
@@ -95,22 +119,61 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .delete-btn:hover {
-      background: #c0392b;
+      background: #e60000;
     }
+
     .nav-link {
       text-align: center;
       margin-top: 20px;
     }
+
     .nav-link a {
-      color: #2c3e50;
+      color: #80d4ff;
       text-decoration: none;
       font-weight: 600;
       font-family: 'Roboto', sans-serif;
-      margin: 0 10px;
+      margin: 0 15px;
+      transition: color 0.3s ease;
     }
+
     .nav-link a:hover {
-      color: #74ebd5;
+      color: #00b7ff;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      input, button {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 8px;
+        font-size: 0.85rem;
+      }
+
+      .nav-link a {
+        display: block;
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
@@ -160,14 +223,12 @@
 
     async function fetchBills() {
       try {
-        console.log('Fetching all bills from: /bills');
         const res = await fetch('/bills', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const bills = await res.json();
-        console.log('Fetched bills:', bills);
         const tbody = document.querySelector('#bills tbody');
         tbody.innerHTML = '';
         bills.forEach(bill => {
@@ -186,7 +247,6 @@
           `;
           tr.style.cursor = 'pointer';
           tr.onclick = (e) => {
-            // Prevent the delete button click from triggering the row click
             if (e.target.className !== 'delete-btn') {
               showBillDetails(bill);
             }
@@ -195,7 +255,7 @@
         });
       } catch (e) {
         console.error('Error fetching bills:', e.message);
-        alert(`Failed to fetch bills: ${e.message}. Check the console for details.`);
+        alert(`Failed to fetch bills: ${e.message}`);
       }
     }
 
@@ -203,20 +263,16 @@
       if (!confirm(`Are you sure you want to delete the bill with Serial Number ${serialNumber}?`)) return;
 
       try {
-        console.log('Deleting bill with serial:', serialNumber);
         const res = await fetch(`/bill/${serialNumber}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' }
         });
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         alert(`Bill with Serial Number ${serialNumber} deleted successfully!`);
-        fetchBills(); // Refresh the bill history
+        fetchBills();
       } catch (e) {
         console.error('Error deleting bill:', e.message);
-        alert(`Failed to delete bill: ${e.message}. Check the console for details.`);
+        alert(`Failed to delete bill: ${e.message}`);
       }
     }
 
