@@ -1,363 +1,487 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Item - SPORTS WORLD Shop</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item - SPORTS WORLD Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      padding: 20px;
-      line-height: 1.6;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
 
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: #00b7ff;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-    }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            color: #00b7ff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
 
-    h2 {
-      font-family: 'Roboto', sans-serif;
-      color: #80d4ff;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-    }
+        h2 {
+            font-family: 'Roboto', sans-serif;
+            color: #80d4ff;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-    input, button {
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      width: 100%;
-      transition: all 0.3s ease;
-      background: #333;
-      color: #e0e0e0;
-    }
+        input, button {
+            font-family: 'Open Sans', sans-serif;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #404040;
+            border-radius: 5px;
+            width: 100%;
+            transition: all 0.3s ease;
+            background: #333;
+            color: #e0e0e0;
+        }
 
-    input:focus {
-      border-color: #00b7ff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
-    }
+        input:focus {
+            border-color: #00b7ff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
+        }
 
-    button {
-      background: #00b7ff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
+        button {
+            background: #00b7ff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
 
-    button:hover {
-      background: #008ecf;
-    }
+        button:hover {
+            background: #008ecf;
+        }
 
-    button:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #2a2a2a;
+            border-radius: 5px;
+            overflow: hidden;
+        }
 
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
-    }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #404040;
+        }
 
-    th {
-      background: #004d73;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
+        th {
+            background: #004d73;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
 
-    tr:hover {
-      background: #333;
-    }
+        tr:hover {
+            background: #333;
+        }
 
-    .edit-btn {
-      background: #ffaa00;
-      padding: 5px 10px;
-      font-size: 12px;
-      margin-right: 5px;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-    }
+        .edit-btn {
+            background: #ffaa00;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
 
-    .edit-btn:hover {
-      background: #e69900;
-    }
+        .edit-btn:hover {
+            background: #e69900;
+        }
 
-    .remove-btn {
-      background: #ff4d4d;
-      padding: 5px 10px;
-      font-size: 12px;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-    }
+        .remove-btn {
+            background: #ff4d4d;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
 
-    .remove-btn:hover {
-      background: #e60000;
-    }
+        .remove-btn:hover {
+            background: #e60000;
+        }
 
-    .nav-link {
-      text-align: center;
-      margin-top: 20px;
-    }
+        .nav-link {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-    .nav-link a {
-      color: #80d4ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin: 0 15px;
-      transition: color 0.3s ease;
-    }
+        .nav-link a {
+            color: #80d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Roboto', sans-serif;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
 
-    .nav-link a:hover {
-      color: #00b7ff;
-    }
+        .nav-link a:hover {
+            color: #00b7ff;
+        }
 
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            width: 400px;
+            border: 1px solid #404040;
+        }
 
-      h2 {
-        font-size: 1.2rem;
-      }
+        .popup h3 {
+            color: #80d4ff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.6rem;
+        }
 
-      input, button {
-        font-size: 0.9rem;
-      }
+        .popup input {
+            margin-bottom: 15px;
+            padding: 12px;
+            font-size: 1rem;
+        }
 
-      th, td {
-        padding: 8px;
-        font-size: 0.85rem;
-      }
+        .popup-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
 
-      .nav-link a {
-        display: block;
-        margin: 10px 0;
-      }
-    }
-  </style>
+        .popup-buttons button {
+            width: 50%;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .cancel-btn {
+            background: #ff4d4d;
+        }
+
+        .cancel-btn:hover {
+            background: #e60000;
+        }
+
+        /* Blur Background */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            input, button {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .nav-link a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .popup {
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Add Item - SPORTS WORLD Shop</h1>
-  <div class="container">
-    <h2>Inventory Management</h2>
-    <input id="password" type="password" placeholder="Enter Password">
-    <button onclick="checkPassword()">Access Inventory</button>
-    <div id="inventory-section" style="display: none;">
-      <input id="name" placeholder="Item Name">
-      <input id="price" type="number" placeholder="Price">
-      <input id="stock" type="number" placeholder="Stock">
-      <button id="add">Add</button>
-      <input id="search" placeholder="Search Items by Name" style="margin-top: 10px;">
-      <table id="items">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <h1>Add Item - SPORTS WORLD Shop</h1>
+    <div class="container">
+        <h2>Inventory Management</h2>
+        <input id="password" type="password" placeholder="Enter Password">
+        <button onclick="checkPassword()">Access Inventory</button>
+        <div id="inventory-section" style="display: none;">
+            <input id="name" placeholder="Item Name">
+            <input id="price" type="number" placeholder="Price">
+            <input id="stock" type="number" placeholder="Stock">
+            <button id="add">Add</button>
+            <input id="search" placeholder="Search Items by Name" style="margin-top: 10px;">
+            <table id="items">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-  </div>
-  <div class="nav-link">
-    <a href="/index.html">Back to Billing</a> | 
-    <a href="/view-bill.html">View Bill by Serial</a> | 
-    <a href="/history.html">Bill History</a>
-  </div>
-  <script>
-    let editingItemId = null;
-    const correctPassword = "gourab009";
-    let allItems = [];
+    <div class="nav-link">
+        <a href="/index.html">Back to Billing</a> |
+        <a href="/view-bill.html">View Bill by Serial</a> |
+        <a href="/history.html">Bill History</a>
+    </div>
 
-    function checkPassword() {
-      const password = document.getElementById('password').value;
-      if (password === correctPassword) {
-        document.getElementById('inventory-section').style.display = 'block';
-        document.getElementById('password').style.display = 'none';
-        document.querySelector('button[onclick="checkPassword()"]').style.display = 'none';
-        fetchInventory();
-      } else {
-        alert('Incorrect password!');
-      }
-    }
+    <div class="popup" id="editPopup">
+        <h3>Edit Item</h3>
+        <input id="editName" placeholder="Item Name">
+        <input id="editPrice" type="number" placeholder="Price">
+        <input id="editStock" type="number" placeholder="Stock">
+        <div class="popup-buttons">
+            <button class="cancel-btn" onclick="cancelEdit()">Cancel</button>
+            <button onclick="saveItemFromPopup()">Save</button>
+        </div>
+    </div>
 
-    async function fetchInventory() {
-      try {
-        const res = await fetch('/items', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        allItems = await res.json();
-        displayItems(allItems);
-      } catch (e) {
-        console.error('Error fetching inventory:', e.message);
-        alert(`Failed to fetch inventory: ${e.message}`);
-      }
-    }
+    <div class="overlay" id="overlay"></div>
 
-    function displayItems(items) {
-      const tbody = document.querySelector('#items tbody');
-      tbody.innerHTML = '';
-      items.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.price}</td>
-          <td>${item.stock}</td>
-          <td>
-            <button class="edit-btn" onclick="editItem('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
-            <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Remove</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+    <script>
+        let editingItemId = null;
+        const correctPassword = "gourab009";
+        let allItems = [];
 
-    document.getElementById('search').oninput = () => {
-      const query = document.getElementById('search').value.toLowerCase();
-      const filteredItems = allItems.filter(item =>
-        item.name.toLowerCase().includes(query)
-      );
-      displayItems(filteredItems);
-    };
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === correctPassword) {
+                document.getElementById('inventory-section').style.display = 'block';
+                document.getElementById('password').style.display = 'none';
+                document.querySelector('button[onclick="checkPassword()"]').style.display = 'none';
+                fetchInventory();
+            } else {
+                alert('Incorrect password!');
+            }
+        }
 
-    function editItem(id, name, price, stock) {
-      editingItemId = id;
-      document.getElementById('name').value = name;
-      document.getElementById('price').value = price;
-      document.getElementById('stock').value = stock;
-      const addBtn = document.getElementById('add');
-      addBtn.textContent = 'Save';
-      addBtn.onclick = saveItem;
-    }
+        async function fetchInventory() {
+            try {
+                const res = await fetch('/items', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+                allItems = await res.json();
+                displayItems(allItems);
+            } catch (e) {
+                console.error('Error fetching inventory:', e.message);
+                alert(`Failed to fetch inventory: ${e.message}`);
+            }
+        }
 
-    async function saveItem() {
-      if (!editingItemId) {
-        alert('No item selected for editing!');
-        return;
-      }
-      const item = {
-        name: document.getElementById('name').value,
-        price: Number(document.getElementById('price').value),
-        stock: Number(document.getElementById('stock').value)
-      };
-      if (!item.name || !item.price || !item.stock) {
-        alert('Please fill in all fields!');
-        return;
-      }
-      try {
-        const res = await fetch(`/items/${editingItemId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(item)
-        });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        editingItemId = null;
-        const addBtn = document.getElementById('add');
-        addBtn.textContent = 'Add';
-        addBtn.onclick = addItem;
-        document.getElementById('name').value = '';
-        document.getElementById('price').value = '';
-        document.getElementById('stock').value = '';
-        fetchInventory();
-      } catch (e) {
-        console.error('Error saving item:', e.message);
-        alert(`Failed to save item: ${e.message}`);
-      }
-    }
+        function displayItems(items) {
+            const tbody = document.querySelector('#items tbody');
+            tbody.innerHTML = '';
+            items.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td>${item.stock}</td>
+                    <td>
+                        <button class="edit-btn" onclick="editItem('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
+                        <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Remove</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
-    async function removeItem(id, name) {
-      if (!confirm(`Are you sure you want to remove "${name}"?`)) return;
-      try {
-        await fetch(`/items/${id}`, {
-          method: 'DELETE'
-        });
-        fetchInventory();
-      } catch (e) {
-        console.error('Error removing item:', e.message);
-        alert(`Failed to remove item: ${e.message}`);
-      }
-    }
+        document.getElementById('search').oninput = () => {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filteredItems = allItems.filter(item =>
+                item.name.toLowerCase().includes(query)
+            );
+            displayItems(filteredItems);
+        };
 
-    async function addItem() {
-      const addButton = document.getElementById('add');
-      addButton.disabled = true;
-      const item = {
-        name: document.getElementById('name').value,
-        price: Number(document.getElementById('price').value),
-        stock: Number(document.getElementById('stock').value)
-      };
-      if (!item.name || !item.price || !item.stock) {
-        alert('Please fill in all fields!');
-        addButton.disabled = false;
-        return;
-      }
-      try {
-        const res = await fetch('/items', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(item)
-        });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        document.getElementById('name').value = '';
-        document.getElementById('price').value = '';
-        document.getElementById('stock').value = '';
-        fetchInventory();
-      } catch (e) {
-        console.error('Error adding item:', e.message);
-        alert(`Failed to add item: ${e.message}`);
-      } finally {
-        addButton.disabled = false;
-      }
-    }
+        function editItem(id, name, price, stock) {
+            try {
+                console.log('Opening popup for item:', { id, name, price, stock }); // Debugging
+                editingItemId = id;
+                const editNameInput = document.getElementById('editName');
+                const editPriceInput = document.getElementById('editPrice');
+                const editStockInput = document.getElementById('editStock');
 
-    const addButton = document.getElementById('add');
-    addButton.addEventListener('click', addItem);
-  </script>
-</body>
+                if (!editNameInput || !editPriceInput || !editStockInput) {
+                    throw new Error('One or more popup input elements not found!');
+                }
+
+                editNameInput.value = name;
+                editPriceInput.value = price;
+                editStockInput.value = stock;
+
+                const popup = document.getElementById('editPopup');
+                if (!popup) {
+                    throw new Error('Popup element not found!');
+                }
+
+                console.log('Setting popup display to block'); // Debugging
+                popup.style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                console.log('Popup should now be visible'); // Debugging
+            } catch (e) {
+                console.error('Error opening popup:', e.message);
+                alert(`Failed to open edit popup: ${e.message}`);
+            }
+        }
+
+        function cancelEdit() {
+            const popup = document.getElementById('editPopup');
+            popup.style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            editingItemId = null;
+        }
+
+        async function saveItemFromPopup() {
+            try {
+                if (!editingItemId) {
+                    alert('No item selected for editing!');
+                    return;
+                }
+                const item = {
+                    name: document.getElementById('editName').value,
+                    price: Number(document.getElementById('editPrice').value),
+                    stock: Number(document.getElementById('editStock').value)
+                };
+                if (!item.name || !item.price || !item.stock) {
+                    alert('Please fill in all fields!');
+                    return;
+                }
+
+                // Check if the new name already exists (excluding the current item being edited)
+                const duplicateCheck = allItems.find(i => i.name.toLowerCase() === item.name.toLowerCase() && i._id !== editingItemId);
+                if (duplicateCheck) {
+                    alert(`Item with name "${item.name}" already exists! Please choose a different name.`);
+                    return;
+                }
+
+                const res = await fetch(`/items/${editingItemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
+                }
+
+                // Close the popup
+                const popup = document.getElementById('editPopup');
+                popup.style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+
+                editingItemId = null;
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('stock').value = '';
+                fetchInventory();
+            } catch (e) {
+                console.error('Error saving item:', e.message);
+                alert(`Failed to save item: ${e.message}`);
+            }
+        }
+
+        async function removeItem(id, name) {
+            if (!confirm(`Are you sure you want to remove "${name}"?`)) return;
+            try {
+                await fetch(`/items/${id}`, {
+                    method: 'DELETE'
+                });
+                fetchInventory();
+            } catch (e) {
+                console.error('Error removing item:', e.message);
+                alert(`Failed to remove item: ${e.message}`);
+            }
+        }
+
+        async function addItem() {
+            const addButton = document.getElementById('add');
+            addButton.disabled = true;
+            const item = {
+                name: document.getElementById('name').value,
+                price: Number(document.getElementById('price').value),
+                stock: Number(document.getElementById('stock').value)
+            };
+            if (!item.name || !item.price || !item.stock) {
+                alert('Please fill in all fields!');
+                addButton.disabled = false;
+                return;
+            }
+            try {
+                const res = await fetch('/items', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('stock').value = '';
+                fetchInventory();
+            } catch (e) {
+                console.error('Error adding item:', e.message);
+                alert(`Failed to add item: ${e.message}`);
+            } finally {
+                addButton.disabled = false;
+            }
+        }
+
+        const addButton = document.getElementById('add');
+        addButton.addEventListener('click', addItem);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92978614caa44526',t:'MTc0MzUwNDYwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
