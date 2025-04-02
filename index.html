@@ -239,7 +239,7 @@
     </div>
     <div class="billing">
       <h2>Billing</h2>
-      <input id="customer" placeholder="Customer Name" required>
+      <input id="customer" placeholder="Customer Name (Optional)">
       <input id="phone" placeholder="Customer Phone Number (Optional)">
       <input id="search" placeholder="Search Items">
       <div id="results"></div>
@@ -320,11 +320,6 @@
 
     let selectedItem = null;
     async function addToBill() {
-      const customer = document.getElementById('customer').value;
-      if (!customer) {
-        alert('Customer name is required!');
-        return;
-      }
       if (!selectedItem) return;
       const qty = Number(document.getElementById('qty').value);
       if (qty <= 0) {
@@ -346,10 +341,10 @@
     function updateBill() {
       const div = document.getElementById('bill');
       div.innerHTML = '';
+      if (bill.length === 0) return;
       const customer = document.getElementById('customer').value;
-      if (!customer || bill.length === 0) return;
       const phone = document.getElementById('phone').value;
-      div.innerHTML += `<p>Customer: ${customer}</p>`;
+      div.innerHTML += `<p>Customer: ${customer || 'N/A'}</p>`;
       if (phone) div.innerHTML += `<p>Phone: ${phone}</p>`;
       const table = document.createElement('table');
       table.innerHTML = `
@@ -412,7 +407,7 @@
       text += "          SPORTS WORLD          \n";
       text += "============================\n";
       text += "\n";
-      text += `Customer: ${customer.padEnd(20, ' ')}\n`;
+      text += `Customer: ${(customer || 'N/A').padEnd(20, ' ')}\n`;
       if (phone) text += `Phone: ${phone.padEnd(20, ' ')}\n`;
       text += `Date: ${new Date().toLocaleString().padEnd(20, ' ')}\n`;
       text += `Serial No: ${serialNumber.padEnd(20, ' ')}\n`;
@@ -497,7 +492,6 @@
 
         const customer = document.getElementById('customer').value;
         const phone = document.getElementById('phone').value;
-        if (!customer) throw new Error('Customer name is required!');
 
         const serialNumber = generateSerialNumber();
 
@@ -534,7 +528,7 @@
           }
         }
 
-        const billData = { items: bill, customer, phone: phone || null, date: new Date().toISOString(), serialNumber };
+        const billData = { items: bill, customer: customer || null, phone: phone || null, date: new Date().toISOString(), serialNumber };
         const billText = encodeBill(bill, customer, phone, serialNumber);
 
         const initCommand = new Uint8Array([0x1B, 0x40]);
