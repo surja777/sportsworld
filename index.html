@@ -193,6 +193,30 @@
         font-size: 0.85rem;
       }
     }
+
+    #results {
+      margin-top: 5px;
+      width: 100%;
+      border-collapse: collapse;
+      background: #2a2a2a;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    #results p {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #404040;
+      cursor: pointer;
+    }
+
+    #results p:nth-child(even) {
+      background: #333;
+    }
+
+    #results p:hover {
+      background: #3d3d3d; /* Slightly lighter hover color */
+    }
   </style>
 </head>
 <body>
@@ -226,8 +250,8 @@
     </div>
   </div>
   <div class="nav-link">
-    <a href="/add-item.html">Add/Edit Items</a> | 
-    <a href="/view-bill.html">View Bill by Serial</a> | 
+    <a href="/add-item.html">Add/Edit Items</a> |
+    <a href="/view-bill.html">View Bill by Serial</a> |
     <a href="/history.html">Bill History</a>
   </div>
   <script>
@@ -241,7 +265,10 @@
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
+        }
         const items = await res.json();
         console.log('Fetched items:', items);
         const tbody = document.querySelector('#items tbody');
@@ -270,17 +297,22 @@
           item.name.toLowerCase().includes(query)
         );
         const div = document.getElementById('results');
-        div.innerHTML = '';
-        results.forEach(item => {
-          const p = document.createElement('p');
-          p.textContent = `${item.name} (Stock: ${item.stock})`;
-          p.onclick = () => {
-            document.getElementById('search').value = `${item.name} (Stock: ${item.stock})`;
-            div.innerHTML = '';
-            selectedItem = item;
-          };
-          div.appendChild(p);
-        });
+
+        if (query) { // Only show results if there is a query
+          div.innerHTML = ''; // Clear previous results
+          results.forEach(item => {
+            const p = document.createElement('p');
+            p.textContent = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
+            p.onclick = () => {
+              document.getElementById('search').value = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
+              div.innerHTML = ''; // Clear results after selection
+              selectedItem = item;
+            };
+            div.appendChild(p);
+          });
+        } else {
+          div.innerHTML = ''; // Clear results if query is empty
+        }
       } catch (e) {
         console.error('Error searching items:', e.message);
       }
@@ -322,15 +354,17 @@
             <th>Qty</th>
             <th>Price</th>
             <th>Total</th>
+            <th>Action</th> 
           </tr>
         </thead>
         <tbody>
-          ${bill.map(item => `
+          ${bill.map((item, index) => `
             <tr>
               <td>${item.name}</td>
               <td>${item.qty}</td>
               <td>${item.price}</td>
               <td>${item.price * item.qty}</td>
+              <td><button onclick="removeItem(${index})">Remove</button></td> 
             </tr>
           `).join('')}
         </tbody>
@@ -338,6 +372,11 @@
       div.appendChild(table);
       const total = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
       div.innerHTML += `<p>Total: ${total}</p>`;
+    }
+
+    function removeItem(index) {
+      bill.splice(index, 1);
+      updateBill();
     }
 
     async function connectToPrinter() {
@@ -365,7 +404,7 @@
 
     function encodeBill(bill, customer, phone, serialNumber) {
       let text = "============================\n";
-      text += "       SPORTS WORLD       \n";
+      text += "          SPORTS WORLD          \n";
       text += "============================\n";
       text += "\n";
       text += `Customer: ${customer.padEnd(20, ' ')}\n`;
@@ -384,14 +423,14 @@
       });
       text += "----------------------------\n";
       const total = bill.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0);
-      text += `                TOTAL ${total.toString().padStart(6, ' ')}\n`;
+      text += `                    TOTAL ${total.toString().padStart(6, ' ')}\n`;
       text += "----------------------------\n";
       text += "Address: Swarupganj Bus Stand\n";
       text += "Nabadwip, Nadia - 741301\n";
       text += "Phone: 7679554458\n";
       text += "----------------------------\n";
-      text += "     Thank You! Visit Again!     \n";
-      text += "     3 Day Return Policy     \n";
+      text += "    Thank You! Visit Again!    \n";
+      text += "    3 Day Return Policy    \n";
       text += "============================\n";
       text += "\n\n";
       return text;
