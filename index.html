@@ -215,7 +215,7 @@
     }
 
     #results p:hover {
-      background: #3d3d3d; /* Slightly lighter hover color */
+      background: #3d3d3d;
     }
   </style>
 </head>
@@ -239,7 +239,7 @@
     </div>
     <div class="billing">
       <h2>Billing</h2>
-      <input id="customer" placeholder="Customer Name">
+      <input id="customer" placeholder="Customer Name" required>
       <input id="phone" placeholder="Customer Phone Number (Optional)">
       <input id="search" placeholder="Search Items">
       <div id="results"></div>
@@ -298,20 +298,20 @@
         );
         const div = document.getElementById('results');
 
-        if (query) { // Only show results if there is a query
-          div.innerHTML = ''; // Clear previous results
+        if (query) {
+          div.innerHTML = '';
           results.forEach(item => {
             const p = document.createElement('p');
             p.textContent = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
             p.onclick = () => {
               document.getElementById('search').value = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
-              div.innerHTML = ''; // Clear results after selection
+              div.innerHTML = '';
               selectedItem = item;
             };
             div.appendChild(p);
           });
         } else {
-          div.innerHTML = ''; // Clear results if query is empty
+          div.innerHTML = '';
         }
       } catch (e) {
         console.error('Error searching items:', e.message);
@@ -320,6 +320,11 @@
 
     let selectedItem = null;
     async function addToBill() {
+      const customer = document.getElementById('customer').value;
+      if (!customer) {
+        alert('Customer name is required!');
+        return;
+      }
       if (!selectedItem) return;
       const qty = Number(document.getElementById('qty').value);
       if (qty <= 0) {
@@ -341,10 +346,10 @@
     function updateBill() {
       const div = document.getElementById('bill');
       div.innerHTML = '';
-      if (bill.length === 0) return;
       const customer = document.getElementById('customer').value;
+      if (!customer || bill.length === 0) return;
       const phone = document.getElementById('phone').value;
-      div.innerHTML += `<p>Customer: ${customer || 'N/A'}</p>`;
+      div.innerHTML += `<p>Customer: ${customer}</p>`;
       if (phone) div.innerHTML += `<p>Phone: ${phone}</p>`;
       const table = document.createElement('table');
       table.innerHTML = `
@@ -414,13 +419,54 @@
       text += "----------------------------\n";
       text += "Qnty Particulars    Rate Amount\n";
       text += "----------------------------\n";
+
       bill.forEach(item => {
         const qty = item.qty.toString().padStart(4, ' ');
-        const itemName = item.name.padEnd(12, ' ').slice(0, 12);
         const rate = item.price.toString().padStart(6, ' ');
         const amount = (item.price * item.qty).toString().padStart(6, ' ');
-        text += `${qty} ${itemName} ${rate} ${amount}\n`;
+
+        const words = item.name.split(' ');
+        let lines = [];
+        let currentLine = '';
+        const maxLineLength = 12;
+
+        words.forEach(word => {
+          if ((currentLine + (currentLine ? ' ' : '') + word).length <= maxLineLength) {
+            currentLine += (currentLine ? ' ' : '') + word;
+          } else {
+            if (currentLine) {
+              lines.push(currentLine);
+              currentLine = '';
+            }
+            if (word.length > maxLineLength) {
+              let remainingWord = word;
+              while (remainingWord.length > 0) {
+                if (remainingWord.length <= maxLineLength - 1) {
+                  lines.push(remainingWord);
+                  remainingWord = '';
+                } else {
+                  const part = remainingWord.slice(0, maxLineLength - 1) + '-';
+                  lines.push(part);
+                  remainingWord = remainingWord.slice(maxLineLength - 1);
+                }
+              }
+            } else {
+              currentLine = word;
+            }
+          }
+        });
+        if (currentLine) lines.push(currentLine);
+
+        lines.forEach((line, index) => {
+          const paddedLine = line.padEnd(12, ' ');
+          if (index === 0) {
+            text += `${qty} ${paddedLine} ${rate} ${amount}\n`;
+          } else {
+            text += `     ${paddedLine}\n`;
+          }
+        });
       });
+
       text += "----------------------------\n";
       const total = bill.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0);
       text += `                    TOTAL ${total.toString().padStart(6, ' ')}\n`;
@@ -451,13 +497,14 @@
 
         const customer = document.getElementById('customer').value;
         const phone = document.getElementById('phone').value;
+        if (!customer) throw new Error('Customer name is required!');
+
         const serialNumber = generateSerialNumber();
 
         const res = await fetch('/items');
         if (!res.ok) throw new Error(`Failed to fetch inventory: HTTP error! Status: ${res.status}`);
         const items = await res.json();
 
-        // Check stock availability (allow qty to equal stock)
         for (const billItem of bill) {
           const inventoryItem = items.find(item => item._id === billItem._id);
           if (!inventoryItem) {
@@ -468,7 +515,6 @@
           }
         }
 
-        // Update stock (allow stock to go to 0)
         for (const billItem of bill) {
           const inventoryItem = items.find(item => item._id === billItem._id);
           const updatedStock = inventoryItem.stock - billItem.qty;
