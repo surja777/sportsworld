@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
       color: #e0e0e0;
       padding: 20px;
       line-height: 1.6;
@@ -57,10 +57,6 @@
       color: #e0e0e0;
     }
 
-    input[type="number"] {
-      width: 60px;
-    }
-
     input:focus {
       border-color: #00b7ff;
       outline: none;
@@ -78,49 +74,6 @@
 
     button:hover {
       background: #008ecf;
-    }
-
-    .return-btn {
-      background: #ff4d4d;
-      padding: 5px 10px;
-      font-size: 12px;
-      width: auto;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .return-btn:hover {
-      background: #e60000;
-    }
-
-    .return-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
-    }
-
-    th {
-      background: #004d73;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    tr:hover {
-      background: #333;
     }
 
     .nav-link {
@@ -141,28 +94,143 @@
       color: #00b7ff;
     }
 
+    /* Updated Bill Details Design */
+    #bill-details {
+      margin-top: 20px;
+      background: #252525;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .bill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #00b7ff;
+      margin-bottom: 20px;
+    }
+
+    .bill-header p {
+      font-size: 1rem;
+      margin: 5px 0;
+      color: #80d4ff;
+      font-weight: 500;
+    }
+
+    .status {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+
+    .status.active { background: #00cc00; color: #fff; }
+    .status.returned { background: #ff4d4d; color: #fff; }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 183, 255, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(0, 183, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 183, 255, 0); }
+    }
+
+    .items-grid {
+      display: grid;
+      gap: 15px;
+    }
+
+    .item-card {
+      background: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .item-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 183, 255, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .item-card p {
+      margin: 5px 0;
+      font-size: 0.95rem;
+    }
+
+    .item-card .item-name {
+      font-weight: 600;
+      color: #00b7ff;
+      font-size: 1.1rem;
+    }
+
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .item-actions input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      background: #404040;
+      border: 1px solid #404040;
+      border-radius: 5px;
+    }
+
+    .return-btn {
+      background: #ff4d4d;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .return-btn:hover {
+      background: #e60000;
+    }
+
+    .return-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    .total-section {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #00b7ff;
+      padding-top: 15px;
+      border-top: 1px solid #404040;
+    }
+
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.2rem;
-      }
-
-      input, button {
-        font-size: 0.9rem;
-      }
-
-      th, td {
-        padding: 8px;
-        font-size: 0.85rem;
-      }
-
-      .nav-link a {
-        display: block;
-        margin: 10px 0;
-      }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.2rem; }
+      .bill-header { flex-direction: column; align-items: flex-start; }
+      .bill-header p { font-size: 0.9rem; }
+      .item-card p { font-size: 0.85rem; }
+      .item-actions { flex-direction: column; align-items: flex-start; }
+      .total-section { font-size: 1rem; }
+      .nav-link a { display: block; margin: 10px 0; }
     }
   </style>
 </head>
@@ -206,55 +274,46 @@
 
         currentBill = bill;
 
-        div.innerHTML += `<p>Serial Number: ${bill.serialNumber}</p>`;
-        div.innerHTML += `<p>Customer: ${bill.customer || "N/A"}</p>`;
-        if (bill.phone) div.innerHTML += `<p>Phone: ${bill.phone}</p>`;
-        div.innerHTML += `<p>Date: ${new Date(bill.date).toLocaleString()}</p>`;
-        if (bill.returned) {
-          div.innerHTML += `<p style="color: red;">Status: Returned</p>`;
-        } else {
-          div.innerHTML += `<p style="color: green;">Status: Active</p>`;
-        }
-        const table = document.createElement("table");
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Qty (Remaining)</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Return Qty</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
+        div.innerHTML = `
+          <div class="bill-header">
+            <div>
+              <p>Serial Number: ${bill.serialNumber}</p>
+              <p>Customer: ${bill.customer || "N/A"}</p>
+              ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ""}
+              <p>Date: ${new Date(bill.date).toLocaleString()}</p>
+            </div>
+            <div class="status ${bill.returned ? "returned" : "active"}">
+              ${bill.returned ? "Returned" : "Active"}
+            </div>
+          </div>
+          <div class="items-grid">
             ${bill.items.map((item, index) => {
               const returnedQty = item.returnedQty || 0;
               const remainingQty = item.qty - returnedQty;
               return `
-                <tr>
-                  <td>${item.name || "N/A"}</td>
-                  <td>${remainingQty} (Originally: ${item.qty}, Returned: ${returnedQty})</td>
-                  <td>${item.price || "N/A"}</td>
-                  <td>${item.price && remainingQty ? item.price * remainingQty : "N/A"}</td>
-                  <td>
-                    ${item.returned ? "Returned" : `<input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" />`}
-                  </td>
-                  <td>
-                    ${item.returned ? '<button class="return-btn" disabled>Returned</button>' : `<button class="return-btn" onclick="returnItem(${index})">Return</button>`}
-                  </td>
-                </tr>
+                <div class="item-card">
+                  <p class="item-name">${item.name || "N/A"}</p>
+                  <p>Qty (Remaining): ${remainingQty} (Originally: ${item.qty}, Returned: ${returnedQty})</p>
+                  <p>Price: ${item.price || "N/A"}</p>
+                  <p>Total: ${item.price && remainingQty ? item.price * remainingQty : "N/A"}</p>
+                  <div class="item-actions">
+                    ${item.returned ? "<p>Returned</p>" : `
+                      <input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" />
+                      <button class="return-btn" onclick="returnItem(${index})">Return</button>
+                    `}
+                  </div>
+                </div>
               `;
             }).join("")}
-          </tbody>
+          </div>
+          <div class="total-section">
+            Total: ${bill.items.reduce((sum, item) => {
+              const returnedQty = item.returnedQty || 0;
+              const remainingQty = item.qty - returnedQty;
+              return sum + (item.price && remainingQty ? item.price * remainingQty : 0);
+            }, 0)}
+          </div>
         `;
-        div.appendChild(table);
-        const total = bill.items.reduce((sum, item) => {
-          const returnedQty = item.returnedQty || 0;
-          const remainingQty = item.qty - returnedQty;
-          return sum + (item.price && remainingQty ? item.price * remainingQty : 0);
-        }, 0);
-        div.innerHTML += `<p>Total: ${total}</p>`;
       } catch (e) {
         console.error("Error fetching bill:", e.message);
         alert(`Failed to fetch bill: ${e.message}`);
