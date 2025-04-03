@@ -142,9 +142,90 @@
       color: #00b7ff;
     }
 
+    .filter-section {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .daily-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .day-card {
+      background: #252525;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .day-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .day-header h3 {
+      color: #80d4ff;
+      font-size: 1.2rem;
+    }
+
+    .bill-count {
+      background: #004d73;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.9rem;
+    }
+
+    .total-sales {
+      color: #e0e0e0;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .bill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bill-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background: #333;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .bill-item:hover {
+      background: #404040;
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 15px;
+      }
+
+      .filter-section {
+        flex-direction: column;
+      }
+
+      .day-header h3 {
+        font-size: 1rem;
+      }
+
+      .bill-item {
+        font-size: 0.9rem;
       }
 
       table {
@@ -174,6 +255,28 @@
         display: block;
         margin: 10px 0;
       }
+
+      .day-card {
+        padding: 10px;
+      }
+
+      .day-header h3 {
+        font-size: 0.9rem;
+      }
+
+      .bill-count {
+        font-size: 0.8rem;
+      }
+
+      .total-sales {
+        font-size: 1rem;
+      }
+
+      .bill-item {
+        font-size: 0.8rem;
+        flex-direction: column;
+        gap: 5px;
+      }
     }
   </style>
 </head>
@@ -184,21 +287,12 @@
     <input id="password" type="password" placeholder="Enter Password">
     <button onclick="checkPassword()">View History</button>
     <div id="history-section" style="display: none;">
-      <h2>All Bills</h2>
-      <table id="bills">
-        <thead>
-          <tr>
-            <th>Serial Number</th>
-            <th>Customer</th>
-            <th>Phone</th>
-            <th>Date & Time</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <h2>Daily Bill History</h2>
+      <div class="filter-section">
+        <input id="date-filter" type="date" onchange="filterByDate()">
+        <button onclick="resetFilter()">Reset Filter</button>
+      </div>
+      <div id="daily-summary" class="daily-summary"></div>
     </div>
   </div>
   <div class="nav-link">
@@ -206,6 +300,7 @@
     <a href="/add-item.html">Add/Edit Items</a> | 
     <a href="/view-bill.html">View Bill by Serial</a>
   </div>
+
   <script>
     const correctPassword = "gourab009";
 
@@ -229,51 +324,74 @@
         });
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const bills = await res.json();
-        const tbody = document.querySelector('#bills tbody');
-        tbody.innerHTML = '';
-        bills.forEach(bill => {
-          const total = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${bill.serialNumber}</td>
-            <td>${bill.customer || 'N/A'}</td>
-            <td>${bill.phone || 'N/A'}</td>
-            <td>${new Date(bill.date).toLocaleString()}</td>
-            <td>${total}</td>
-            <td style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</td>
-            <td>
-              <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete</button>
-            </td>
-          `;
-          tr.style.cursor = 'pointer';
-          tr.onclick = (e) => {
-            if (e.target.className !== 'delete-btn') {
-              showBillDetails(bill);
-            }
-          };
-          tbody.appendChild(tr);
-        });
+        displayDailySummary(bills);
       } catch (e) {
         console.error('Error fetching bills:', e.message);
         alert(`Failed to fetch bills: ${e.message}`);
       }
     }
 
-    async function deleteBill(serialNumber) {
-      if (!confirm(`Are you sure you want to delete the bill with Serial Number ${serialNumber}?`)) return;
+    function displayDailySummary(bills) {
+      const dailySummary = document.getElementById('daily-summary');
+      dailySummary.innerHTML = '';
 
-      try {
-        const res = await fetch(`/bill/${serialNumber}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' }
+      // Group bills by date
+      const billsByDate = bills.reduce((acc, bill) => {
+        const date = new Date(bill.date).toLocaleDateString('en-GB', {
+          day: 'numeric', month: 'long', year: 'numeric'
         });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        alert(`Bill with Serial Number ${serialNumber} deleted successfully!`);
-        fetchBills();
-      } catch (e) {
-        console.error('Error deleting bill:', e.message);
-        alert(`Failed to delete bill: ${e.message}`);
-      }
+        if (!acc[date]) {
+          acc[date] = { bills: [], total: 0, count: 0 };
+        }
+        const billTotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        acc[date].bills.push(bill);
+        acc[date].total += billTotal;
+        acc[date].count += 1;
+        return acc;
+      }, {});
+
+      // Display each day's summary
+      Object.keys(billsByDate).sort((a, b) => new Date(b) - new Date(a)).forEach(date => {
+        const { total, count, bills } = billsByDate[date];
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'day-card';
+        dayDiv.innerHTML = `
+          <div class="day-header">
+            <h3>${date}</h3>
+            <span class="bill-count">${count} Bill${count > 1 ? 's' : ''}</span>
+          </div>
+          <p class="total-sales">Total Sales: <strong>₹${total.toLocaleString()}</strong></p>
+          <div class="bill-list">
+            ${bills.map(bill => `
+              <div class="bill-item" onclick="showBillDetails(${JSON.stringify(bill)})">
+                <span>Serial: ${bill.serialNumber}</span>
+                <span>₹${bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0)}</span>
+                <span style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        dailySummary.appendChild(dayDiv);
+      });
+    }
+
+    function filterByDate() {
+      const selectedDate = new Date(document.getElementById('date-filter').value);
+      const formattedDate = selectedDate.toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      fetchBills().then(() => {
+        const allDays = document.querySelectorAll('.day-card');
+        allDays.forEach(day => {
+          const dayDate = day.querySelector('.day-header h3').textContent;
+          day.style.display = dayDate === formattedDate ? 'block' : 'none';
+        });
+      });
+    }
+
+    function resetFilter() {
+      document.getElementById('date-filter').value = '';
+      fetchBills();
     }
 
     function showBillDetails(bill) {
@@ -309,9 +427,27 @@
             `).join('')}
           </tbody>
         </table>
-        <p><strong>Total: ${total}</strong></p>
+        <p><strong>Total: ₹${total.toLocaleString()}</strong></p>
+        <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete Bill</button>
       `;
       document.querySelector('.container').appendChild(div);
+    }
+
+    async function deleteBill(serialNumber) {
+      if (!confirm(`Are you sure you want to delete the bill with Serial Number ${serialNumber}?`)) return;
+
+      try {
+        const res = await fetch(`/bill/${serialNumber}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        alert(`Bill with Serial Number ${serialNumber} deleted successfully!`);
+        fetchBills();
+      } catch (e) {
+        console.error('Error deleting bill:', e.message);
+        alert(`Failed to delete bill: ${e.message}`);
+      }
     }
   </script>
 </body>
