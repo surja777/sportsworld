@@ -101,14 +101,6 @@
       background: #333;
     }
 
-    .bill-details {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      background: #252525;
-    }
-
     .delete-btn {
       background: #ff4d4d;
       padding: 5px 10px;
@@ -212,6 +204,139 @@
       background: #404040;
     }
 
+    /* Popup Styling (from add-item.html) */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #2a2a2a;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border: 1px solid #404040;
+    }
+
+    .bill-details h3 {
+      color: #80d4ff;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.6rem;
+    }
+
+    .bill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #00b7ff;
+      margin-bottom: 20px;
+    }
+
+    .bill-header p {
+      font-size: 1rem;
+      margin: 5px 0;
+      color: #80d4ff;
+      font-weight: 500;
+    }
+
+    .status {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+
+    .status.active { background: #00cc00; color: #fff; }
+    .status.returned { background: #ff4d4d; color: #fff; }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 183, 255, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(0, 183, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 183, 255, 0); }
+    }
+
+    .items-grid {
+      display: grid;
+      gap: 15px;
+    }
+
+    .item-card {
+      background: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .item-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 183, 255, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .item-card p {
+      margin: 5px 0;
+      font-size: 0.95rem;
+    }
+
+    .item-card .item-name {
+      font-weight: 600;
+      color: #00b7ff;
+      font-size: 1.1rem;
+    }
+
+    .total-section {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #00b7ff;
+      padding-top: 15px;
+      border-top: 1px solid #404040;
+    }
+
+    .close-btn {
+      background: #ff4d4d;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .close-btn:hover {
+      background: #e60000;
+    }
+
+    /* Blur Background */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 15px;
@@ -229,9 +354,12 @@
         font-size: 0.9rem;
       }
 
-      table {
-        font-size: 0.9rem;
+      .popup {
+        width: 90%;
       }
+
+      .bill-header { flex-direction: column; align-items: flex-start; }
+      .bill-header p { font-size: 0.9rem; }
     }
 
     @media (max-width: 480px) {
@@ -278,6 +406,9 @@
         flex-direction: column;
         gap: 5px;
       }
+
+      .item-card p { font-size: 0.85rem; }
+      .total-section { font-size: 1rem; }
     }
   </style>
 </head>
@@ -301,6 +432,12 @@
     <a href="/add-item.html">Add/Edit Items</a> | 
     <a href="/view-bill.html">View Bill by Serial</a>
   </div>
+  <div class="popup bill-details" id="bill-popup">
+    <h3>Bill Details</h3>
+    <div id="bill-content"></div>
+    <button class="close-btn" onclick="closePopup()">Close</button>
+  </div>
+  <div class="overlay" id="overlay" onclick="closePopup()"></div>
 
   <script>
     const correctPassword = "gourab009";
@@ -397,42 +534,59 @@
     }
 
     function showBillDetails(bill) {
-      const existingDetails = document.querySelector('.bill-details');
-      if (existingDetails) existingDetails.remove();
+      const popup = document.getElementById('bill-popup');
+      const content = document.getElementById('bill-content');
+      const overlay = document.getElementById('overlay');
 
-      const total = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      const div = document.createElement('div');
-      div.className = 'bill-details';
-      div.innerHTML = `
-        <h3>Bill Details (Serial: ${bill.serialNumber})</h3>
-        <p>Customer: ${bill.customer || 'N/A'}</p>
-        ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ''}
-        <p>Date: ${new Date(bill.date).toLocaleString()}</p>
-        <p style="color: ${bill.returned ? 'red' : 'green'}">Status: ${bill.returned ? 'Returned' : 'Active'}</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${bill.items.map(item => `
-              <tr>
-                <td>${item.name}</td>
-                <td>${item.qty}</td>
-                <td>${item.price}</td>
-                <td>${item.price * item.qty}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-        <p><strong>Total: ₹${total.toLocaleString()}</strong></p>
-        <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete Bill</button>
+      // Calculate total considering returned quantities
+      const total = bill.items.reduce((sum, item) => {
+        const returnedQty = item.returnedQty || 0;
+        const remainingQty = item.qty - returnedQty;
+        return sum + (item.price && remainingQty ? item.price * remainingQty : 0);
+      }, 0);
+
+      // Populate popup content
+      content.innerHTML = `
+        <div class="bill-header">
+          <div>
+            <p>Serial Number: ${bill.serialNumber}</p>
+            <p>Customer: ${bill.customer || 'N/A'}</p>
+            ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ''}
+            <p>Date: ${new Date(bill.date).toLocaleString()}</p>
+          </div>
+          <div class="status ${bill.returned ? 'returned' : 'active'}">
+            ${bill.returned ? 'Returned' : 'Active'}
+          </div>
+        </div>
+        <div class="items-grid">
+          ${bill.items.map((item, index) => {
+            const returnedQty = item.returnedQty || 0;
+            const remainingQty = item.qty - returnedQty;
+            return `
+              <div class="item-card">
+                <p class="item-name">${item.name || 'N/A'}</p>
+                <p>Qty (Remaining): ${remainingQty} (Originally: ${item.qty}, Returned: ${returnedQty})</p>
+                <p>Price: ${item.price || 'N/A'}</p>
+                <p>Total: ${item.price && remainingQty ? item.price * remainingQty : 'N/A'}</p>
+              </div>
+            `;
+          }).join('')}
+        </div>
+        <div class="total-section">
+          Total: ₹${total.toLocaleString()}
+        </div>
       `;
-      document.querySelector('.container').appendChild(div);
+
+      // Show popup and overlay
+      popup.style.display = 'block';
+      overlay.style.display = 'block';
+    }
+
+    function closePopup() {
+      const popup = document.getElementById('bill-popup');
+      const overlay = document.getElementById('overlay');
+      popup.style.display = 'none';
+      overlay.style.display = 'none';
     }
 
     async function deleteBill(serialNumber) {
@@ -445,14 +599,14 @@
         });
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         alert(`Bill with Serial Number ${serialNumber} deleted successfully!`);
+        closePopup();
         fetchBills();
-        const existingDetails = document.querySelector('.bill-details');
-        if (existingDetails) existingDetails.remove();
       } catch (e) {
         console.error('Error deleting bill:', e.message);
         alert(`Failed to delete bill: ${e.message}`);
       }
     }
   </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9336c26f9d2f12ee',t:'MTc0NTE3NDMxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
