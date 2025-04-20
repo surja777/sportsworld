@@ -204,7 +204,7 @@
       background: #404040;
     }
 
-    /* Popup Styling (from add-item.html) */
+    /* Popup Styling */
     .popup {
       display: none;
       position: fixed;
@@ -456,12 +456,14 @@
 
     async function fetchBills() {
       try {
+        console.log('Fetching bills...');
         const res = await fetch('/bills', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const bills = await res.json();
+        console.log('Bills fetched:', bills);
         displayDailySummary(bills);
       } catch (e) {
         console.error('Error fetching bills:', e.message);
@@ -500,12 +502,12 @@
           </div>
           <p class="total-sales">Total Sales: <strong>₹${total.toLocaleString()}</strong></p>
           <div class="bill-list">
-            ${bills.map(bill => `
-              <div class="bill-item">
-                <span onclick="showBillDetails(${JSON.stringify(bill)})">Serial: ${bill.serialNumber}</span>
+            ${bills.map((bill, index) => `
+              <div class="bill-item" onclick="showBillDetails(bills[${index}])">
+                <span>Serial: ${bill.serialNumber}</span>
                 <span>₹${bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0)}</span>
                 <span style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</span>
-                <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete</button>
+                <button class="delete-btn" onclick="event.stopPropagation(); deleteBill('${bill.serialNumber}')">Delete</button>
               </div>
             `).join('')}
           </div>
@@ -534,9 +536,16 @@
     }
 
     function showBillDetails(bill) {
+      console.log('Showing bill details for:', bill);
       const popup = document.getElementById('bill-popup');
       const content = document.getElementById('bill-content');
       const overlay = document.getElementById('overlay');
+
+      if (!bill) {
+        console.error('No bill data provided');
+        alert('Error: No bill data available');
+        return;
+      }
 
       // Calculate total considering returned quantities
       const total = bill.items.reduce((sum, item) => {
@@ -549,17 +558,17 @@
       content.innerHTML = `
         <div class="bill-header">
           <div>
-            <p>Serial Number: ${bill.serialNumber}</p>
+            <p>Serial Number: ${bill.serialNumber || 'N/A'}</p>
             <p>Customer: ${bill.customer || 'N/A'}</p>
             ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ''}
-            <p>Date: ${new Date(bill.date).toLocaleString()}</p>
+            <p>Date: ${bill.date ? new Date(bill.date).toLocaleString() : 'N/A'}</p>
           </div>
           <div class="status ${bill.returned ? 'returned' : 'active'}">
             ${bill.returned ? 'Returned' : 'Active'}
           </div>
         </div>
         <div class="items-grid">
-          ${bill.items.map((item, index) => {
+          ${bill.items && bill.items.length ? bill.items.map((item, index) => {
             const returnedQty = item.returnedQty || 0;
             const remainingQty = item.qty - returnedQty;
             return `
@@ -570,7 +579,7 @@
                 <p>Total: ${item.price && remainingQty ? item.price * remainingQty : 'N/A'}</p>
               </div>
             `;
-          }).join('')}
+          }).join('') : '<p>No items found</p>'}
         </div>
         <div class="total-section">
           Total: ₹${total.toLocaleString()}
@@ -580,6 +589,7 @@
       // Show popup and overlay
       popup.style.display = 'block';
       overlay.style.display = 'block';
+      console.log('Popup and overlay displayed');
     }
 
     function closePopup() {
@@ -587,6 +597,7 @@
       const overlay = document.getElementById('overlay');
       popup.style.display = 'none';
       overlay.style.display = 'none';
+      console.log('Popup closed');
     }
 
     async function deleteBill(serialNumber) {
