@@ -1,288 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Item - SPORTS WORLD Shop</title>
-  <style>
-    /* Global Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Poppins', sans-serif; 
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
-      color: #e0e0e0; 
-      padding: 20px; 
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    h1 { 
-      font-family: 'Montserrat', sans-serif; 
-      text-align: center; 
-      color: #00b7ff; 
-      text-transform: uppercase; 
-      letter-spacing: 3px; 
-      margin-bottom: 25px; 
-      font-size: 2.2rem; 
-      text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
-    }
-    h2 { 
-      font-family: 'Roboto', sans-serif; 
-      color: #f72585; 
-      margin-bottom: 15px; 
-      font-size: 1.6rem; 
-      border-left: 5px solid #4cc9f0; 
-      padding-left: 12px; 
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item - SPORTS WORLD Shop</title>
+    <style>
+        /* Global Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
+            color: #e0e0e0; 
+            padding: 15px; 
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-    /* Main Container */
-    .container { 
-      max-width: 900px; 
-      margin: 0 auto; 
-      background: rgba(255, 255, 255, 0.03); 
-      padding: 30px; 
-      border-radius: 20px; 
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
+        h1 { 
+            font-family: 'Montserrat', sans-serif; 
+            text-align: center; 
+            color: #00b7ff; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-bottom: 25px; 
+            font-size: clamp(1.5rem, 5vw, 2.2rem); 
+            text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
+        }
 
-    input, button { 
-      font-family: 'Open Sans', sans-serif; 
-      padding: 14px; 
-      margin: 10px 0; 
-      border: 2px solid #333; 
-      border-radius: 10px; 
-      width: 100%; 
-      transition: all 0.3s ease; 
-      background: #121212; 
-      color: #fff; 
-      font-size: 1rem; 
-    }
-    input:focus { 
-      border-color: #4cc9f0; 
-      outline: none; 
-      box-shadow: 0 0 20px rgba(76, 201, 240, 0.3); 
-    }
-    
-    button { 
-      background: linear-gradient(90deg, #4cc9f0, #4361ee); 
-      color: #fff; 
-      border: none; 
-      cursor: pointer; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      letter-spacing: 1.5px; 
-    }
-    button:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5); 
-    }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: clamp(15px, 3vw, 30px); 
+            border-radius: 20px; 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    /* Table Styles */
-    table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-top: 20px; }
-    th, td { padding: 15px; text-align: left; background: rgba(255, 255, 255, 0.05); }
-    th { background: #4361ee; color: #fff; border-radius: 8px; font-weight: bold; }
-    td:first-child { border-radius: 10px 0 0 10px; font-weight: 600; }
-    td:last-child { border-radius: 0 10px 10px 0; }
+        h2 { 
+            font-family: 'Roboto', sans-serif; 
+            color: #f72585; 
+            margin-bottom: 15px; 
+            font-size: 1.4rem; 
+            border-left: 5px solid #4cc9f0; 
+            padding-left: 12px; 
+        }
 
-    /* Highlights and Actions */
-    .price-tag { color: #4cc9f0; font-weight: bold; }
-    .stock-good { color: #4ade80; font-weight: bold; }
-    .stock-low { color: #f87171; font-weight: bold; }
-    
-    .edit-btn { background: #f59e0b; width: auto; padding: 5px 15px; font-size: 0.8rem; margin-right: 5px; }
-    .remove-btn { background: #f87171; width: auto; padding: 5px 15px; font-size: 0.8rem; }
+        /* Input and Button Styles */
+        input, button { 
+            font-family: 'Open Sans', sans-serif; 
+            padding: 14px; 
+            margin: 10px 0; 
+            border: 2px solid #333; 
+            border-radius: 10px; 
+            width: 100%; 
+            transition: all 0.3s ease; 
+            background: #121212; 
+            color: #fff; 
+            font-size: 1rem; 
+            outline: none;
+        }
 
-    /* Navigation */
-    .nav-link { text-align: center; margin-top: 40px; }
-    .nav-link a { 
-      color: #4cc9f0; 
-      text-decoration: none; 
-      font-weight: bold; 
-      margin: 0 15px; 
-      padding: 10px 20px; 
-      border: 1px solid #4cc9f0; 
-      border-radius: 30px; 
-      transition: 0.3s;
-    }
-    .nav-link a:hover { background: #4cc9f0; color: #000; }
+        input:focus { border-color: #4cc9f0; box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
 
-    /* Popup Modal Styles */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #1a1a1a;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-      z-index: 1000;
-      width: 400px;
-      border: 2px solid #4cc9f0;
-    }
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
-      z-index: 999;
-    }
-  </style>
+        button { 
+            background: linear-gradient(90deg, #4cc9f0, #4361ee); 
+            color: #fff; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        button:hover { transform: translateY(-2px); opacity: 0.9; }
+        button:disabled { background: #555; cursor: not-allowed; }
+
+        /* Table Responsive Design */
+        .table-wrapper { 
+            width: 100%; 
+            overflow-x: auto; 
+            border-radius: 10px; 
+            margin-top: 20px;
+        }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 500px; }
+        th, td { padding: 12px 15px; text-align: left; background: rgba(255, 255, 255, 0.05); }
+        th { background: #4361ee; color: #fff; border-radius: 5px; }
+        
+        .price-tag { color: #4ade80; font-weight: bold; }
+
+        /* Actions */
+        .edit-btn { background: #ffaa00; width: auto; padding: 6px 15px; font-size: 0.85rem; margin-right: 5px; }
+        .remove-btn { background: #ff4d4d; width: auto; padding: 6px 15px; font-size: 0.85rem; }
+
+        /* Popup / Modal */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid #4cc9f0;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+
+        /* Navigation */
+        .nav-link { 
+            text-align: center; 
+            margin-top: 30px; 
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link a { 
+            color: #4cc9f0; 
+            text-decoration: none; 
+            font-weight: bold; 
+            padding: 10px 20px; 
+            border: 1px solid #4cc9f0; 
+            border-radius: 30px; 
+            transition: 0.3s;
+        }
+
+        .nav-link a:hover { background: #4cc9f0; color: #000; }
+
+        @media (max-width: 480px) {
+            th, td { padding: 8px; font-size: 0.85rem; }
+            .edit-btn, .remove-btn { display: block; width: 100%; margin: 4px 0; }
+        }
+    </style>
 </head>
 <body>
-  <h1>Inventory Management</h1>
-  <div class="container">
-    <div id="auth-section">
-      <h2>Security Access</h2>
-      <input id="password" type="password" placeholder="Enter Admin Password">
-      <button onclick="checkPassword()">Enter Management</button>
+    <h1>Inventory Management</h1>
+    <div class="container">
+        <div id="auth-section">
+            <h2>Security Access</h2>
+            <input id="password" type="password" placeholder="Enter Admin Password">
+            <button onclick="checkPassword()">Login</button>
+        </div>
+
+        <div id="inventory-section" style="display: none;">
+            <h2>Add New Item</h2>
+            <input id="name" placeholder="Item Name">
+            <input id="price" type="number" placeholder="Price (₹)">
+            <input id="stock" type="number" placeholder="Initial Stock">
+            <button id="add" onclick="addItem()">+ Add Item</button>
+
+            <h2 style="margin-top: 30px; color: #4cc9f0;">Current Stock</h2>
+            <input id="search" placeholder="🔍 Search Inventory..." style="margin-top: 10px;">
+            
+            <div class="table-wrapper">
+                <table id="items">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <div id="inventory-section" style="display: none;">
-      <h2>Add New Item</h2>
-      <input id="name" placeholder="Item Name (e.g., Cricket Bat)">
-      <input id="price" type="number" placeholder="Price (₹)">
-      <input id="stock" type="number" placeholder="Initial Stock Qty">
-      <button id="add" onclick="addItem()">+ Add to Inventory</button>
-
-      <h2 style="margin-top: 30px; color: #4cc9f0;">Current Stock</h2>
-      <input id="search" placeholder="🔍 Search Inventory..." oninput="filterItems()">
-      <div style="max-height: 400px; overflow-y: auto;">
-        <table id="items">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <div class="nav-link">
+        <a href="/index.html">Back to Billing</a>
+        <a href="/history.html">View History</a>
     </div>
-  </div>
 
-  <div class="overlay" id="overlay"></div>
-  <div class="popup" id="editPopup">
-    <h3 style="color: #4cc9f0; margin-bottom: 15px;">Edit Product</h3>
-    <input id="editName" placeholder="Item Name">
-    <input id="editPrice" type="number" placeholder="Price">
-    <input id="editStock" type="number" placeholder="Stock">
-    <div style="display: flex; gap: 10px; margin-top: 15px;">
-      <button onclick="saveItemFromPopup()">Save Changes</button>
-      <button onclick="cancelEdit()" style="background: #444;">Cancel</button>
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="editPopup">
+        <h3 style="color: #4cc9f0; margin-bottom: 15px; text-align: center;">Edit Product</h3>
+        <input id="editName" placeholder="Item Name">
+        <input id="editPrice" type="number" placeholder="Price">
+        <input id="editStock" type="number" placeholder="Stock">
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button onclick="saveItemFromPopup()">Save</button>
+            <button onclick="cancelEdit()" style="background: #444;">Cancel</button>
+        </div>
     </div>
-  </div>
 
-  <div class="nav-link">
-    <a href="/index.html">Back to Billing</a>
-    <a href="/history.html">View History</a>
-  </div>
+    <script>
+        let editingItemId = null;
+        let allItems = [];
+        const correctPassword = "gourab009";
 
-  <script>
-    let editingItemId = null;
-    let allItems = [];
-    const correctPassword = "gourab009";
+        function checkPassword() {
+            if (document.getElementById('password').value === correctPassword) {
+                document.getElementById('inventory-section').style.display = 'block';
+                document.getElementById('auth-section').style.display = 'none';
+                fetchInventory();
+            } else { alert('Incorrect password!'); }
+        }
 
-    function checkPassword() {
-      const input = document.getElementById('password').value;
-      if (input === correctPassword) {
-        document.getElementById('auth-section').style.display = 'none';
-        document.getElementById('inventory-section').style.display = 'block';
-        fetchInventory();
-      } else {
-        alert("Incorrect Password!");
-      }
-    }
+        async function fetchInventory() {
+            const res = await fetch('/items');
+            allItems = await res.json();
+            displayItems(allItems);
+        }
 
-    async function fetchInventory() {
-      const res = await fetch('/items');
-      allItems = await res.json();
-      displayItems(allItems);
-    }
+        function displayItems(items) {
+            const tbody = document.querySelector('#items tbody');
+            tbody.innerHTML = '';
+            items.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td class="price-tag">₹${item.price}</td>
+                    <td style="color: ${item.stock < 5 ? '#f87171' : '#4ade80'}">${item.stock}</td>
+                    <td>
+                        <button class="edit-btn" onclick="openEdit('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
+                        <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Del</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
-    function displayItems(items) {
-      const tbody = document.querySelector('#items tbody');
-      tbody.innerHTML = '';
-      items.forEach(item => {
-        const stockClass = item.stock < 5 ? 'stock-low' : 'stock-good';
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td class="price-tag">₹${item.price}</td>
-          <td class="${stockClass}">${item.stock}</td>
-          <td>
-            <button class="edit-btn" onclick="openEdit('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
-            <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Del</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+        document.getElementById('search').oninput = () => {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filtered = allItems.filter(i => i.name.toLowerCase().includes(query));
+            displayItems(filtered);
+        };
 
-    function filterItems() {
-      const query = document.getElementById('search').value.toLowerCase();
-      const filtered = allItems.filter(i => i.name.toLowerCase().includes(query));
-      displayItems(filtered);
-    }
+        function openEdit(id, name, price, stock) {
+            editingItemId = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editStock').value = stock;
+            document.getElementById('editPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
 
-    async function addItem() {
-      const name = document.getElementById('name').value;
-      const price = Number(document.getElementById('price').value);
-      const stock = Number(document.getElementById('stock').value);
+        function cancelEdit() {
+            document.getElementById('editPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
 
-      if (!name || !price || !stock) return alert("Fill all fields!");
+        async function saveItemFromPopup() {
+            const item = {
+                name: document.getElementById('editName').value,
+                price: Number(document.getElementById('editPrice').value),
+                stock: Number(document.getElementById('editStock').value)
+            };
+            await fetch(`/items/${editingItemId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item)
+            });
+            cancelEdit();
+            fetchInventory();
+        }
 
-      await fetch('/items', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, price, stock })
-      });
+        async function addItem() {
+            const name = document.getElementById('name').value;
+            const price = Number(document.getElementById('price').value);
+            const stock = Number(document.getElementById('stock').value);
+            if(!name || !price || !stock) return alert('Fill all fields!');
 
-      document.getElementById('name').value = '';
-      document.getElementById('price').value = '';
-      document.getElementById('stock').value = '';
-      fetchInventory();
-    }
+            await fetch('/items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price, stock })
+            });
+            document.getElementById('name').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('stock').value = '';
+            fetchInventory();
+        }
 
-    function openEdit(id, name, price, stock) {
-      editingItemId = id;
-      document.getElementById('editName').value = name;
-      document.getElementById('editPrice').value = price;
-      document.getElementById('editStock').value = stock;
-      document.getElementById('editPopup').style.display = 'block';
-      document.getElementById('overlay').style.display = 'block';
-    }
-
-    function cancelEdit() {
-      document.getElementById('editPopup').style.display = 'none';
-      document.getElementById('overlay').style.display = 'none';
-    }
-
-    async function saveItemFromPopup() {
-      const name = document.getElementById('editName').value;
-      const price = Number(document.getElementById('editPrice').value);
-      const stock = Number(document.getElementById('editStock').value);
-
-      await fetch(`/items/${editingItemId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, price, stock })
-      });
-
-      cancelEdit();
-      fetchInventory();
-    }
-
-    async function removeItem(id, name) {
-      if (!confirm(`Delete "${name}"?`)) return;
-      await fetch(`/items/${id}`, { method: 'DELETE' });
-      fetchInventory();
-    }
-  </script>
+        async function removeItem(id, name) {
+            if (!confirm(`Delete "${name}"?`)) return;
+            await fetch(`/items/${id}`, { method: 'DELETE' });
+            fetchInventory();
+        }
+    </script>
 </body>
 </html>
