@@ -67,6 +67,41 @@
       scrollbar-color: #00b7ff #1a1a2e;
     }
 
+    /* New Error Message Styling */
+    #error-container {
+      display: none;
+      background: #f87171;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      position: relative;
+      font-weight: bold;
+      border: 2px solid #ef4444;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(5px); }
+      50% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    #error-container button {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      background: rgba(0,0,0,0.2);
+      border-radius: 50%;
+      line-height: 1;
+      margin: 0;
+    }
+
     /* Inputs & Buttons */
     input, button { 
       font-family: 'Open Sans', sans-serif; 
@@ -87,7 +122,6 @@
       background: #1a1a1a; 
     }
     
-    /* Neon Blue Buttons */
     button { 
       background: linear-gradient(90deg, #4cc9f0, #4361ee); 
       color: #fff; 
@@ -126,7 +160,6 @@
     .result-card .name { font-size: 1.2rem; font-weight: bold; color: #fff; margin-bottom: 4px; }
     .result-card .info { display: flex; justify-content: space-between; }
     
-    /* Visual Highlights */
     .price-tag { color: #4cc9f0; font-weight: bold; }
     .stock-good { color: #4ade80; font-weight: bold; }
     .stock-low { color: #f87171; font-weight: bold; }
@@ -138,7 +171,7 @@
       border-radius: 15px; 
       border: 2px dashed #4cc9f0; 
     }
-    .discount-input { border: 2px solid #f72585 !important; color: #f72585 !important; }
+    .discount-input { border: 2px solid #f72585 !important; color: #f72585 !important; font-weight: bold; }
 
     .nav-link { text-align: center; margin-top: 40px; }
     .nav-link a { 
@@ -176,13 +209,19 @@
 
     <div class="billing">
       <h2>Billing Section</h2>
+
+      <div id="error-container">
+        <span id="error-message"></span>
+        <button onclick="closeError()">X</button>
+      </div>
+
       <input id="customer" placeholder="Customer Name (Optional)">
       <input id="phone" placeholder="Phone Number (Optional)">
       
       <input id="search" placeholder="🔍 Search Items (Bat, Ball, etc.)">
       <div id="results"></div>
       
-      <input id="qty" type="number" placeholder="Enter Quantity">
+      <input id="qty" type="number" placeholder="Enter Quantity (Default is 1)">
       <button onclick="addToBill()">+ Add to List</button>
       
       <div id="bill"></div>
@@ -205,6 +244,7 @@
     let bill = [];
     let printer = null;
     let selectedItem = null;
+    let errorTimer = null;
 
     // Fetch and display inventory with color-coded stock
     async function fetchInventory() {
@@ -222,6 +262,25 @@
         `;
         tbody.appendChild(tr);
       });
+    }
+
+    // Error Message Helpers
+    function showError(msg) {
+      const errDiv = document.getElementById('error-container');
+      const errMsg = document.getElementById('error-message');
+      errMsg.textContent = msg;
+      errDiv.style.display = 'block';
+
+      // Clear any existing timer and set a new one for 5 seconds
+      if (errorTimer) clearTimeout(errorTimer);
+      errorTimer = setTimeout(() => {
+        closeError();
+      }, 5000);
+    }
+
+    function closeError() {
+      document.getElementById('error-container').style.display = 'none';
+      if (errorTimer) clearTimeout(errorTimer);
     }
 
     // Dynamic colorful search results
@@ -255,21 +314,38 @@
           document.getElementById('search').value = item.name;
           div.innerHTML = '';
           selectedItem = item;
+          closeError();
         };
         div.appendChild(card);
       });
     };
 
     function addToBill() {
-      const qty = Number(document.getElementById('qty').value);
-      if (!selectedItem || qty <= 0 || qty > selectedItem.stock) { 
-        alert('Please select an item and check available stock!'); 
-        return; 
+      // Logic: Default to 1 if empty
+      const qtyInput = document.getElementById('qty').value;
+      const qty = qtyInput === "" ? 1 : Number(qtyInput);
+
+      if (!selectedItem) {
+        showError("Please search and select an item first!");
+        return;
       }
+
+      // Check for 0 stock error
+      if (selectedItem.stock <= 0) {
+        showError(`0 stock on this item: ${selectedItem.name}`);
+        return;
+      }
+
+      if (qty <= 0 || qty > selectedItem.stock) {
+        showError(`Stock limit reached! Only ${selectedItem.stock} available.`);
+        return;
+      }
+
       bill.push({ ...selectedItem, qty });
       document.getElementById('search').value = '';
       document.getElementById('qty').value = '';
       selectedItem = null;
+      closeError();
       updateBill();
     }
 
@@ -304,9 +380,9 @@
 
     function removeItem(index) { bill.splice(index, 1); updateBill(); }
 
-    // BLUETOOTH PRINTER LOGIC
+    // PRINTER LOGIC
     async function connectToPrinter() {
-      if (!navigator.bluetooth) return alert('Use Google Chrome on Android/Laptop for Printing!');
+      if (!navigator.bluetooth) return alert('Use Chrome for Printing!');
       try {
         const device = await navigator.bluetooth.requestDevice({
           filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
@@ -316,33 +392,15 @@
         const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
         const char = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
         return { device, char };
-      } catch (e) { alert('Printer Connection Error'); return null; }
+      } catch (e) { alert('Printer error'); return null; }
     }
 
     function encodeBill(bill, customer, phone, serialNumber, discount = 0) {
-      let text = "============================\n";
-      text += "          SPORTS WORLD          \n";
-      text += "============================\n\n";
-      text += `Customer: ${customer || 'N/A'}\n`;
-      if (phone) text += `Phone: ${phone}\n`;
-      text += `Date: ${new Date().toLocaleString()}\n`;
-      text += `Serial No: ${serialNumber}\n`;
-      text += "----------------------------\n";
-      text += "Qnty Particulars    Rate Amount\n";
-      text += "----------------------------\n";
-
-      bill.forEach(item => {
-        text += `${item.qty.toString().padStart(4)} ${item.name.slice(0,12).padEnd(12)} ${item.price.toString().padStart(6)} ${(item.price * item.qty).toString().padStart(6)}\n`;
-      });
-
+      let text = "============================\n          SPORTS WORLD          \n============================\n\n";
+      text += `Customer: ${customer || 'N/A'}\n${phone ? 'Phone: ' + phone + '\n' : ''}Date: ${new Date().toLocaleString()}\nSerial: ${serialNumber}\n----------------------------\nQnty Particulars    Rate Amount\n----------------------------\n`;
+      bill.forEach(item => { text += `${item.qty.toString().padStart(4)} ${item.name.slice(0,12).padEnd(12)} ${item.price.toString().padStart(6)} ${(item.price * item.qty).toString().padStart(6)}\n`; });
       const subtotal = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
-      text += "----------------------------\n";
-      text += `Subtotal:           ${subtotal.toString().padStart(8)}\n`;
-      if (discount > 0) text += `Discount:          -${discount.toString().padStart(8)}\n`;
-      text += `TOTAL:              ${(subtotal - discount).toString().padStart(8)}\n`;
-      text += "----------------------------\n";
-      text += "Thank You! Visit Again!\n";
-      text += "============================\n\n\n";
+      text += `----------------------------\nSubtotal:           ${subtotal.toString().padStart(8)}\n${discount > 0 ? 'Discount:          -' + discount.toString().padStart(8) + '\n' : ''}TOTAL:              ${(subtotal - discount).toString().padStart(8)}\n----------------------------\nThank You! Visit Again!\n============================\n\n\n`;
       return text;
     }
 
@@ -356,7 +414,6 @@
         const serial = Math.floor(1000000000 + Math.random() * 9000000000).toString();
         const discount = Number(document.getElementById('discount').value) || 0;
         
-        // Bluetooth Print Execution
         if (printer) {
            const billText = encodeBill(bill, document.getElementById('customer').value, document.getElementById('phone').value, serial, discount);
            const encoder = new TextEncoder();
@@ -367,21 +424,12 @@
            }
         }
 
-        // Save to Database
         await fetch('/bill', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            items: bill, 
-            customer: document.getElementById('customer').value, 
-            phone: document.getElementById('phone').value, 
-            date: new Date().toISOString(), 
-            serialNumber: serial,
-            discount
-          })
+          body: JSON.stringify({ items: bill, customer: document.getElementById('customer').value, phone: document.getElementById('phone').value, date: new Date().toISOString(), serialNumber: serial, discount })
         });
 
-        // Update Inventory Stock
         for (const item of bill) {
           await fetch(`/items/${item._id}`, {
             method: 'PUT',
@@ -390,12 +438,12 @@
           });
         }
 
-        alert('Bill Processed Successfully!');
+        alert('Success!');
         bill = []; updateBill(); fetchInventory();
         document.getElementById('discount').value = '';
         document.getElementById('customer').value = '';
         document.getElementById('phone').value = '';
-      } catch (e) { alert('Error: ' + e.message); }
+      } catch (e) { alert(e.message); }
       btn.disabled = false;
     }
 
