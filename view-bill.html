@@ -5,289 +5,300 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Bill - SPORTS WORLD Shop</title>
   <style>
-    /* Global Base Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Poppins', sans-serif; 
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
-      color: #e0e0e0; 
-      padding: 15px; 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      padding: 20px;
       line-height: 1.6;
-      min-height: 100vh;
     }
 
-    h1 { 
-      font-family: 'Montserrat', sans-serif; 
-      text-align: center; 
-      color: #00b7ff; 
-      text-transform: uppercase; 
-      letter-spacing: 2px; 
-      margin-bottom: 25px; 
-      font-size: clamp(1.5rem, 5vw, 2.2rem); 
-      text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #00b7ff;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
     }
 
-    .container { 
-      max-width: 700px; 
-      margin: 0 auto; 
-      background: rgba(255, 255, 255, 0.03); 
-      padding: clamp(15px, 3vw, 30px); 
-      border-radius: 20px; 
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #80d4ff;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
     }
 
-    h2 { 
-      font-family: 'Roboto', sans-serif; 
-      color: #f72585; 
-      margin-bottom: 15px; 
-      font-size: 1.4rem; 
-      border-left: 5px solid #4cc9f0; 
-      padding-left: 12px; 
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    /* Input and Button Styles */
-    input, button { 
-      font-family: 'Open Sans', sans-serif; 
-      padding: 14px; 
-      margin: 10px 0; 
-      border: 2px solid #333; 
-      border-radius: 10px; 
-      width: 100%; 
-      transition: all 0.3s ease; 
-      background: #121212; 
-      color: #fff; 
-      font-size: 1rem; 
+    input, button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #404040;
+      border-radius: 5px;
+      width: 100%;
+      transition: all 0.3s ease;
+      background: #333;
+      color: #e0e0e0;
+    }
+
+    input:focus {
+      border-color: #00b7ff;
       outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
     }
 
-    input:focus { border-color: #4cc9f0; box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
-
-    button { 
-      background: linear-gradient(90deg, #4cc9f0, #4361ee); 
-      color: #fff; 
-      border: none; 
-      cursor: pointer; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      letter-spacing: 1px;
+    button {
+      background: #00b7ff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
     }
 
-    button:hover { transform: translateY(-2px); opacity: 0.9; }
+    button:hover {
+      background: #008ecf;
+    }
 
-    /* Bill Content Area */
-    #bill-details { margin-top: 25px; }
+    .return-btn {
+      background: #ff4d4d;
+      padding: 5px 10px;
+      font-size: 12px;
+      width: auto;
+      border: none;
+      border-radius: 5px;
+    }
 
-    .bill-header-card {
-      background: rgba(255, 255, 255, 0.05);
+    .return-btn:hover {
+      background: #e60000;
+    }
+
+    .return-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #2a2a2a;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #404040;
+    }
+
+    th {
+      background: #004d73;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    tr:hover {
+      background: #333;
+    }
+
+    .nav-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .nav-link a {
+      color: #80d4ff;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link a:hover {
+      color: #00b7ff;
+    }
+
+    #bill-details {
+      margin-top: 20px;
+      background: #252525;
       padding: 20px;
       border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .bill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #00b7ff;
       margin-bottom: 20px;
-      border-bottom: 3px solid #4cc9f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
+    }
+
+    .status {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .status.active { background: #00cc00; color: #fff; }
+    .status.returned { background: #ff4d4d; color: #fff; }
+
+    .items-grid {
+      display: grid;
       gap: 15px;
     }
 
-    .status-badge {
-      padding: 6px 18px;
-      border-radius: 30px;
-      font-weight: bold;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .status-active { background: #4ade80; color: #000; }
-    .status-returned { background: #f87171; color: #fff; }
-
-    /* Item Cards */
     .item-card {
-      background: #252525;
+      background: #333;
       padding: 15px;
-      margin: 12px 0;
-      border-radius: 12px;
-      border-left: 6px solid #4cc9f0;
-      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
+      border-radius: 10px;
     }
 
-    .item-main { flex: 1; min-width: 150px; }
-    .item-name { font-weight: bold; color: #fff; font-size: 1.1rem; margin-bottom: 4px; }
-    .item-meta { font-size: 0.9rem; color: #888; }
-    .price-tag { color: #4ade80; font-weight: bold; font-size: 1.1rem; }
-
-    /* Summary Section */
-    .total-area { 
-      margin-top: 25px; 
-      padding: 20px; 
-      background: rgba(0, 0, 0, 0.5); 
-      border-radius: 15px; 
-      border: 2px dashed #4cc9f0; 
+    .total-section {
+      margin-top: 20px;
       text-align: right;
-    }
-    .discount-tag { color: #f87171; font-weight: bold; margin-bottom: 5px; }
-
-    /* Return Logic Styling */
-    .return-section {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-top: 10px;
-      width: 100%;
-    }
-    .return-qty-input { width: 80px !important; margin: 0 !important; padding: 8px !important; }
-    .btn-return { background: #f87171; width: auto; padding: 8px 15px; font-size: 0.8rem; margin: 0; }
-
-    /* Navigation */
-    .nav-link { 
-      text-align: center; 
-      margin-top: 40px; 
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
+      font-size: 1.1rem;
+      padding-top: 15px;
+      border-top: 1px solid #404040;
     }
 
-    .nav-link a { 
-      color: #4cc9f0; 
-      text-decoration: none; 
-      font-weight: bold; 
-      padding: 10px 20px; 
-      border: 1px solid #4cc9f0; 
-      border-radius: 30px; 
-      transition: 0.3s;
+    .grand-total {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #00b7ff;
     }
-    .nav-link a:hover { background: #4cc9f0; color: #000; }
 
     @media (max-width: 480px) {
-      .bill-header-card { flex-direction: column; }
-      .item-card { flex-direction: column; align-items: flex-start; }
-      .price-tag { width: 100%; text-align: left; }
+      .bill-header { flex-direction: column; align-items: flex-start; }
+      .nav-link a { display: block; margin: 10px 0; }
     }
   </style>
 </head>
 <body>
-  <h1>View Bill Details</h1>
+  <h1>View Bill - SPORTS WORLD Shop</h1>
   <div class="container">
-    <h2>Search by Serial</h2>
-    <input id="serial" placeholder="Enter 10-digit Serial Number" maxlength="10" />
-    <button onclick="fetchBill()">Find Bill</button>
+    <h2>Enter Serial Number</h2>
+    <input id="serial" placeholder="Enter 10-digit Serial Number" />
+    <button onclick="fetchBill()">View Bill</button>
     <div id="bill-details"></div>
   </div>
-
   <div class="nav-link">
-    <a href="/index.html">Back to Billing</a>
-    <a href="/history.html">View History</a>
+    <a href="/index.html">Back to Billing</a> |
+    <a href="/add-item.html">Add/Edit Items</a> |
+    <a href="/history.html">Bill History</a>
   </div>
-
   <script>
     let currentBill = null;
 
     async function fetchBill() {
       const serial = document.getElementById("serial").value;
-      if (!serial || serial.length !== 10) {
+      if (!serial || serial.length !== 10 || isNaN(serial)) {
         alert("Please enter a valid 10-digit serial number!");
         return;
       }
 
       try {
         const res = await fetch(`/bill/${serial}`);
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const bill = await res.json();
         const div = document.getElementById("bill-details");
         div.innerHTML = "";
-
+        
         if (!bill) {
-          div.innerHTML = "<p style='text-align:center; padding: 20px;'>No bill found with this serial.</p>";
+          div.innerHTML = "<p>No bill found with this serial number.</p>";
           return;
         }
 
         currentBill = bill;
-        const subtotal = bill.items.reduce((s, i) => {
-          const rem = i.qty - (i.returnedQty || 0);
-          return s + (i.price * rem);
-        }, 0);
-        const grandTotal = subtotal - (bill.discount || 0);
+        const subtotal = bill.items.reduce((sum, item) => sum + (item.price * (item.qty - (item.returnedQty || 0))), 0);
+        const discount = bill.discount || 0;
 
         div.innerHTML = `
-          <div class="bill-header-card">
+          <div class="bill-header">
             <div>
-              <p style="color:#4cc9f0; font-weight:bold; font-family: monospace;">#${bill.serialNumber}</p>
-              <p style="font-size: 1.1rem; margin: 4px 0;">${bill.customer || "Walking Customer"}</p>
-              <p style="font-size:0.85rem; color:#888;">${new Date(bill.date).toLocaleString()}</p>
+              <p>Serial Number: ${bill.serialNumber}</p>
+              <p>Customer: ${bill.customer || "N/A"}</p>
+              ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ""}
+              <p>Date: ${new Date(bill.date).toLocaleString()}</p>
             </div>
-            <span class="status-badge ${bill.returned ? 'status-returned' : 'status-active'}">
-              ${bill.returned ? 'Returned' : 'Active'}
-            </span>
+            <div class="status ${bill.returned ? "returned" : "active"}">
+              ${bill.returned ? "Returned" : "Active"}
+            </div>
           </div>
-
-          <div class="items-list">
+          <div class="items-grid">
             ${bill.items.map((item, index) => {
-              const remaining = item.qty - (item.returnedQty || 0);
+              const remainingQty = item.qty - (item.returnedQty || 0);
               return `
                 <div class="item-card">
-                  <div class="item-main">
-                    <p class="item-name">${item.name}</p>
-                    <p class="item-meta">
-                      Qty: ${remaining} ${item.returnedQty > 0 ? `(Original: ${item.qty}, Returned: ${item.returnedQty})` : ''} 
-                      | Price: ₹${item.price}
-                    </p>
-                  </div>
-                  <div>
-                    <p class="price-tag">₹${item.price * remaining}</p>
-                    ${!item.returned ? `
-                      <div class="return-section">
-                        <input type="number" id="ret-qty-${index}" class="return-qty-input" min="1" max="${remaining}" placeholder="Qty">
-                        <button class="btn-return" onclick="processReturn(${index})">Return</button>
-                      </div>
-                    ` : '<span style="color:#f87171; font-size:0.85rem; font-weight:bold;">Fully Returned</span>'}
-                  </div>
+                  <p><strong>${item.name}</strong></p>
+                  <p>Qty: ${remainingQty} (Orig: ${item.qty}, Ret: ${item.returnedQty || 0})</p>
+                  <p>Price: ₹${item.price}</p>
+                  <p>Total: ₹${item.price * remainingQty}</p>
+                  ${!item.returned ? `
+                    <div style="margin-top:10px; display:flex; gap:10px;">
+                      <input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" style="width:60px;"/>
+                      <button class="return-btn" onclick="returnItem(${index})">Return</button>
+                    </div>
+                  ` : '<p style="color:#ff4d4d; margin-top:10px;">Returned</p>'}
                 </div>
               `;
-            }).join('')}
+            }).join("")}
           </div>
-
-          <div class="total-area">
-            <p style="margin-bottom: 5px;">Subtotal: ₹${subtotal}</p>
-            ${bill.discount > 0 ? `<p class="discount-tag">Custom Discount: -₹${bill.discount}</p>` : ''}
-            <p style="font-size: 1.8rem; color: #4ade80; border-top: 1px solid #444; padding-top: 10px; margin-top: 5px;">
-              <strong>Grand Total: ₹${grandTotal}</strong>
-            </p>
+          <div class="total-section">
+            <p>Subtotal: ₹${subtotal}</p>
+            ${discount > 0 ? `<p style="color:#ff4d4d;">Discount: -₹${discount}</p>` : ""}
+            <p class="grand-total">Grand Total: ₹${subtotal - discount}</p>
           </div>
         `;
       } catch (e) {
-        alert("Error loading bill details.");
+        alert(`Failed to fetch bill: ${e.message}`);
       }
     }
 
-    async function processReturn(itemIndex) {
-      const input = document.getElementById(`ret-qty-${itemIndex}`);
-      const qty = input.value === "" ? (currentBill.items[itemIndex].qty - (currentBill.items[itemIndex].returnedQty || 0)) : Number(input.value);
+    async function returnItem(itemIndex) {
+      const returnQtyInput = document.getElementById(`return-qty-${itemIndex}`);
+      const returnQty = Number(returnQtyInput.value);
+      const item = currentBill.items[itemIndex];
+      const remainingQty = item.qty - (item.returnedQty || 0);
 
-      if (!confirm(`Confirm returning ${qty} unit(s) of ${currentBill.items[itemIndex].name}?`)) return;
+      if (isNaN(returnQty) || returnQty <= 0 || returnQty > remainingQty) {
+        alert(`Enter quantity between 1 and ${remainingQty}`);
+        return;
+      }
 
       try {
         const res = await fetch(`/bill/${currentBill.serialNumber}/return`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ itemIndex, returnQty: qty })
+          body: JSON.stringify({ itemIndex, returnQty }),
         });
-        
-        if (res.ok) {
-          alert("Return successful! Inventory updated.");
-          fetchBill();
-        } else {
-          const errText = await res.text();
-          alert("Return failed: " + errText);
-        }
+        if (!res.ok) throw new Error("Return failed");
+        alert("Item returned successfully!");
+        fetchBill();
       } catch (e) {
-        alert("Error connecting to server.");
+        alert(e.message);
       }
     }
   </script>
