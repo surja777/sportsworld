@@ -5,188 +5,192 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bill History - SPORTS WORLD Shop</title>
   <style>
-    /* Global Base Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Poppins', sans-serif; 
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
-      color: #e0e0e0; 
-      padding: 15px; 
-      line-height: 1.6;
-      min-height: 100vh;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    h1 { 
-      font-family: 'Montserrat', sans-serif; 
-      text-align: center; 
-      color: #00b7ff; 
-      text-transform: uppercase; 
-      letter-spacing: 2px; 
-      margin-bottom: 25px; 
-      font-size: clamp(1.5rem, 5vw, 2.2rem); 
-      text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
-    }
-
-    .container { 
-      max-width: 1000px; 
-      margin: 0 auto; 
-      background: rgba(255, 255, 255, 0.03); 
-      padding: clamp(15px, 3vw, 30px); 
-      border-radius: 20px; 
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    h2 { 
-      font-family: 'Roboto', sans-serif; 
-      color: #f72585; 
-      margin-bottom: 15px; 
-      font-size: 1.4rem; 
-      border-left: 5px solid #4cc9f0; 
-      padding-left: 12px; 
-    }
-
-    /* Input and Button Styles */
-    input, button { 
-      font-family: 'Open Sans', sans-serif; 
-      padding: 14px; 
-      margin: 10px 0; 
-      border: 2px solid #333; 
-      border-radius: 10px; 
-      width: 100%; 
-      transition: all 0.3s ease; 
-      background: #121212; 
-      color: #fff; 
-      font-size: 1rem; 
-      outline: none;
-    }
-
-    input:focus { border-color: #4cc9f0; box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
-
-    button { 
-      background: linear-gradient(90deg, #4cc9f0, #4361ee); 
-      color: #fff; 
-      border: none; 
-      cursor: pointer; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      letter-spacing: 1px;
-    }
-
-    button:hover { transform: translateY(-2px); opacity: 0.9; }
-
-    /* Daily Summary Cards */
-    .day-card {
-      background: rgba(255, 255, 255, 0.05);
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
       padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-      border-left: 8px solid #4cc9f0;
-      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #00b7ff;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #80d4ff;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    input, button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #404040;
+      border-radius: 5px;
+      width: 100%;
+      transition: all 0.3s ease;
+      background: #333;
+      color: #e0e0e0;
+    }
+
+    input:focus {
+      border-color: #00b7ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
+    }
+
+    button {
+      background: #00b7ff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    button:hover {
+      background: #008ecf;
+    }
+
+    .delete-btn {
+      background: #ff4d4d;
+      padding: 5px 10px;
+      font-size: 12px;
+      width: auto;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #e60000;
+    }
+
+    .nav-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .nav-link a {
+      color: #80d4ff;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link a:hover {
+      color: #00b7ff;
+    }
+
+    .day-card {
+      background: #252525;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 5px solid #00b7ff;
     }
 
     .day-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    /* Individual Bill Items */
     .bill-item {
-      background: #252525;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 10px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      padding: 8px;
+      background: #333;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
-      flex-wrap: wrap;
-      gap: 10px;
+      margin-bottom: 5px;
     }
 
-    .bill-item:hover { 
-      background: #333; 
-      transform: translateX(10px);
-      border-color: #4cc9f0;
+    .bill-item:hover {
+      background: #404040;
     }
 
-    .price-tag { color: #4ade80; font-weight: bold; }
-    .discount-tag { color: #f87171; font-weight: bold; }
-
-    /* Detail Modal/Area */
-    #bill-details-modal {
+    #bill-details-view {
       margin-top: 20px;
-      padding: 20px;
-      background: rgba(0,0,0,0.6);
-      border-radius: 15px;
-      border: 1px solid #444;
+      padding: 15px;
+      background: #222;
+      border-radius: 8px;
       display: none;
     }
 
-    .table-wrapper { width: 100%; overflow-x: auto; border-radius: 10px; }
-    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 400px; }
-    th, td { padding: 12px; text-align: left; background: rgba(255, 255, 255, 0.05); }
-    th { color: #4cc9f0; background: #4361ee33; }
-
-    /* Navigation */
-    .nav-link { 
-      text-align: center; 
-      margin-top: 30px; 
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
     }
 
-    .nav-link a { 
-      color: #4cc9f0; 
-      text-decoration: none; 
-      font-weight: bold; 
-      padding: 10px 20px; 
-      border: 1px solid #4cc9f0; 
-      border-radius: 30px; 
-      transition: 0.3s;
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #444;
     }
 
-    .nav-link a:hover { background: #4cc9f0; color: #000; }
+    .total-row {
+      text-align: right;
+      margin-top: 10px;
+    }
 
-    @media (max-width: 600px) {
-      .day-header, .bill-item { flex-direction: column; align-items: flex-start; }
-      .day-header span, .bill-item span { width: 100%; text-align: left; }
+    @media (max-width: 480px) {
+      .nav-link a { display: block; margin: 10px 0; }
     }
   </style>
 </head>
 <body>
-  <h1>Bill History</h1>
+  <h1>Bill History - SPORTS WORLD Shop</h1>
   <div class="container">
     <div id="auth-section">
-      <h2>Security Access</h2>
-      <input id="password" type="password" placeholder="Enter Admin Password">
-      <button onclick="checkPassword()">Access Records</button>
+      <h2>Access Records</h2>
+      <input id="password" type="password" placeholder="Enter Password">
+      <button onclick="checkPassword()">View History</button>
     </div>
 
     <div id="history-section" style="display: none;">
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <input type="date" id="date-filter" onchange="filterByDate()" style="flex: 1; min-width: 200px;">
-        <button onclick="fetchBills()" style="width: auto; padding: 0 20px;">Reset View</button>
+      <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <input type="date" id="date-filter" onchange="filterByDate()">
+        <button onclick="resetFilter()" style="width: auto; padding: 0 15px;">Reset</button>
       </div>
-      <div id="daily-summary" style="margin-top: 20px;"></div>
-      <div id="bill-details-modal"></div>
+      <div id="daily-summary"></div>
+      <div id="bill-details-view"></div>
     </div>
   </div>
 
   <div class="nav-link">
-    <a href="/index.html">Back to Billing</a>
-    <a href="/add-item.html">Inventory Management</a>
+    <a href="/index.html">Back to Billing</a> |
+    <a href="/add-item.html">Add/Edit Items</a> |
+    <a href="/view-bill.html">View Bill</a>
   </div>
 
   <script>
@@ -204,13 +208,9 @@
     }
 
     async function fetchBills() {
-      try {
-        const res = await fetch('/bills');
-        const bills = await res.json();
-        displayHistory(bills);
-      } catch (e) {
-        alert("Error loading history records.");
-      }
+      const res = await fetch('/bills');
+      const bills = await res.json();
+      displayHistory(bills);
     }
 
     function displayHistory(bills) {
@@ -218,16 +218,12 @@
       container.innerHTML = '';
 
       const grouped = bills.reduce((acc, bill) => {
-        const date = new Date(bill.date).toLocaleDateString('en-GB', {
-          day: 'numeric', month: 'long', year: 'numeric'
-        });
+        const date = new Date(bill.date).toLocaleDateString('en-GB');
         if (!acc[date]) acc[date] = { bills: [], total: 0 };
         
-        const subtotal = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
-        const finalBillAmount = subtotal - (bill.discount || 0);
-        
+        const subtotal = bill.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0);
         acc[date].bills.push(bill);
-        acc[date].total += finalBillAmount;
+        acc[date].total += (subtotal - (bill.discount || 0));
         return acc;
       }, {});
 
@@ -237,69 +233,59 @@
         card.innerHTML = `
           <div class="day-header">
             <h3>${date}</h3>
-            <span class="price-tag">Daily Total: ₹${data.total}</span>
+            <span style="color:#00ffcc; font-weight:bold;">Total: ₹${data.total}</span>
           </div>
+          ${data.bills.map(b => {
+            const bSub = b.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0);
+            return `
+              <div class="bill-item" onclick="showDetails(${JSON.stringify(b).replace(/"/g, '&quot;')})">
+                <span>Serial: ${b.serialNumber}</span>
+                <span>₹${bSub - (b.discount || 0)}</span>
+              </div>`;
+          }).join('')}
         `;
-        
-        data.bills.forEach(bill => {
-          const sub = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'bill-item';
-          itemDiv.innerHTML = `
-            <div>
-              <span style="color:#4cc9f0; font-family:monospace;">#${bill.serialNumber}</span>
-              <p style="font-size: 0.85rem; color: #888;">${bill.customer || 'Walking Customer'}</p>
-            </div>
-            <span class="price-tag">₹${sub - (bill.discount || 0)}</span>
-          `;
-          itemDiv.onclick = () => showBillDetails(bill);
-          card.appendChild(itemDiv);
-        });
-        
         container.appendChild(card);
       });
     }
 
-    function showBillDetails(bill) {
-      const modal = document.getElementById('bill-details-modal');
-      const subtotal = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
-      
-      modal.style.display = 'block';
-      modal.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-          <h3 style="color: #4cc9f0;">Bill #${bill.serialNumber}</h3>
-          <button onclick="document.getElementById('bill-details-modal').style.display='none'" style="width: auto; padding: 5px 15px; margin: 0; background: #444;">Close</button>
+    function showDetails(bill) {
+      const view = document.getElementById('bill-details-view');
+      const subtotal = bill.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0);
+      view.style.display = 'block';
+      view.innerHTML = `
+        <div style="display:flex; justify-content:space-between;">
+          <h3>Details: #${bill.serialNumber}</h3>
+          <button onclick="document.getElementById('bill-details-view').style.display='none'" style="width:auto; padding:0 10px;">X</button>
         </div>
-        <div class="table-wrapper">
-          <table>
-            <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
-            <tbody>
-              ${bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>₹${i.price * i.qty}</td></tr>`).join('')}
-            </tbody>
-          </table>
-        </div>
-        <div style="text-align: right; margin-top: 15px;">
+        <table>
+          <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+          <tbody>
+            ${bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty - (i.returnedQty || 0)}</td><td>₹${i.price * (i.qty - (i.returnedQty || 0))}</td></tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="total-row">
           <p>Subtotal: ₹${subtotal}</p>
-          <p class="discount-tag">Discount: -₹${bill.discount || 0}</p>
-          <h2 class="price-tag" style="font-size: 1.5rem; margin-top: 5px;">Grand Total: ₹${subtotal - (bill.discount || 0)}</h2>
+          ${bill.discount > 0 ? `<p style="color:#ff4d4d;">Discount: -₹${bill.discount}</p>` : ''}
+          <p><strong style="color:#00b7ff; font-size:1.2rem;">Grand Total: ₹${subtotal - (bill.discount || 0)}</strong></p>
         </div>
       `;
-      modal.scrollIntoView({ behavior: 'smooth' });
+      view.scrollIntoView({ behavior: 'smooth' });
     }
 
     function filterByDate() {
-      const filter = document.getElementById('date-filter').value;
-      if (!filter) return fetchBills();
-      
-      const selected = new Date(filter).toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric'
-      });
-      
+      const val = document.getElementById('date-filter').value;
+      if (!val) return fetchBills();
+      const selected = new Date(val).toLocaleDateString('en-GB');
       const cards = document.querySelectorAll('.day-card');
-      cards.forEach(card => {
-        const cardDate = card.querySelector('h3').textContent;
-        card.style.display = cardDate === selected ? 'block' : 'none';
+      cards.forEach(c => {
+        const d = c.querySelector('h3').textContent;
+        c.style.display = d === selected ? 'block' : 'none';
       });
+    }
+
+    function resetFilter() {
+      document.getElementById('date-filter').value = '';
+      fetchBills();
     }
   </script>
 </body>
