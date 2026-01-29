@@ -120,7 +120,7 @@ connectDB().then(() => {
     }
   });
 
-  // UPDATED ROUTE TO HANDLE DISCOUNTS
+  // Updated to include discount
   app.post('/bill', async (req, res) => {
     try {
       const { items, customer, phone, date, serialNumber, discount } = req.body;
@@ -145,7 +145,7 @@ connectDB().then(() => {
         phone: phone || null,
         date: new Date(date),
         items: itemsWithReturnStatus,
-        discount: Number(discount) || 0, // Store the custom discount
+        discount: Number(discount) || 0,
         returned: false
       });
 
