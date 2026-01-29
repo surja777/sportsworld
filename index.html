@@ -5,102 +5,267 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPORTS WORLD Shop</title>
   <style>
+    /* Global Styles with a Premium Dark Look */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: #1a1a1a; color: #e0e0e0; padding: 20px; line-height: 1.6; }
-    h1 { font-family: 'Montserrat', sans-serif; text-align: center; color: #00b7ff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; font-size: 1.8rem; }
-    h2 { font-family: 'Roboto', sans-serif; color: #80d4ff; margin-bottom: 15px; font-size: 1.4rem; }
-    .container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px; background: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
-    .inventory, .billing { flex: 1; min-width: 300px; padding: 15px; background: #252525; border-radius: 8px; border: 1px solid #404040; }
-    .inventory-table-wrapper { max-height: 400px; overflow-y: auto; border: 1px solid #404040; border-radius: 5px; }
-    input, button { font-family: 'Open Sans', sans-serif; padding: 10px; margin: 5px 0; border: 1px solid #404040; border-radius: 5px; width: 100%; transition: all 0.3s ease; background: #333; color: #e0e0e0; }
-    input:focus { border-color: #00b7ff; outline: none; box-shadow: 0 0 5px rgba(0, 183, 255, 0.3); }
-    button { background: #00b7ff; color: #fff; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; }
-    button:hover { background: #008ecf; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #2a2a2a; border-radius: 5px; overflow: hidden; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #404040; }
-    th { background: #004d73; color: #fff; position: sticky; top: 0; z-index: 1; }
-    .nav-link { text-align: center; margin-top: 20px; }
-    .nav-link a { color: #80d4ff; text-decoration: none; font-weight: 600; margin: 0 15px; }
-    #results { margin-top: 5px; background: #2a2a2a; border-radius: 5px; }
-    #results p { padding: 12px; border-bottom: 1px solid #404040; cursor: pointer; }
-    #results p:hover { background: #3d3d3d; }
-    .total-area { margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 5px; }
-    .discount-input { border: 1px solid #ff4d4d !important; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
+      color: #e0e0e0; 
+      padding: 20px; 
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    h1 { 
+      font-family: 'Montserrat', sans-serif; 
+      text-align: center; 
+      color: #00b7ff; 
+      text-transform: uppercase; 
+      letter-spacing: 3px; 
+      margin-bottom: 25px; 
+      font-size: 2.2rem; 
+      text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
+    }
+    h2 { 
+      font-family: 'Roboto', sans-serif; 
+      color: #f72585; 
+      margin-bottom: 15px; 
+      font-size: 1.6rem; 
+      border-left: 5px solid #4cc9f0; 
+      padding-left: 12px; 
+    }
+
+    /* Main Container */
+    .container { 
+      max-width: 1300px; 
+      margin: 0 auto; 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 25px; 
+      background: rgba(255, 255, 255, 0.03); 
+      padding: 30px; 
+      border-radius: 20px; 
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .inventory, .billing { 
+      flex: 1; 
+      min-width: 350px; 
+      padding: 20px; 
+      background: rgba(0, 0, 0, 0.3); 
+      border-radius: 15px; 
+      border: 1px solid rgba(255, 255, 255, 0.05); 
+    }
+
+    /* Inventory Table Scroller */
+    .inventory-table-wrapper { 
+      max-height: 450px; 
+      overflow-y: auto; 
+      border-radius: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #00b7ff #1a1a2e;
+    }
+
+    /* Inputs & Buttons */
+    input, button { 
+      font-family: 'Open Sans', sans-serif; 
+      padding: 14px; 
+      margin: 10px 0; 
+      border: 2px solid #333; 
+      border-radius: 10px; 
+      width: 100%; 
+      transition: all 0.3s ease; 
+      background: #121212; 
+      color: #fff; 
+      font-size: 1rem; 
+    }
+    input:focus { 
+      border-color: #4cc9f0; 
+      outline: none; 
+      box-shadow: 0 0 20px rgba(76, 201, 240, 0.3); 
+      background: #1a1a1a; 
+    }
+    
+    /* Neon Blue Buttons */
+    button { 
+      background: linear-gradient(90deg, #4cc9f0, #4361ee); 
+      color: #fff; 
+      border: none; 
+      cursor: pointer; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      letter-spacing: 1.5px; 
+    }
+    button:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5); 
+    }
+
+    /* Tables */
+    table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+    th, td { padding: 15px; text-align: left; background: rgba(255, 255, 255, 0.05); }
+    th { background: #4361ee; color: #fff; position: sticky; top: 0; z-index: 10; border-radius: 5px; }
+    td:first-child { border-radius: 10px 0 0 10px; font-weight: bold; }
+    td:last-child { border-radius: 0 10px 10px 0; }
+
+    /* Colorful Search Results */
+    #results { margin-top: 10px; display: grid; gap: 12px; }
+    .result-card { 
+      padding: 15px; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      border-left: 8px solid #4cc9f0;
+      background: #252525;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    }
+    .result-card:hover { transform: scale(1.03); filter: brightness(1.2); }
+    .result-card .name { font-size: 1.2rem; font-weight: bold; color: #fff; margin-bottom: 4px; }
+    .result-card .info { display: flex; justify-content: space-between; }
+    
+    /* Visual Highlights */
+    .price-tag { color: #4cc9f0; font-weight: bold; }
+    .stock-good { color: #4ade80; font-weight: bold; }
+    .stock-low { color: #f87171; font-weight: bold; }
+
+    .total-area { 
+      margin-top: 25px; 
+      padding: 20px; 
+      background: rgba(0, 0, 0, 0.5); 
+      border-radius: 15px; 
+      border: 2px dashed #4cc9f0; 
+    }
+    .discount-input { border: 2px solid #f72585 !important; color: #f72585 !important; }
+
+    .nav-link { text-align: center; margin-top: 40px; }
+    .nav-link a { 
+      color: #4cc9f0; 
+      text-decoration: none; 
+      font-weight: bold; 
+      margin: 0 15px; 
+      padding: 10px 20px; 
+      border: 1px solid #4cc9f0; 
+      border-radius: 30px; 
+      transition: 0.3s;
+    }
+    .nav-link a:hover { background: #4cc9f0; color: #000; }
   </style>
 </head>
 <body>
   <h1>SPORTS WORLD Shop</h1>
   <div class="container">
+    
     <div class="inventory">
       <h2>Inventory</h2>
       <div class="inventory-table-wrapper">
         <table id="items">
-          <thead><tr><th>Name</th><th>Price</th><th>Stock</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
+
     <div class="billing">
-      <h2>Billing</h2>
+      <h2>Billing Section</h2>
       <input id="customer" placeholder="Customer Name (Optional)">
-      <input id="phone" placeholder="Customer Phone Number (Optional)">
-      <input id="search" placeholder="Search Items">
+      <input id="phone" placeholder="Phone Number (Optional)">
+      
+      <input id="search" placeholder="🔍 Search Items (Bat, Ball, etc.)">
       <div id="results"></div>
-      <input id="qty" type="number" placeholder="Quantity">
-      <button onclick="addToBill()">Add to Bill</button>
+      
+      <input id="qty" type="number" placeholder="Enter Quantity">
+      <button onclick="addToBill()">+ Add to List</button>
+      
       <div id="bill"></div>
+      
       <div class="total-area">
-        <input id="discount" class="discount-input" type="number" placeholder="Enter Discount Amount" oninput="updateBill()">
+        <input id="discount" class="discount-input" type="number" placeholder="Enter Discount Amount (₹)" oninput="updateBill()">
         <div id="price-summary"></div>
       </div>
-      <button onclick="printBill()">Print</button>
+      
+      <button onclick="printBill()" style="margin-top: 15px; background: linear-gradient(90deg, #f72585, #7209b7);">Print & Save Bill</button>
     </div>
   </div>
+
   <div class="nav-link">
-    <a href="/add-item.html">Add/Edit Items</a> |
-    <a href="/view-bill.html">View Bill by Serial</a> |
-    <a href="/history.html">Bill History</a>
+    <a href="/add-item.html">Add New Items</a>
+    <a href="/history.html">View History</a>
   </div>
+
   <script>
     let bill = [];
     let printer = null;
     let selectedItem = null;
 
+    // Fetch and display inventory with color-coded stock
     async function fetchInventory() {
       const res = await fetch('/items');
       const items = await res.json();
       const tbody = document.querySelector('#items tbody');
       tbody.innerHTML = '';
       items.forEach(item => {
+        const stockStyle = item.stock < 5 ? 'stock-low' : 'stock-good';
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${item.name}</td><td>${item.price}</td><td>${item.stock}</td>`;
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td class="price-tag">₹${item.price}</td>
+          <td class="${stockStyle}">${item.stock}</td>
+        `;
         tbody.appendChild(tr);
       });
     }
 
+    // Dynamic colorful search results
     document.getElementById('search').oninput = async () => {
       const query = document.getElementById('search').value.toLowerCase();
-      if (!query) { document.getElementById('results').innerHTML = ''; return; }
+      const div = document.getElementById('results');
+      if (!query) { div.innerHTML = ''; return; }
+      
       const res = await fetch('/items');
       const items = await res.json();
       const results = items.filter(item => item.name.toLowerCase().includes(query));
-      const div = document.getElementById('results');
+      
       div.innerHTML = '';
-      results.forEach(item => {
-        const p = document.createElement('p');
-        p.textContent = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
-        p.onclick = () => {
+      const cardColors = ["#3a0ca3", "#3f37c9", "#4361ee", "#4895ef", "#560bad"];
+      
+      results.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.style.backgroundColor = cardColors[index % cardColors.length];
+        const stockStyle = item.stock < 5 ? 'stock-low' : 'stock-good';
+        
+        card.innerHTML = `
+          <span class="name">${item.name}</span>
+          <div class="info">
+            <span class="price-tag">Price: ₹${item.price}</span>
+            <span>Stock: <span class="${stockStyle}">${item.stock}</span></span>
+          </div>
+        `;
+        
+        card.onclick = () => {
           document.getElementById('search').value = item.name;
           div.innerHTML = '';
           selectedItem = item;
         };
-        div.appendChild(p);
+        div.appendChild(card);
       });
     };
 
     function addToBill() {
       const qty = Number(document.getElementById('qty').value);
-      if (!selectedItem || qty <= 0 || qty > selectedItem.stock) { alert('Invalid qty!'); return; }
+      if (!selectedItem || qty <= 0 || qty > selectedItem.stock) { 
+        alert('Please select an item and check available stock!'); 
+        return; 
+      }
       bill.push({ ...selectedItem, qty });
       document.getElementById('search').value = '';
       document.getElementById('qty').value = '';
@@ -115,24 +280,33 @@
       if (bill.length === 0) { summaryDiv.innerHTML = ''; return; }
       
       const table = document.createElement('table');
-      table.innerHTML = `<thead><tr><th>Name</th><th>Qty</th><th>Total</th><th>Action</th></tr></thead>
-        <tbody>${bill.map((item, i) => `<tr><td>${item.name}</td><td>${item.qty}</td><td>${item.price * item.qty}</td>
-        <td><button onclick="removeItem(${i})">X</button></td></tr>`).join('')}</tbody>`;
+      table.innerHTML = `
+        <thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead>
+        <tbody>${bill.map((item, i) => `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.qty}</td>
+            <td class="price-tag">₹${item.price * item.qty}</td>
+            <td><button onclick="removeItem(${i})" style="width: auto; padding: 5px 10px; background: #f87171;">X</button></td>
+          </tr>`).join('')}
+        </tbody>`;
       div.appendChild(table);
 
       const subtotal = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
       const discount = Number(document.getElementById('discount').value) || 0;
+      
       summaryDiv.innerHTML = `
-        <p>Subtotal: ₹${subtotal}</p>
-        ${discount > 0 ? `<p style="color: #ff4d4d;">Discount: -₹${discount}</p>` : ''}
-        <p><strong>Grand Total: ₹${subtotal - discount}</strong></p>
+        <p style="font-size: 1.1rem; margin-top: 10px;">Subtotal: ₹${subtotal}</p>
+        ${discount > 0 ? `<p style="color: #f87171; font-weight: bold;">Discount: -₹${discount}</p>` : ''}
+        <p style="font-size: 1.5rem; color: #4ade80;"><strong>Grand Total: ₹${subtotal - discount}</strong></p>
       `;
     }
 
     function removeItem(index) { bill.splice(index, 1); updateBill(); }
 
+    // BLUETOOTH PRINTER LOGIC
     async function connectToPrinter() {
-      if (!navigator.bluetooth) return alert('Use Chrome!');
+      if (!navigator.bluetooth) return alert('Use Google Chrome on Android/Laptop for Printing!');
       try {
         const device = await navigator.bluetooth.requestDevice({
           filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
@@ -142,7 +316,7 @@
         const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
         const char = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
         return { device, char };
-      } catch (e) { alert('Printer error'); return null; }
+      } catch (e) { alert('Printer Connection Error'); return null; }
     }
 
     function encodeBill(bill, customer, phone, serialNumber, discount = 0) {
@@ -167,7 +341,6 @@
       if (discount > 0) text += `Discount:          -${discount.toString().padStart(8)}\n`;
       text += `TOTAL:              ${(subtotal - discount).toString().padStart(8)}\n`;
       text += "----------------------------\n";
-      text += "Address: Swarupganj, Nadia\n";
       text += "Thank You! Visit Again!\n";
       text += "============================\n\n\n";
       return text;
@@ -175,22 +348,26 @@
 
     async function printBill() {
       const btn = document.querySelector('button[onclick="printBill()"]');
+      if (bill.length === 0) return alert('Add items first!');
       btn.disabled = true;
+
       try {
         if (!printer) printer = await connectToPrinter();
         const serial = Math.floor(1000000000 + Math.random() * 9000000000).toString();
         const discount = Number(document.getElementById('discount').value) || 0;
         
-        // Print Logic
-        const billText = encodeBill(bill, document.getElementById('customer').value, document.getElementById('phone').value, serial, discount);
-        const encoder = new TextEncoder();
-        const data = encoder.encode(billText);
-        for (let i = 0; i < data.length; i += 128) {
-          await printer.char.writeValue(data.slice(i, i + 128));
-          await new Promise(r => setTimeout(r, 100));
+        // Bluetooth Print Execution
+        if (printer) {
+           const billText = encodeBill(bill, document.getElementById('customer').value, document.getElementById('phone').value, serial, discount);
+           const encoder = new TextEncoder();
+           const data = encoder.encode(billText);
+           for (let i = 0; i < data.length; i += 128) {
+             await printer.char.writeValue(data.slice(i, i + 128));
+             await new Promise(r => setTimeout(r, 100));
+           }
         }
 
-        // Save Logic
+        // Save to Database
         await fetch('/bill', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -204,7 +381,7 @@
           })
         });
 
-        // Stock Logic
+        // Update Inventory Stock
         for (const item of bill) {
           await fetch(`/items/${item._id}`, {
             method: 'PUT',
@@ -213,10 +390,12 @@
           });
         }
 
-        alert('Done!');
+        alert('Bill Processed Successfully!');
         bill = []; updateBill(); fetchInventory();
         document.getElementById('discount').value = '';
-      } catch (e) { alert(e.message); }
+        document.getElementById('customer').value = '';
+        document.getElementById('phone').value = '';
+      } catch (e) { alert('Error: ' + e.message); }
       btn.disabled = false;
     }
 
