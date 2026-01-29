@@ -5,47 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bill History - SPORTS WORLD Shop</title>
   <style>
-    /* Global Styles */
+    /* Global Base Styles */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: 'Poppins', sans-serif; 
       background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
       color: #e0e0e0; 
-      padding: 20px; 
+      padding: 15px; 
       line-height: 1.6;
       min-height: 100vh;
     }
+
     h1 { 
       font-family: 'Montserrat', sans-serif; 
       text-align: center; 
       color: #00b7ff; 
       text-transform: uppercase; 
-      letter-spacing: 3px; 
+      letter-spacing: 2px; 
       margin-bottom: 25px; 
-      font-size: 2.2rem; 
+      font-size: clamp(1.5rem, 5vw, 2.2rem); 
       text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
     }
-    h2 { 
-      font-family: 'Roboto', sans-serif; 
-      color: #f72585; 
-      margin-bottom: 15px; 
-      font-size: 1.6rem; 
-      border-left: 5px solid #4cc9f0; 
-      padding-left: 12px; 
-    }
 
-    /* Main Container */
     .container { 
       max-width: 1000px; 
       margin: 0 auto; 
       background: rgba(255, 255, 255, 0.03); 
-      padding: 30px; 
+      padding: clamp(15px, 3vw, 30px); 
       border-radius: 20px; 
       backdrop-filter: blur(10px);
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    h2 { 
+      font-family: 'Roboto', sans-serif; 
+      color: #f72585; 
+      margin-bottom: 15px; 
+      font-size: 1.4rem; 
+      border-left: 5px solid #4cc9f0; 
+      padding-left: 12px; 
+    }
+
+    /* Input and Button Styles */
     input, button { 
       font-family: 'Open Sans', sans-serif; 
       padding: 14px; 
@@ -57,13 +59,11 @@
       background: #121212; 
       color: #fff; 
       font-size: 1rem; 
+      outline: none;
     }
-    input:focus { 
-      border-color: #4cc9f0; 
-      outline: none; 
-      box-shadow: 0 0 20px rgba(76, 201, 240, 0.3); 
-    }
-    
+
+    input:focus { border-color: #4cc9f0; box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
+
     button { 
       background: linear-gradient(90deg, #4cc9f0, #4361ee); 
       color: #fff; 
@@ -71,12 +71,10 @@
       cursor: pointer; 
       font-weight: 700; 
       text-transform: uppercase; 
-      letter-spacing: 1.5px; 
+      letter-spacing: 1px;
     }
-    button:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5); 
-    }
+
+    button:hover { transform: translateY(-2px); opacity: 0.9; }
 
     /* Daily Summary Cards */
     .day-card {
@@ -87,6 +85,7 @@
       border-left: 8px solid #4cc9f0;
       box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
     }
+
     .day-header {
       display: flex;
       justify-content: space-between;
@@ -94,6 +93,8 @@
       margin-bottom: 15px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
       padding-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     /* Individual Bill Items */
@@ -108,42 +109,60 @@
       cursor: pointer;
       transition: all 0.3s ease;
       border: 1px solid transparent;
+      flex-wrap: wrap;
+      gap: 10px;
     }
+
     .bill-item:hover { 
       background: #333; 
       transform: translateX(10px);
       border-color: #4cc9f0;
     }
 
-    /* Styling for values */
     .price-tag { color: #4ade80; font-weight: bold; }
     .discount-tag { color: #f87171; font-weight: bold; }
-    .serial-tag { color: #4cc9f0; font-family: monospace; }
 
-    /* Navigation */
-    .nav-link { text-align: center; margin-top: 40px; }
-    .nav-link a { 
-      color: #4cc9f0; 
-      text-decoration: none; 
-      font-weight: bold; 
-      margin: 0 15px; 
-      padding: 10px 20px; 
-      border: 1px solid #4cc9f0; 
-      border-radius: 30px; 
-      transition: 0.3s;
-    }
-    .nav-link a:hover { background: #4cc9f0; color: #000; }
-
+    /* Detail Modal/Area */
     #bill-details-modal {
       margin-top: 20px;
       padding: 20px;
       background: rgba(0,0,0,0.6);
       border-radius: 15px;
       border: 1px solid #444;
+      display: none;
     }
-    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #444; }
-    th { color: #4cc9f0; }
+
+    .table-wrapper { width: 100%; overflow-x: auto; border-radius: 10px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 400px; }
+    th, td { padding: 12px; text-align: left; background: rgba(255, 255, 255, 0.05); }
+    th { color: #4cc9f0; background: #4361ee33; }
+
+    /* Navigation */
+    .nav-link { 
+      text-align: center; 
+      margin-top: 30px; 
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link a { 
+      color: #4cc9f0; 
+      text-decoration: none; 
+      font-weight: bold; 
+      padding: 10px 20px; 
+      border: 1px solid #4cc9f0; 
+      border-radius: 30px; 
+      transition: 0.3s;
+    }
+
+    .nav-link a:hover { background: #4cc9f0; color: #000; }
+
+    @media (max-width: 600px) {
+      .day-header, .bill-item { flex-direction: column; align-items: flex-start; }
+      .day-header span, .bill-item span { width: 100%; text-align: left; }
+    }
   </style>
 </head>
 <body>
@@ -152,22 +171,22 @@
     <div id="auth-section">
       <h2>Security Access</h2>
       <input id="password" type="password" placeholder="Enter Admin Password">
-      <button onclick="checkPassword()">Access History</button>
+      <button onclick="checkPassword()">Access Records</button>
     </div>
 
     <div id="history-section" style="display: none;">
-      <div style="display: flex; gap: 10px;">
-        <input type="date" id="date-filter" onchange="filterByDate()">
-        <button onclick="fetchBills()" style="width: auto; padding: 0 20px;">Reset</button>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="date" id="date-filter" onchange="filterByDate()" style="flex: 1; min-width: 200px;">
+        <button onclick="fetchBills()" style="width: auto; padding: 0 20px;">Reset View</button>
       </div>
       <div id="daily-summary" style="margin-top: 20px;"></div>
-      <div id="bill-details-modal" style="display: none;"></div>
+      <div id="bill-details-modal"></div>
     </div>
   </div>
 
   <div class="nav-link">
     <a href="/index.html">Back to Billing</a>
-    <a href="/add-item.html">Inventory</a>
+    <a href="/add-item.html">Inventory Management</a>
   </div>
 
   <script>
@@ -180,7 +199,7 @@
         document.getElementById('history-section').style.display = 'block';
         fetchBills();
       } else {
-        alert("Access Denied!");
+        alert("Incorrect password!");
       }
     }
 
@@ -190,7 +209,7 @@
         const bills = await res.json();
         displayHistory(bills);
       } catch (e) {
-        alert("Error loading history");
+        alert("Error loading history records.");
       }
     }
 
@@ -228,8 +247,8 @@
           itemDiv.className = 'bill-item';
           itemDiv.innerHTML = `
             <div>
-              <span class="serial-tag">#${bill.serialNumber}</span>
-              <p style="font-size: 0.8rem; color: #888;">${bill.customer || 'Walking Customer'}</p>
+              <span style="color:#4cc9f0; font-family:monospace;">#${bill.serialNumber}</span>
+              <p style="font-size: 0.85rem; color: #888;">${bill.customer || 'Walking Customer'}</p>
             </div>
             <span class="price-tag">₹${sub - (bill.discount || 0)}</span>
           `;
@@ -247,20 +266,22 @@
       
       modal.style.display = 'block';
       modal.innerHTML = `
-        <div style="display: flex; justify-content: space-between;">
-          <h3 color="#4cc9f0">Bill #${bill.serialNumber}</h3>
-          <button onclick="this.parentElement.parentElement.style.display='none'" style="width: 40px; margin: 0;">X</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="color: #4cc9f0;">Bill #${bill.serialNumber}</h3>
+          <button onclick="document.getElementById('bill-details-modal').style.display='none'" style="width: auto; padding: 5px 15px; margin: 0; background: #444;">Close</button>
         </div>
-        <table>
-          <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
-          <tbody>
-            ${bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>₹${i.price * i.qty}</td></tr>`).join('')}
-          </tbody>
-        </table>
-        <div style="text-align: right;">
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+            <tbody>
+              ${bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>₹${i.price * i.qty}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div style="text-align: right; margin-top: 15px;">
           <p>Subtotal: ₹${subtotal}</p>
           <p class="discount-tag">Discount: -₹${bill.discount || 0}</p>
-          <h2 class="price-tag">Grand Total: ₹${subtotal - (bill.discount || 0)}</h2>
+          <h2 class="price-tag" style="font-size: 1.5rem; margin-top: 5px;">Grand Total: ₹${subtotal - (bill.discount || 0)}</h2>
         </div>
       `;
       modal.scrollIntoView({ behavior: 'smooth' });
