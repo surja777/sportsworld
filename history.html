@@ -5,431 +5,280 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bill History - SPORTS WORLD Shop</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      padding: 20px;
+    /* Global Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
+      color: #e0e0e0; 
+      padding: 20px; 
       line-height: 1.6;
+      min-height: 100vh;
+    }
+    h1 { 
+      font-family: 'Montserrat', sans-serif; 
+      text-align: center; 
+      color: #00b7ff; 
+      text-transform: uppercase; 
+      letter-spacing: 3px; 
+      margin-bottom: 25px; 
+      font-size: 2.2rem; 
+      text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
+    }
+    h2 { 
+      font-family: 'Roboto', sans-serif; 
+      color: #f72585; 
+      margin-bottom: 15px; 
+      font-size: 1.6rem; 
+      border-left: 5px solid #4cc9f0; 
+      padding-left: 12px; 
     }
 
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: #00b7ff;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
+    /* Main Container */
+    .container { 
+      max-width: 1000px; 
+      margin: 0 auto; 
+      background: rgba(255, 255, 255, 0.03); 
+      padding: 30px; 
+      border-radius: 20px; 
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    h2 {
-      font-family: 'Roboto', sans-serif;
-      color: #80d4ff;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
+    input, button { 
+      font-family: 'Open Sans', sans-serif; 
+      padding: 14px; 
+      margin: 10px 0; 
+      border: 2px solid #333; 
+      border-radius: 10px; 
+      width: 100%; 
+      transition: all 0.3s ease; 
+      background: #121212; 
+      color: #fff; 
+      font-size: 1rem; 
+    }
+    input:focus { 
+      border-color: #4cc9f0; 
+      outline: none; 
+      box-shadow: 0 0 20px rgba(76, 201, 240, 0.3); 
+    }
+    
+    button { 
+      background: linear-gradient(90deg, #4cc9f0, #4361ee); 
+      color: #fff; 
+      border: none; 
+      cursor: pointer; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      letter-spacing: 1.5px; 
+    }
+    button:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5); 
     }
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    input, button {
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      width: 100%;
-      transition: all 0.3s ease;
-      background: #333;
-      color: #e0e0e0;
-    }
-
-    input:focus {
-      border-color: #00b7ff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
-    }
-
-    button {
-      background: #00b7ff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    button:hover {
-      background: #008ecf;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
-    }
-
-    th {
-      background: #004d73;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    tr:hover {
-      background: #333;
-    }
-
-    .bill-details {
-      margin-top: 20px;
-      padding: 15px;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      background: #252525;
-    }
-
-    .delete-btn {
-      background: #ff4d4d;
-      padding: 5px 10px;
-      font-size: 12px;
-      width: auto;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .delete-btn:hover {
-      background: #e60000;
-    }
-
-    .nav-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .nav-link a {
-      color: #80d4ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin: 0 15px;
-      transition: color 0.3s ease;
-    }
-
-    .nav-link a:hover {
-      color: #00b7ff;
-    }
-
-    .filter-section {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .daily-summary {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
+    /* Daily Summary Cards */
     .day-card {
-      background: #252525;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      border-left: 8px solid #4cc9f0;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
     }
-
-    .day-card:hover {
-      transform: translateY(-5px);
-    }
-
     .day-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 10px;
     }
 
-    .day-header h3 {
-      color: #80d4ff;
-      font-size: 1.2rem;
-    }
-
-    .bill-count {
-      background: #004d73;
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 0.9rem;
-    }
-
-    .total-sales {
-      color: #e0e0e0;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-
-    .bill-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    /* Individual Bill Items */
     .bill-item {
+      background: #252525;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
-      padding: 8px;
-      background: #333;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
       align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .bill-item:hover { 
+      background: #333; 
+      transform: translateX(10px);
+      border-color: #4cc9f0;
     }
 
-    .bill-item:hover {
-      background: #404040;
-    }
+    /* Styling for values */
+    .price-tag { color: #4ade80; font-weight: bold; }
+    .discount-tag { color: #f87171; font-weight: bold; }
+    .serial-tag { color: #4cc9f0; font-family: monospace; }
 
-    .calculation-row {
-      text-align: right;
-      margin-top: 10px;
-      font-size: 1rem;
+    /* Navigation */
+    .nav-link { text-align: center; margin-top: 40px; }
+    .nav-link a { 
+      color: #4cc9f0; 
+      text-decoration: none; 
+      font-weight: bold; 
+      margin: 0 15px; 
+      padding: 10px 20px; 
+      border: 1px solid #4cc9f0; 
+      border-radius: 30px; 
+      transition: 0.3s;
     }
+    .nav-link a:hover { background: #4cc9f0; color: #000; }
 
-    .discount-text {
-      color: #ff4d4d;
-      font-weight: bold;
+    #bill-details-modal {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 15px;
+      border: 1px solid #444;
     }
-
-    @media (max-width: 768px) {
-      .container { padding: 15px; }
-      .filter-section { flex-direction: column; }
-      .day-header h3 { font-size: 1rem; }
-      .bill-item { font-size: 0.9rem; }
-      table { font-size: 0.9rem; }
-    }
-
-    @media (max-width: 480px) {
-      h1 { font-size: 1.5rem; }
-      h2 { font-size: 1.2rem; }
-      input, button { font-size: 0.9rem; }
-      th, td { padding: 8px; font-size: 0.85rem; }
-      .nav-link a { display: block; margin: 10px 0; }
-      .day-card { padding: 10px; }
-      .day-header h3 { font-size: 0.9rem; }
-      .bill-count { font-size: 0.8rem; }
-      .total-sales { font-size: 1rem; }
-      .bill-item { font-size: 0.8rem; flex-direction: column; gap: 5px; }
-    }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #444; }
+    th { color: #4cc9f0; }
   </style>
 </head>
 <body>
-  <h1>Bill History - SPORTS WORLD Shop</h1>
+  <h1>Bill History</h1>
   <div class="container">
-    <h2>Access Bill History</h2>
-    <input id="password" type="password" placeholder="Enter Password">
-    <button onclick="checkPassword()">View History</button>
+    <div id="auth-section">
+      <h2>Security Access</h2>
+      <input id="password" type="password" placeholder="Enter Admin Password">
+      <button onclick="checkPassword()">Access History</button>
+    </div>
+
     <div id="history-section" style="display: none;">
-      <h2>Daily Bill History</h2>
-      <div class="filter-section">
-        <input id="date-filter" type="date" onchange="filterByDate()">
-        <button onclick="resetFilter()">Reset Filter</button>
+      <div style="display: flex; gap: 10px;">
+        <input type="date" id="date-filter" onchange="filterByDate()">
+        <button onclick="fetchBills()" style="width: auto; padding: 0 20px;">Reset</button>
       </div>
-      <div id="daily-summary" class="daily-summary"></div>
+      <div id="daily-summary" style="margin-top: 20px;"></div>
+      <div id="bill-details-modal" style="display: none;"></div>
     </div>
   </div>
+
   <div class="nav-link">
-    <a href="/index.html">Back to Billing</a> | 
-    <a href="/add-item.html">Add/Edit Items</a> | 
-    <a href="/view-bill.html">View Bill by Serial</a>
+    <a href="/index.html">Back to Billing</a>
+    <a href="/add-item.html">Inventory</a>
   </div>
 
   <script>
     const correctPassword = "gourab009";
 
     function checkPassword() {
-      const password = document.getElementById('password').value;
-      if (password === correctPassword) {
+      const input = document.getElementById('password').value;
+      if (input === correctPassword) {
+        document.getElementById('auth-section').style.display = 'none';
         document.getElementById('history-section').style.display = 'block';
-        document.getElementById('password').style.display = 'none';
-        document.querySelector('button[onclick="checkPassword()"]').style.display = 'none';
         fetchBills();
       } else {
-        alert('Incorrect password!');
+        alert("Access Denied!");
       }
     }
 
     async function fetchBills() {
       try {
-        const res = await fetch('/bills', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        const res = await fetch('/bills');
         const bills = await res.json();
-        displayDailySummary(bills);
+        displayHistory(bills);
       } catch (e) {
-        console.error('Error fetching bills:', e.message);
-        alert(`Failed to fetch bills: ${e.message}`);
+        alert("Error loading history");
       }
     }
 
-    function displayDailySummary(bills) {
-      const dailySummary = document.getElementById('daily-summary');
-      dailySummary.innerHTML = '';
+    function displayHistory(bills) {
+      const container = document.getElementById('daily-summary');
+      container.innerHTML = '';
 
-      const billsByDate = bills.reduce((acc, bill) => {
+      const grouped = bills.reduce((acc, bill) => {
         const date = new Date(bill.date).toLocaleDateString('en-GB', {
           day: 'numeric', month: 'long', year: 'numeric'
         });
-        if (!acc[date]) {
-          acc[date] = { bills: [], total: 0, count: 0 };
-        }
+        if (!acc[date]) acc[date] = { bills: [], total: 0 };
         
-        // Calculate the actual total including discount for the daily summary
-        const subtotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const discount = bill.discount || 0;
-        const billTotal = subtotal - discount;
-
+        const subtotal = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
+        const finalBillAmount = subtotal - (bill.discount || 0);
+        
         acc[date].bills.push(bill);
-        acc[date].total += billTotal;
-        acc[date].count += 1;
+        acc[date].total += finalBillAmount;
         return acc;
       }, {});
 
-      Object.keys(billsByDate).sort((a, b) => new Date(b) - new Date(a)).forEach(date => {
-        const { total, count, bills } = billsByDate[date];
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'day-card';
-        dayDiv.innerHTML = `
+      Object.entries(grouped).forEach(([date, data]) => {
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        card.innerHTML = `
           <div class="day-header">
             <h3>${date}</h3>
-            <span class="bill-count">${count} Bill${count > 1 ? 's' : ''}</span>
-          </div>
-          <p class="total-sales">Total Sales: <strong>₹${total.toLocaleString()}</strong></p>
-          <div class="bill-list">
-            ${bills.map(bill => {
-                const subtotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-                const discount = bill.discount || 0;
-                return `
-                  <div class="bill-item" onclick="showBillDetails(${JSON.stringify(bill).replace(/"/g, '&quot;')})">
-                    <span>Serial: ${bill.serialNumber}</span>
-                    <span>₹${(subtotal - discount).toLocaleString()}</span>
-                    <span style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</span>
-                    <button class="delete-btn" onclick="event.stopPropagation(); deleteBill('${bill.serialNumber}')">Delete</button>
-                  </div>
-                `;
-            }).join('')}
+            <span class="price-tag">Daily Total: ₹${data.total}</span>
           </div>
         `;
-        dailySummary.appendChild(dayDiv);
-      });
-    }
-
-    function filterByDate() {
-      const selectedDate = new Date(document.getElementById('date-filter').value);
-      const formattedDate = selectedDate.toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric'
-      });
-      fetchBills().then(() => {
-        const allDays = document.querySelectorAll('.day-card');
-        allDays.forEach(day => {
-          const dayDate = day.querySelector('.day-header h3').textContent;
-          day.style.display = dayDate === formattedDate ? 'block' : 'none';
+        
+        data.bills.forEach(bill => {
+          const sub = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'bill-item';
+          itemDiv.innerHTML = `
+            <div>
+              <span class="serial-tag">#${bill.serialNumber}</span>
+              <p style="font-size: 0.8rem; color: #888;">${bill.customer || 'Walking Customer'}</p>
+            </div>
+            <span class="price-tag">₹${sub - (bill.discount || 0)}</span>
+          `;
+          itemDiv.onclick = () => showBillDetails(bill);
+          card.appendChild(itemDiv);
         });
+        
+        container.appendChild(card);
       });
-    }
-
-    function resetFilter() {
-      document.getElementById('date-filter').value = '';
-      fetchBills();
     }
 
     function showBillDetails(bill) {
-      const existingDetails = document.querySelector('.bill-details');
-      if (existingDetails) existingDetails.remove();
-
-      const subtotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      const discount = bill.discount || 0;
-      const grandTotal = subtotal - discount;
-
-      const div = document.createElement('div');
-      div.className = 'bill-details';
-      div.innerHTML = `
-        <h3>Bill Details (Serial: ${bill.serialNumber})</h3>
-        <p>Customer: ${bill.customer || 'N/A'}</p>
-        ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ''}
-        <p>Date: ${new Date(bill.date).toLocaleString()}</p>
-        <p style="color: ${bill.returned ? 'red' : 'green'}">Status: ${bill.returned ? 'Returned' : 'Active'}</p>
+      const modal = document.getElementById('bill-details-modal');
+      const subtotal = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
+      
+      modal.style.display = 'block';
+      modal.innerHTML = `
+        <div style="display: flex; justify-content: space-between;">
+          <h3 color="#4cc9f0">Bill #${bill.serialNumber}</h3>
+          <button onclick="this.parentElement.parentElement.style.display='none'" style="width: 40px; margin: 0;">X</button>
+        </div>
         <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Total</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
           <tbody>
-            ${bill.items.map(item => `
-              <tr>
-                <td>${item.name}</td>
-                <td>${item.qty}</td>
-                <td>${item.price}</td>
-                <td>${item.price * item.qty}</td>
-              </tr>
-            `).join('')}
+            ${bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>₹${i.price * i.qty}</td></tr>`).join('')}
           </tbody>
         </table>
-        <div class="calculation-row">
-          <p>Subtotal: ₹${subtotal.toLocaleString()}</p>
-          ${discount > 0 ? `<p class="discount-text">Discount: -₹${discount.toLocaleString()}</p>` : ''}
-          <p><strong>Grand Total: ₹${grandTotal.toLocaleString()}</strong></p>
+        <div style="text-align: right;">
+          <p>Subtotal: ₹${subtotal}</p>
+          <p class="discount-tag">Discount: -₹${bill.discount || 0}</p>
+          <h2 class="price-tag">Grand Total: ₹${subtotal - (bill.discount || 0)}</h2>
         </div>
-        <button class="delete-btn" style="margin-top: 15px;" onclick="deleteBill('${bill.serialNumber}')">Delete Bill</button>
       `;
-      document.querySelector('.container').appendChild(div);
-      div.scrollIntoView({ behavior: 'smooth' });
+      modal.scrollIntoView({ behavior: 'smooth' });
     }
 
-    async function deleteBill(serialNumber) {
-      if (!confirm(`Are you sure you want to delete the bill with Serial Number ${serialNumber}?`)) return;
-
-      try {
-        const res = await fetch(`/bill/${serialNumber}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        alert(`Bill ${serialNumber} deleted successfully!`);
-        fetchBills();
-        const existingDetails = document.querySelector('.bill-details');
-        if (existingDetails) existingDetails.remove();
-      } catch (e) {
-        alert(`Failed to delete bill: ${e.message}`);
-      }
+    function filterByDate() {
+      const filter = document.getElementById('date-filter').value;
+      if (!filter) return fetchBills();
+      
+      const selected = new Date(filter).toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      
+      const cards = document.querySelectorAll('.day-card');
+      cards.forEach(card => {
+        const cardDate = card.querySelector('h3').textContent;
+        card.style.display = cardDate === selected ? 'block' : 'none';
+      });
     }
   </script>
 </body>
