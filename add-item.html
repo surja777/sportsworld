@@ -5,218 +5,322 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Item - SPORTS WORLD Shop</title>
     <style>
-        /* Global Base Styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
-            color: #e0e0e0; 
-            padding: 15px; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
             line-height: 1.6;
+            position: relative;
             min-height: 100vh;
         }
 
-        h1 { 
-            font-family: 'Montserrat', sans-serif; 
-            text-align: center; 
-            color: #00b7ff; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            margin-bottom: 25px; 
-            font-size: clamp(1.5rem, 5vw, 2.2rem); 
-            text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            color: #00b7ff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
         }
 
-        .container { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            background: rgba(255, 255, 255, 0.03); 
-            padding: clamp(15px, 3vw, 30px); 
-            border-radius: 20px; 
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        h2 {
+            font-family: 'Roboto', sans-serif;
+            color: #80d4ff;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
         }
 
-        h2 { 
-            font-family: 'Roboto', sans-serif; 
-            color: #f72585; 
-            margin-bottom: 15px; 
-            font-size: 1.4rem; 
-            border-left: 5px solid #4cc9f0; 
-            padding-left: 12px; 
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        /* Input and Button Styles */
-        input, button { 
-            font-family: 'Open Sans', sans-serif; 
-            padding: 14px; 
-            margin: 10px 0; 
-            border: 2px solid #333; 
-            border-radius: 10px; 
-            width: 100%; 
-            transition: all 0.3s ease; 
-            background: #121212; 
-            color: #fff; 
-            font-size: 1rem; 
+        input, button {
+            font-family: 'Open Sans', sans-serif;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #404040;
+            border-radius: 5px;
+            width: 100%;
+            transition: all 0.3s ease;
+            background: #333;
+            color: #e0e0e0;
+        }
+
+        input:focus {
+            border-color: #00b7ff;
             outline: none;
+            box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
         }
 
-        input:focus { border-color: #4cc9f0; box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
-
-        button { 
-            background: linear-gradient(90deg, #4cc9f0, #4361ee); 
-            color: #fff; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
+        button {
+            background: #00b7ff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        button:hover { transform: translateY(-2px); opacity: 0.9; }
-        button:disabled { background: #555; cursor: not-allowed; }
+        button:hover {
+            background: #008ecf;
+        }
 
-        /* Table Responsive Design */
-        .table-wrapper { 
-            width: 100%; 
-            overflow-x: auto; 
-            border-radius: 10px; 
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #2a2a2a;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #404040;
+        }
+
+        th {
+            background: #004d73;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        tr:hover {
+            background: #333;
+        }
+
+        .edit-btn {
+            background: #ffaa00;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background: #e69900;
+        }
+
+        .remove-btn {
+            background: #ff4d4d;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #e60000;
+        }
+
+        .nav-link {
+            text-align: center;
             margin-top: 20px;
         }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 500px; }
-        th, td { padding: 12px 15px; text-align: left; background: rgba(255, 255, 255, 0.05); }
-        th { background: #4361ee; color: #fff; border-radius: 5px; }
-        
-        .price-tag { color: #4ade80; font-weight: bold; }
+        .nav-link a {
+            color: #80d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Roboto', sans-serif;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
 
-        /* Actions */
-        .edit-btn { background: #ffaa00; width: auto; padding: 6px 15px; font-size: 0.85rem; margin-right: 5px; }
-        .remove-btn { background: #ff4d4d; width: auto; padding: 6px 15px; font-size: 0.85rem; }
+        .nav-link a:hover {
+            color: #00b7ff;
+        }
 
-        /* Popup / Modal */
+        /* Popup Styles */
         .popup {
             display: none;
             position: fixed;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
-            background: #1a1a1a;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            width: 90%;
-            max-width: 400px;
-            border: 2px solid #4cc9f0;
+            width: 400px;
+            border: 1px solid #404040;
         }
 
+        .popup h3 {
+            color: #80d4ff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.6rem;
+        }
+
+        .popup input {
+            margin-bottom: 15px;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .popup-buttons button {
+            width: 50%;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .cancel-btn {
+            background: #ff4d4d;
+        }
+
+        .cancel-btn:hover {
+            background: #e60000;
+        }
+
+        /* Blur Background */
         .overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             z-index: 999;
         }
 
-        /* Navigation */
-        .nav-link { 
-            text-align: center; 
-            margin-top: 30px; 
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .nav-link a { 
-            color: #4cc9f0; 
-            text-decoration: none; 
-            font-weight: bold; 
-            padding: 10px 20px; 
-            border: 1px solid #4cc9f0; 
-            border-radius: 30px; 
-            transition: 0.3s;
-        }
-
-        .nav-link a:hover { background: #4cc9f0; color: #000; }
-
         @media (max-width: 480px) {
-            th, td { padding: 8px; font-size: 0.85rem; }
-            .edit-btn, .remove-btn { display: block; width: 100%; margin: 4px 0; }
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            input, button {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .nav-link a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .popup {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Inventory Management</h1>
+    <h1>Add Item - SPORTS WORLD Shop</h1>
     <div class="container">
+        <h2>Inventory Management</h2>
         <div id="auth-section">
-            <h2>Security Access</h2>
-            <input id="password" type="password" placeholder="Enter Admin Password">
-            <button onclick="checkPassword()">Login</button>
+            <input id="password" type="password" placeholder="Enter Password">
+            <button onclick="checkPassword()">Access Inventory</button>
         </div>
-
         <div id="inventory-section" style="display: none;">
-            <h2>Add New Item</h2>
             <input id="name" placeholder="Item Name">
-            <input id="price" type="number" placeholder="Price (₹)">
-            <input id="stock" type="number" placeholder="Initial Stock">
-            <button id="add" onclick="addItem()">+ Add Item</button>
-
-            <h2 style="margin-top: 30px; color: #4cc9f0;">Current Stock</h2>
-            <input id="search" placeholder="🔍 Search Inventory..." style="margin-top: 10px;">
-            
-            <div class="table-wrapper">
-                <table id="items">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            <input id="price" type="number" placeholder="Price">
+            <input id="stock" type="number" placeholder="Stock">
+            <button id="add" onclick="addItem()">Add</button>
+            <input id="search" placeholder="Search Items by Name" style="margin-top: 10px;">
+            <table id="items">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
-
     <div class="nav-link">
-        <a href="/index.html">Back to Billing</a>
-        <a href="/history.html">View History</a>
+        <a href="/index.html">Back to Billing</a> |
+        <a href="/view-bill.html">View Bill by Serial</a> |
+        <a href="/history.html">Bill History</a>
     </div>
 
-    <div class="overlay" id="overlay"></div>
     <div class="popup" id="editPopup">
-        <h3 style="color: #4cc9f0; margin-bottom: 15px; text-align: center;">Edit Product</h3>
+        <h3>Edit Item</h3>
         <input id="editName" placeholder="Item Name">
         <input id="editPrice" type="number" placeholder="Price">
         <input id="editStock" type="number" placeholder="Stock">
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <div class="popup-buttons">
+            <button class="cancel-btn" onclick="cancelEdit()">Cancel</button>
             <button onclick="saveItemFromPopup()">Save</button>
-            <button onclick="cancelEdit()" style="background: #444;">Cancel</button>
         </div>
     </div>
 
+    <div class="overlay" id="overlay"></div>
+
     <script>
         let editingItemId = null;
-        let allItems = [];
         const correctPassword = "gourab009";
+        let allItems = [];
 
         function checkPassword() {
-            if (document.getElementById('password').value === correctPassword) {
+            const password = document.getElementById('password').value;
+            if (password === correctPassword) {
                 document.getElementById('inventory-section').style.display = 'block';
                 document.getElementById('auth-section').style.display = 'none';
                 fetchInventory();
-            } else { alert('Incorrect password!'); }
+            } else {
+                alert('Incorrect password!');
+            }
         }
 
         async function fetchInventory() {
-            const res = await fetch('/items');
-            allItems = await res.json();
-            displayItems(allItems);
+            try {
+                const res = await fetch('/items', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+                allItems = await res.json();
+                displayItems(allItems);
+            } catch (e) {
+                console.error('Error fetching inventory:', e.message);
+                alert(`Failed to fetch inventory: ${e.message}`);
+            }
         }
 
         function displayItems(items) {
@@ -226,11 +330,11 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${item.name}</td>
-                    <td class="price-tag">₹${item.price}</td>
-                    <td style="color: ${item.stock < 5 ? '#f87171' : '#4ade80'}">${item.stock}</td>
+                    <td>${item.price}</td>
+                    <td>${item.stock}</td>
                     <td>
-                        <button class="edit-btn" onclick="openEdit('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
-                        <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Del</button>
+                        <button class="edit-btn" onclick="editItem('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
+                        <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Remove</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -239,11 +343,13 @@
 
         document.getElementById('search').oninput = () => {
             const query = document.getElementById('search').value.toLowerCase();
-            const filtered = allItems.filter(i => i.name.toLowerCase().includes(query));
-            displayItems(filtered);
+            const filteredItems = allItems.filter(item =>
+                item.name.toLowerCase().includes(query)
+            );
+            displayItems(filteredItems);
         };
 
-        function openEdit(id, name, price, stock) {
+        function editItem(id, name, price, stock) {
             editingItemId = id;
             document.getElementById('editName').value = name;
             document.getElementById('editPrice').value = price;
@@ -255,44 +361,83 @@
         function cancelEdit() {
             document.getElementById('editPopup').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
+            editingItemId = null;
         }
 
         async function saveItemFromPopup() {
-            const item = {
-                name: document.getElementById('editName').value,
-                price: Number(document.getElementById('editPrice').value),
-                stock: Number(document.getElementById('editStock').value)
-            };
-            await fetch(`/items/${editingItemId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(item)
-            });
-            cancelEdit();
-            fetchInventory();
-        }
+            try {
+                if (!editingItemId) {
+                    alert('No item selected for editing!');
+                    return;
+                }
+                const item = {
+                    name: document.getElementById('editName').value,
+                    price: Number(document.getElementById('editPrice').value),
+                    stock: Number(document.getElementById('editStock').value)
+                };
+                if (!item.name || !item.price || !item.stock) {
+                    alert('Please fill in all fields!');
+                    return;
+                }
 
-        async function addItem() {
-            const name = document.getElementById('name').value;
-            const price = Number(document.getElementById('price').value);
-            const stock = Number(document.getElementById('stock').value);
-            if(!name || !price || !stock) return alert('Fill all fields!');
+                const res = await fetch(`/items/${editingItemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-            await fetch('/items', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, price, stock })
-            });
-            document.getElementById('name').value = '';
-            document.getElementById('price').value = '';
-            document.getElementById('stock').value = '';
-            fetchInventory();
+                cancelEdit();
+                fetchInventory();
+            } catch (e) {
+                console.error('Error saving item:', e.message);
+                alert(`Failed to save item: ${e.message}`);
+            }
         }
 
         async function removeItem(id, name) {
-            if (!confirm(`Delete "${name}"?`)) return;
-            await fetch(`/items/${id}`, { method: 'DELETE' });
-            fetchInventory();
+            if (!confirm(`Are you sure you want to remove "${name}"?`)) return;
+            try {
+                await fetch(`/items/${id}`, {
+                    method: 'DELETE'
+                });
+                fetchInventory();
+            } catch (e) {
+                console.error('Error removing item:', e.message);
+                alert(`Failed to remove item: ${e.message}`);
+            }
+        }
+
+        async function addItem() {
+            const addButton = document.getElementById('add');
+            addButton.disabled = true;
+            const item = {
+                name: document.getElementById('name').value,
+                price: Number(document.getElementById('price').value),
+                stock: Number(document.getElementById('stock').value)
+            };
+            if (!item.name || !item.price || !item.stock) {
+                alert('Please fill in all fields!');
+                addButton.disabled = false;
+                return;
+            }
+            try {
+                const res = await fetch('/items', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('stock').value = '';
+                fetchInventory();
+            } catch (e) {
+                console.error('Error adding item:', e.message);
+                alert(`Failed to add item: ${e.message}`);
+            } finally {
+                addButton.disabled = false;
+            }
         }
     </script>
 </body>
