@@ -5,47 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Bill - SPORTS WORLD Shop</title>
   <style>
-    /* Global Styles */
+    /* Global Base Styles */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: 'Poppins', sans-serif; 
       background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
       color: #e0e0e0; 
-      padding: 20px; 
+      padding: 15px; 
       line-height: 1.6;
       min-height: 100vh;
     }
+
     h1 { 
       font-family: 'Montserrat', sans-serif; 
       text-align: center; 
       color: #00b7ff; 
       text-transform: uppercase; 
-      letter-spacing: 3px; 
+      letter-spacing: 2px; 
       margin-bottom: 25px; 
-      font-size: 2.2rem; 
+      font-size: clamp(1.5rem, 5vw, 2.2rem); 
       text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
     }
-    h2 { 
-      font-family: 'Roboto', sans-serif; 
-      color: #f72585; 
-      margin-bottom: 15px; 
-      font-size: 1.6rem; 
-      border-left: 5px solid #4cc9f0; 
-      padding-left: 12px; 
-    }
 
-    /* Main Container */
     .container { 
       max-width: 700px; 
       margin: 0 auto; 
       background: rgba(255, 255, 255, 0.03); 
-      padding: 30px; 
+      padding: clamp(15px, 3vw, 30px); 
       border-radius: 20px; 
       backdrop-filter: blur(10px);
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    h2 { 
+      font-family: 'Roboto', sans-serif; 
+      color: #f72585; 
+      margin-bottom: 15px; 
+      font-size: 1.4rem; 
+      border-left: 5px solid #4cc9f0; 
+      padding-left: 12px; 
+    }
+
+    /* Input and Button Styles */
     input, button { 
       font-family: 'Open Sans', sans-serif; 
       padding: 14px; 
@@ -57,13 +59,11 @@
       background: #121212; 
       color: #fff; 
       font-size: 1rem; 
+      outline: none;
     }
-    input:focus { 
-      border-color: #4cc9f0; 
-      outline: none; 
-      box-shadow: 0 0 20px rgba(76, 201, 240, 0.3); 
-    }
-    
+
+    input:focus { border-color: #4cc9f0; box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
+
     button { 
       background: linear-gradient(90deg, #4cc9f0, #4361ee); 
       color: #fff; 
@@ -71,16 +71,15 @@
       cursor: pointer; 
       font-weight: 700; 
       text-transform: uppercase; 
-      letter-spacing: 1.5px; 
-    }
-    button:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5); 
+      letter-spacing: 1px;
     }
 
-    /* Bill Header Area */
+    button:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    /* Bill Content Area */
     #bill-details { margin-top: 25px; }
-    .bill-info-header {
+
+    .bill-header-card {
       background: rgba(255, 255, 255, 0.05);
       padding: 20px;
       border-radius: 15px;
@@ -89,13 +88,17 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 15px;
     }
+
     .status-badge {
-      padding: 5px 15px;
-      border-radius: 20px;
+      padding: 6px 18px;
+      border-radius: 30px;
       font-weight: bold;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .status-active { background: #4ade80; color: #000; }
     .status-returned { background: #f87171; color: #fff; }
@@ -111,12 +114,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .item-name { font-weight: bold; color: #fff; font-size: 1.1rem; }
-    .item-meta { font-size: 0.9rem; color: #888; }
 
-    /* Highlights */
-    .price-tag { color: #4ade80; font-weight: bold; }
+    .item-main { flex: 1; min-width: 150px; }
+    .item-name { font-weight: bold; color: #fff; font-size: 1.1rem; margin-bottom: 4px; }
+    .item-meta { font-size: 0.9rem; color: #888; }
+    .price-tag { color: #4ade80; font-weight: bold; font-size: 1.1rem; }
+
+    /* Summary Section */
     .total-area { 
       margin-top: 25px; 
       padding: 20px; 
@@ -125,15 +132,33 @@
       border: 2px dashed #4cc9f0; 
       text-align: right;
     }
-    .discount-tag { color: #f87171; font-weight: bold; font-size: 1.1rem; }
+    .discount-tag { color: #f87171; font-weight: bold; margin-bottom: 5px; }
+
+    /* Return Logic Styling */
+    .return-section {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .return-qty-input { width: 80px !important; margin: 0 !important; padding: 8px !important; }
+    .btn-return { background: #f87171; width: auto; padding: 8px 15px; font-size: 0.8rem; margin: 0; }
 
     /* Navigation */
-    .nav-link { text-align: center; margin-top: 40px; }
+    .nav-link { 
+      text-align: center; 
+      margin-top: 40px; 
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
     .nav-link a { 
       color: #4cc9f0; 
       text-decoration: none; 
       font-weight: bold; 
-      margin: 0 15px; 
       padding: 10px 20px; 
       border: 1px solid #4cc9f0; 
       border-radius: 30px; 
@@ -141,19 +166,18 @@
     }
     .nav-link a:hover { background: #4cc9f0; color: #000; }
 
-    .return-btn {
-      background: #f87171;
-      width: auto;
-      padding: 8px 15px;
-      font-size: 0.8rem;
+    @media (max-width: 480px) {
+      .bill-header-card { flex-direction: column; }
+      .item-card { flex-direction: column; align-items: flex-start; }
+      .price-tag { width: 100%; text-align: left; }
     }
   </style>
 </head>
 <body>
   <h1>View Bill Details</h1>
   <div class="container">
-    <h2>Search Bill</h2>
-    <input id="serial" placeholder="Enter 10-digit Serial Number" />
+    <h2>Search by Serial</h2>
+    <input id="serial" placeholder="Enter 10-digit Serial Number" maxlength="10" />
     <button onclick="fetchBill()">Find Bill</button>
     <div id="bill-details"></div>
   </div>
@@ -180,20 +204,23 @@
         div.innerHTML = "";
 
         if (!bill) {
-          div.innerHTML = "<p style='text-align:center;'>No bill found with this serial.</p>";
+          div.innerHTML = "<p style='text-align:center; padding: 20px;'>No bill found with this serial.</p>";
           return;
         }
 
         currentBill = bill;
-        const subtotal = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
+        const subtotal = bill.items.reduce((s, i) => {
+          const rem = i.qty - (i.returnedQty || 0);
+          return s + (i.price * rem);
+        }, 0);
         const grandTotal = subtotal - (bill.discount || 0);
 
         div.innerHTML = `
-          <div class="bill-info-header">
+          <div class="bill-header-card">
             <div>
-              <p style="color:#4cc9f0; font-weight:bold;">#${bill.serialNumber}</p>
-              <p>${bill.customer || "Walking Customer"}</p>
-              <p style="font-size:0.8rem; color:#888;">${new Date(bill.date).toLocaleString()}</p>
+              <p style="color:#4cc9f0; font-weight:bold; font-family: monospace;">#${bill.serialNumber}</p>
+              <p style="font-size: 1.1rem; margin: 4px 0;">${bill.customer || "Walking Customer"}</p>
+              <p style="font-size:0.85rem; color:#888;">${new Date(bill.date).toLocaleString()}</p>
             </div>
             <span class="status-badge ${bill.returned ? 'status-returned' : 'status-active'}">
               ${bill.returned ? 'Returned' : 'Active'}
@@ -201,51 +228,66 @@
           </div>
 
           <div class="items-list">
-            ${bill.items.map((item, index) => `
-              <div class="item-card">
-                <div>
-                  <p class="item-name">${item.name}</p>
-                  <p class="item-meta">Qty: ${item.qty} | Price: ₹${item.price}</p>
+            ${bill.items.map((item, index) => {
+              const remaining = item.qty - (item.returnedQty || 0);
+              return `
+                <div class="item-card">
+                  <div class="item-main">
+                    <p class="item-name">${item.name}</p>
+                    <p class="item-meta">
+                      Qty: ${remaining} ${item.returnedQty > 0 ? `(Original: ${item.qty}, Returned: ${item.returnedQty})` : ''} 
+                      | Price: ₹${item.price}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="price-tag">₹${item.price * remaining}</p>
+                    ${!item.returned ? `
+                      <div class="return-section">
+                        <input type="number" id="ret-qty-${index}" class="return-qty-input" min="1" max="${remaining}" placeholder="Qty">
+                        <button class="btn-return" onclick="processReturn(${index})">Return</button>
+                      </div>
+                    ` : '<span style="color:#f87171; font-size:0.85rem; font-weight:bold;">Fully Returned</span>'}
+                  </div>
                 </div>
-                <div style="text-align:right;">
-                  <p class="price-tag">₹${item.price * item.qty}</p>
-                  ${!bill.returned && !item.returned ? 
-                    `<button class="return-btn" onclick="returnItem(${index})">Return</button>` : 
-                    (item.returned ? '<span style="color:#f87171; font-size:0.8rem;">Returned</span>' : '')}
-                </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
 
           <div class="total-area">
-            <p>Subtotal: ₹${subtotal}</p>
-            ${bill.discount > 0 ? `<p class="discount-tag">Discount: -₹${bill.discount}</p>` : ''}
-            <p style="font-size: 1.8rem; color: #4ade80;"><strong>Total: ₹${grandTotal}</strong></p>
+            <p style="margin-bottom: 5px;">Subtotal: ₹${subtotal}</p>
+            ${bill.discount > 0 ? `<p class="discount-tag">Custom Discount: -₹${bill.discount}</p>` : ''}
+            <p style="font-size: 1.8rem; color: #4ade80; border-top: 1px solid #444; padding-top: 10px; margin-top: 5px;">
+              <strong>Grand Total: ₹${grandTotal}</strong>
+            </p>
           </div>
         `;
       } catch (e) {
-        alert("Error finding bill.");
+        alert("Error loading bill details.");
       }
     }
 
-    async function returnItem(itemIndex) {
-      if (!confirm("Are you sure you want to return this item?")) return;
+    async function processReturn(itemIndex) {
+      const input = document.getElementById(`ret-qty-${itemIndex}`);
+      const qty = input.value === "" ? (currentBill.items[itemIndex].qty - (currentBill.items[itemIndex].returnedQty || 0)) : Number(input.value);
+
+      if (!confirm(`Confirm returning ${qty} unit(s) of ${currentBill.items[itemIndex].name}?`)) return;
 
       try {
         const res = await fetch(`/bill/${currentBill.serialNumber}/return`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ itemIndex })
+          body: JSON.stringify({ itemIndex, returnQty: qty })
         });
         
         if (res.ok) {
-          alert("Item returned successfully! Stock updated.");
+          alert("Return successful! Inventory updated.");
           fetchBill();
         } else {
-          alert("Failed to return item.");
+          const errText = await res.text();
+          alert("Return failed: " + errText);
         }
       } catch (e) {
-        alert("Error processing return.");
+        alert("Error connecting to server.");
       }
     }
   </script>
