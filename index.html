@@ -5,218 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPORTS WORLD Shop</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      padding: 20px;
-      line-height: 1.6;
-    }
-
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: #00b7ff;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-    }
-
-    h2 {
-      font-family: 'Roboto', sans-serif;
-      color: #80d4ff;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .inventory, .billing {
-      flex: 1;
-      min-width: 300px;
-      padding: 15px;
-      background: #252525;
-      border-radius: 8px;
-      border: 1px solid #404040;
-    }
-
-    .inventory-table-wrapper {
-      max-height: 400px;
-      overflow-y: auto;
-      border: 1px solid #404040;
-      border-radius: 5px;
-    }
-
-    input, button {
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      width: 100%;
-      transition: all 0.3s ease;
-      background: #333;
-      color: #e0e0e0;
-    }
-
-    input:focus {
-      border-color: #00b7ff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
-    }
-
-    button {
-      background: #00b7ff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    button:hover {
-      background: #008ecf;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
-    }
-
-    th {
-      background: #004d73;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    tr:hover {
-      background: #333;
-    }
-
-    .nav-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .nav-link a {
-      color: #80d4ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin: 0 15px;
-      transition: color 0.3s ease;
-    }
-
-    .nav-link a:hover {
-      color: #00b7ff;
-    }
-
-    .inventory-table-wrapper::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .inventory-table-wrapper::-webkit-scrollbar-track {
-      background: #333;
-      border-radius: 5px;
-    }
-
-    .inventory-table-wrapper::-webkit-scrollbar-thumb {
-      background: #00b7ff;
-      border-radius: 5px;
-    }
-
-    .inventory-table-wrapper::-webkit-scrollbar-thumb:hover {
-      background: #008ecf;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.2rem;
-      }
-
-      .inventory, .billing {
-        min-width: 100%;
-      }
-
-      .nav-link a {
-        display: block;
-        margin: 10px 0;
-      }
-    }
-
-    @media (max-width: 480px) {
-      input, button {
-        font-size: 0.9rem;
-      }
-
-      th, td {
-        padding: 8px;
-        font-size: 0.85rem;
-      }
-    }
-
-    #results {
-      margin-top: 5px;
-      width: 100%;
-      border-collapse: collapse;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    #results p {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
-      cursor: pointer;
-    }
-
-    #results p:nth-child(even) {
-      background: #333;
-    }
-
-    #results p:hover {
-      background: #3d3d3d;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #1a1a1a; color: #e0e0e0; padding: 20px; line-height: 1.6; }
+    h1 { font-family: 'Montserrat', sans-serif; text-align: center; color: #00b7ff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; font-size: 1.8rem; }
+    h2 { font-family: 'Roboto', sans-serif; color: #80d4ff; margin-bottom: 15px; font-size: 1.4rem; }
+    .container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px; background: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+    .inventory, .billing { flex: 1; min-width: 300px; padding: 15px; background: #252525; border-radius: 8px; border: 1px solid #404040; }
+    .inventory-table-wrapper { max-height: 400px; overflow-y: auto; border: 1px solid #404040; border-radius: 5px; }
+    input, button { font-family: 'Open Sans', sans-serif; padding: 10px; margin: 5px 0; border: 1px solid #404040; border-radius: 5px; width: 100%; transition: all 0.3s ease; background: #333; color: #e0e0e0; }
+    input:focus { border-color: #00b7ff; outline: none; box-shadow: 0 0 5px rgba(0, 183, 255, 0.3); }
+    button { background: #00b7ff; color: #fff; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+    button:hover { background: #008ecf; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #2a2a2a; border-radius: 5px; overflow: hidden; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #404040; }
+    th { background: #004d73; color: #fff; position: sticky; top: 0; z-index: 1; }
+    .nav-link { text-align: center; margin-top: 20px; }
+    .nav-link a { color: #80d4ff; text-decoration: none; font-weight: 600; margin: 0 15px; }
+    #results { margin-top: 5px; background: #2a2a2a; border-radius: 5px; }
+    #results p { padding: 12px; border-bottom: 1px solid #404040; cursor: pointer; }
+    #results p:hover { background: #3d3d3d; }
+    .total-area { margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 5px; }
+    .discount-input { border: 1px solid #ff4d4d !important; }
   </style>
 </head>
 <body>
@@ -226,13 +35,7 @@
       <h2>Inventory</h2>
       <div class="inventory-table-wrapper">
         <table id="items">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Name</th><th>Price</th><th>Stock</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -246,6 +49,10 @@
       <input id="qty" type="number" placeholder="Quantity">
       <button onclick="addToBill()">Add to Bill</button>
       <div id="bill"></div>
+      <div class="total-area">
+        <input id="discount" class="discount-input" type="number" placeholder="Enter Discount Amount" oninput="updateBill()">
+        <div id="price-summary"></div>
+      </div>
       <button onclick="printBill()">Print</button>
     </div>
   </div>
@@ -257,130 +64,75 @@
   <script>
     let bill = [];
     let printer = null;
+    let selectedItem = null;
 
     async function fetchInventory() {
-      try {
-        console.log('Fetching inventory from: /items');
-        const res = await fetch('/items', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`HTTP error! Status: ${res.status}, Details: ${errorText}`);
-        }
-        const items = await res.json();
-        console.log('Fetched items:', items);
-        const tbody = document.querySelector('#items tbody');
-        tbody.innerHTML = '';
-        items.forEach(item => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${item.name}</td>
-            <td>${item.price}</td>
-            <td>${item.stock}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } catch (e) {
-        console.error('Error fetching inventory:', e.message);
-        alert(`Failed to fetch inventory: ${e.message}. Check the console for details.`);
-      }
+      const res = await fetch('/items');
+      const items = await res.json();
+      const tbody = document.querySelector('#items tbody');
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${item.name}</td><td>${item.price}</td><td>${item.stock}</td>`;
+        tbody.appendChild(tr);
+      });
     }
 
     document.getElementById('search').oninput = async () => {
       const query = document.getElementById('search').value.toLowerCase();
-      try {
-        const res = await fetch('/items');
-        const items = await res.json();
-        const results = items.filter(item =>
-          item.name.toLowerCase().includes(query)
-        );
-        const div = document.getElementById('results');
-
-        if (query) {
+      if (!query) { document.getElementById('results').innerHTML = ''; return; }
+      const res = await fetch('/items');
+      const items = await res.json();
+      const results = items.filter(item => item.name.toLowerCase().includes(query));
+      const div = document.getElementById('results');
+      div.innerHTML = '';
+      results.forEach(item => {
+        const p = document.createElement('p');
+        p.textContent = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
+        p.onclick = () => {
+          document.getElementById('search').value = item.name;
           div.innerHTML = '';
-          results.forEach(item => {
-            const p = document.createElement('p');
-            p.textContent = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
-            p.onclick = () => {
-              document.getElementById('search').value = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
-              div.innerHTML = '';
-              selectedItem = item;
-            };
-            div.appendChild(p);
-          });
-        } else {
-          div.innerHTML = '';
-        }
-      } catch (e) {
-        console.error('Error searching items:', e.message);
-      }
+          selectedItem = item;
+        };
+        div.appendChild(p);
+      });
     };
 
-    let selectedItem = null;
-    async function addToBill() {
-      if (!selectedItem) return;
+    function addToBill() {
       const qty = Number(document.getElementById('qty').value);
-      if (qty <= 0) {
-        alert('Quantity must be greater than 0!');
-        return;
-      }
-      if (qty > selectedItem.stock) {
-        alert('Not enough stock!');
-        return;
-      }
+      if (!selectedItem || qty <= 0 || qty > selectedItem.stock) { alert('Invalid qty!'); return; }
       bill.push({ ...selectedItem, qty });
       document.getElementById('search').value = '';
       document.getElementById('qty').value = '';
-      document.getElementById('results').innerHTML = '';
       selectedItem = null;
       updateBill();
     }
 
     function updateBill() {
       const div = document.getElementById('bill');
+      const summaryDiv = document.getElementById('price-summary');
       div.innerHTML = '';
-      if (bill.length === 0) return;
-      const customer = document.getElementById('customer').value;
-      const phone = document.getElementById('phone').value;
-      div.innerHTML += `<p>Customer: ${customer || 'N/A'}</p>`;
-      if (phone) div.innerHTML += `<p>Phone: ${phone}</p>`;
+      if (bill.length === 0) { summaryDiv.innerHTML = ''; return; }
+      
       const table = document.createElement('table');
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Total</th>
-            <th>Action</th> 
-          </tr>
-        </thead>
-        <tbody>
-          ${bill.map((item, index) => `
-            <tr>
-              <td>${item.name}</td>
-              <td>${item.qty}</td>
-              <td>${item.price}</td>
-              <td>${item.price * item.qty}</td>
-              <td><button onclick="removeItem(${index})">Remove</button></td> 
-            </tr>
-          `).join('')}
-        </tbody>
-      `;
+      table.innerHTML = `<thead><tr><th>Name</th><th>Qty</th><th>Total</th><th>Action</th></tr></thead>
+        <tbody>${bill.map((item, i) => `<tr><td>${item.name}</td><td>${item.qty}</td><td>${item.price * item.qty}</td>
+        <td><button onclick="removeItem(${i})">X</button></td></tr>`).join('')}</tbody>`;
       div.appendChild(table);
-      const total = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
-      div.innerHTML += `<p>Total: ${total}</p>`;
+
+      const subtotal = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const discount = Number(document.getElementById('discount').value) || 0;
+      summaryDiv.innerHTML = `
+        <p>Subtotal: ₹${subtotal}</p>
+        ${discount > 0 ? `<p style="color: #ff4d4d;">Discount: -₹${discount}</p>` : ''}
+        <p><strong>Grand Total: ₹${subtotal - discount}</strong></p>
+      `;
     }
 
-    function removeItem(index) {
-      bill.splice(index, 1);
-      updateBill();
-    }
+    function removeItem(index) { bill.splice(index, 1); updateBill(); }
 
     async function connectToPrinter() {
-      if (!navigator.bluetooth) return alert('Use Chrome for Bluetooth!');
+      if (!navigator.bluetooth) return alert('Use Chrome!');
       try {
         const device = await navigator.bluetooth.requestDevice({
           filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
@@ -390,188 +142,82 @@
         const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
         const char = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
         return { device, char };
-      } catch (e) {
-        alert('Printer error: ' + e);
-        return null;
-      }
+      } catch (e) { alert('Printer error'); return null; }
     }
 
-    function generateSerialNumber() {
-      const min = 1000000000;
-      const max = 9999999999;
-      return Math.floor(min + Math.random() * (max - min + 1)).toString();
-    }
-
-    function encodeBill(bill, customer, phone, serialNumber) {
+    function encodeBill(bill, customer, phone, serialNumber, discount = 0) {
       let text = "============================\n";
       text += "          SPORTS WORLD          \n";
-      text += "============================\n";
-      text += "\n";
-      text += `Customer: ${(customer || 'N/A').padEnd(20, ' ')}\n`;
-      if (phone) text += `Phone: ${phone.padEnd(20, ' ')}\n`;
-      text += `Date: ${new Date().toLocaleString().padEnd(20, ' ')}\n`;
-      text += `Serial No: ${serialNumber.padEnd(20, ' ')}\n`;
+      text += "============================\n\n";
+      text += `Customer: ${customer || 'N/A'}\n`;
+      if (phone) text += `Phone: ${phone}\n`;
+      text += `Date: ${new Date().toLocaleString()}\n`;
+      text += `Serial No: ${serialNumber}\n`;
       text += "----------------------------\n";
       text += "Qnty Particulars    Rate Amount\n";
       text += "----------------------------\n";
 
       bill.forEach(item => {
-        const qty = item.qty.toString().padStart(4, ' ');
-        const rate = item.price.toString().padStart(6, ' ');
-        const amount = (item.price * item.qty).toString().padStart(6, ' ');
-
-        const words = item.name.split(' ');
-        let lines = [];
-        let currentLine = '';
-        const maxLineLength = 12;
-
-        words.forEach(word => {
-          if ((currentLine + (currentLine ? ' ' : '') + word).length <= maxLineLength) {
-            currentLine += (currentLine ? ' ' : '') + word;
-          } else {
-            if (currentLine) {
-              lines.push(currentLine);
-              currentLine = '';
-            }
-            if (word.length > maxLineLength) {
-              let remainingWord = word;
-              while (remainingWord.length > 0) {
-                if (remainingWord.length <= maxLineLength - 1) {
-                  lines.push(remainingWord);
-                  remainingWord = '';
-                } else {
-                  const part = remainingWord.slice(0, maxLineLength - 1) + '-';
-                  lines.push(part);
-                  remainingWord = remainingWord.slice(maxLineLength - 1);
-                }
-              }
-            } else {
-              currentLine = word;
-            }
-          }
-        });
-        if (currentLine) lines.push(currentLine);
-
-        lines.forEach((line, index) => {
-          const paddedLine = line.padEnd(12, ' ');
-          if (index === 0) {
-            text += `${qty} ${paddedLine} ${rate} ${amount}\n`;
-          } else {
-            text += `     ${paddedLine}\n`;
-          }
-        });
+        text += `${item.qty.toString().padStart(4)} ${item.name.slice(0,12).padEnd(12)} ${item.price.toString().padStart(6)} ${(item.price * item.qty).toString().padStart(6)}\n`;
       });
 
+      const subtotal = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
       text += "----------------------------\n";
-      const total = bill.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0);
-      text += `                    TOTAL ${total.toString().padStart(6, ' ')}\n`;
+      text += `Subtotal:           ${subtotal.toString().padStart(8)}\n`;
+      if (discount > 0) text += `Discount:          -${discount.toString().padStart(8)}\n`;
+      text += `TOTAL:              ${(subtotal - discount).toString().padStart(8)}\n`;
       text += "----------------------------\n";
-      text += "Address: Swarupganj Bus Stand\n";
-      text += "Nabadwip, Nadia - 741301\n";
-      text += "Phone: 7679554458\n";
-      text += "----------------------------\n";
-      text += "    Thank You! Visit Again!    \n";
-      text += "    3 Day Return Policy    \n";
-      text += "============================\n";
-      text += "\n\n";
+      text += "Address: Swarupganj, Nadia\n";
+      text += "Thank You! Visit Again!\n";
+      text += "============================\n\n\n";
       return text;
     }
 
     async function printBill() {
-      const printBtn = document.querySelector('button[onclick="printBill()"]');
-      printBtn.disabled = true;
-      printBtn.textContent = 'Printing...';
-
+      const btn = document.querySelector('button[onclick="printBill()"]');
+      btn.disabled = true;
       try {
-        if (!printer || !printer.device.gatt.connected) {
-          printer = await connectToPrinter();
-        }
-        if (!printer) throw new Error('Printer not connected');
-
-        if (bill.length === 0) throw new Error('No items in the bill to print');
-
-        const customer = document.getElementById('customer').value;
-        const phone = document.getElementById('phone').value;
-
-        const serialNumber = generateSerialNumber();
-
-        const res = await fetch('/items');
-        if (!res.ok) throw new Error(`Failed to fetch inventory: HTTP error! Status: ${res.status}`);
-        const items = await res.json();
-
-        for (const billItem of bill) {
-          const inventoryItem = items.find(item => item._id === billItem._id);
-          if (!inventoryItem) {
-            throw new Error(`Item ${billItem.name} not found in inventory!`);
-          }
-          if (inventoryItem.stock < billItem.qty) {
-            throw new Error(`Not enough stock for ${billItem.name}! Available: ${inventoryItem.stock}, Required: ${billItem.qty}`);
-          }
-        }
-
-        for (const billItem of bill) {
-          const inventoryItem = items.find(item => item._id === billItem._id);
-          const updatedStock = inventoryItem.stock - billItem.qty;
-          const updatedItem = {
-            name: inventoryItem.name,
-            price: inventoryItem.price,
-            stock: updatedStock
-          };
-          const updateRes = await fetch(`/items/${billItem._id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedItem)
-          });
-          if (!updateRes.ok) {
-            const errorText = await updateRes.text();
-            throw new Error(`Failed to update stock for ${billItem.name}: HTTP error! Status: ${updateRes.status}, Details: ${errorText}`);
-          }
-        }
-
-        const billData = { items: bill, customer: customer || null, phone: phone || null, date: new Date().toISOString(), serialNumber };
-        const billText = encodeBill(bill, customer, phone, serialNumber);
-
-        const initCommand = new Uint8Array([0x1B, 0x40]);
-        await printer.char.writeValue(initCommand);
-        await new Promise(resolve => setTimeout(resolve, 100));
-
+        if (!printer) printer = await connectToPrinter();
+        const serial = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+        const discount = Number(document.getElementById('discount').value) || 0;
+        
+        // Print Logic
+        const billText = encodeBill(bill, document.getElementById('customer').value, document.getElementById('phone').value, serial, discount);
         const encoder = new TextEncoder();
-        const fullData = encoder.encode(billText);
-        const chunkSize = 128;
-        for (let i = 0; i < fullData.length; i += chunkSize) {
-          const chunk = fullData.slice(i, i + chunkSize);
-          await printer.char.writeValue(chunk);
-          await new Promise(resolve => setTimeout(resolve, 1000));
+        const data = encoder.encode(billText);
+        for (let i = 0; i < data.length; i += 128) {
+          await printer.char.writeValue(data.slice(i, i + 128));
+          await new Promise(r => setTimeout(r, 100));
         }
 
-        const finalNewline = encoder.encode('\n\n');
-        await printer.char.writeValue(finalNewline);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const formFeed = new Uint8Array([0x0C]);
-        await printer.char.writeValue(formFeed);
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const billRes = await fetch('/bill', {
+        // Save Logic
+        await fetch('/bill', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(billData)
+          body: JSON.stringify({ 
+            items: bill, 
+            customer: document.getElementById('customer').value, 
+            phone: document.getElementById('phone').value, 
+            date: new Date().toISOString(), 
+            serialNumber: serial,
+            discount
+          })
         });
-        if (!billRes.ok) throw new Error(`Failed to save bill: HTTP error! Status: ${billRes.status}`);
 
-        alert(`Bill saved successfully! Serial Number: ${serialNumber}`);
-        bill = [];
-        document.getElementById('customer').value = '';
-        document.getElementById('phone').value = '';
-        fetchInventory();
-        updateBill();
-      } catch (e) {
-        console.error('Error during printBill:', e.message);
-        alert(`Failed to print bill: ${e.message}. Check the console for details.`);
-      } finally {
-        printBtn.disabled = false;
-        printBtn.textContent = 'Print';
-      }
+        // Stock Logic
+        for (const item of bill) {
+          await fetch(`/items/${item._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ stock: item.stock - item.qty })
+          });
+        }
+
+        alert('Done!');
+        bill = []; updateBill(); fetchInventory();
+        document.getElementById('discount').value = '';
+      } catch (e) { alert(e.message); }
+      btn.disabled = false;
     }
 
     fetchInventory();
