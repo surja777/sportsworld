@@ -5,426 +5,247 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Bill - SPORTS WORLD Shop</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      padding: 20px;
+    /* Global Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); 
+      color: #e0e0e0; 
+      padding: 20px; 
       line-height: 1.6;
+      min-height: 100vh;
+    }
+    h1 { 
+      font-family: 'Montserrat', sans-serif; 
+      text-align: center; 
+      color: #00b7ff; 
+      text-transform: uppercase; 
+      letter-spacing: 3px; 
+      margin-bottom: 25px; 
+      font-size: 2.2rem; 
+      text-shadow: 0 0 15px rgba(0, 183, 255, 0.6); 
+    }
+    h2 { 
+      font-family: 'Roboto', sans-serif; 
+      color: #f72585; 
+      margin-bottom: 15px; 
+      font-size: 1.6rem; 
+      border-left: 5px solid #4cc9f0; 
+      padding-left: 12px; 
     }
 
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: #00b7ff;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
+    /* Main Container */
+    .container { 
+      max-width: 700px; 
+      margin: 0 auto; 
+      background: rgba(255, 255, 255, 0.03); 
+      padding: 30px; 
+      border-radius: 20px; 
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); 
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    h2 {
-      font-family: 'Roboto', sans-serif;
-      color: #80d4ff;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
+    input, button { 
+      font-family: 'Open Sans', sans-serif; 
+      padding: 14px; 
+      margin: 10px 0; 
+      border: 2px solid #333; 
+      border-radius: 10px; 
+      width: 100%; 
+      transition: all 0.3s ease; 
+      background: #121212; 
+      color: #fff; 
+      font-size: 1rem; 
+    }
+    input:focus { 
+      border-color: #4cc9f0; 
+      outline: none; 
+      box-shadow: 0 0 20px rgba(76, 201, 240, 0.3); 
+    }
+    
+    button { 
+      background: linear-gradient(90deg, #4cc9f0, #4361ee); 
+      color: #fff; 
+      border: none; 
+      cursor: pointer; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      letter-spacing: 1.5px; 
+    }
+    button:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5); 
     }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    input, button {
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      width: 100%;
-      transition: all 0.3s ease;
-      background: #333;
-      color: #e0e0e0;
-    }
-
-    input[type="number"] {
-      width: 60px;
-    }
-
-    input:focus {
-      border-color: #00b7ff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
-    }
-
-    button {
-      background: #00b7ff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    button:hover {
-      background: #008ecf;
-    }
-
-    .return-btn {
-      background: #ff4d4d;
-      padding: 5px 10px;
-      font-size: 12px;
-      width: auto;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .return-btn:hover {
-      background: #e60000;
-    }
-
-    .return-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
-    }
-
-    th {
-      background: #004d73;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    tr:hover {
-      background: #333;
-    }
-
-    .nav-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .nav-link a {
-      color: #80d4ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin: 0 15px;
-      transition: color 0.3s ease;
-    }
-
-    .nav-link a:hover {
-      color: #00b7ff;
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.2rem;
-      }
-
-      input, button {
-        font-size: 0.9rem;
-      }
-
-      th, td {
-        padding: 8px;
-        font-size: 0.85rem;
-      }
-
-      .nav-link a {
-        display: block;
-        margin: 10px 0;
-      }
-    }
-
-    /* Updated Bill Details Design (only for #bill-details) */
-    #bill-details {
-      margin-top: 20px;
-      background: #252525;
+    /* Bill Header Area */
+    #bill-details { margin-top: 25px; }
+    .bill-info-header {
+      background: rgba(255, 255, 255, 0.05);
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      animation: slideIn 0.5s ease-out;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #4cc9f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
     }
-
-    @keyframes slideIn {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .status-badge {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.8rem;
+      text-transform: uppercase;
     }
+    .status-active { background: #4ade80; color: #000; }
+    .status-returned { background: #f87171; color: #fff; }
 
-    .bill-header {
+    /* Item Cards */
+    .item-card {
+      background: #252525;
+      padding: 15px;
+      margin: 12px 0;
+      border-radius: 12px;
+      border-left: 6px solid #4cc9f0;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #00b7ff;
-      margin-bottom: 20px;
     }
+    .item-name { font-weight: bold; color: #fff; font-size: 1.1rem; }
+    .item-meta { font-size: 0.9rem; color: #888; }
 
-    .bill-header p {
-      font-size: 1rem;
-      margin: 5px 0;
-      color: #80d4ff;
-      font-weight: 500;
+    /* Highlights */
+    .price-tag { color: #4ade80; font-weight: bold; }
+    .total-area { 
+      margin-top: 25px; 
+      padding: 20px; 
+      background: rgba(0, 0, 0, 0.5); 
+      border-radius: 15px; 
+      border: 2px dashed #4cc9f0; 
+      text-align: right;
     }
+    .discount-tag { color: #f87171; font-weight: bold; font-size: 1.1rem; }
 
-    .status {
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      animation: pulse 2s infinite;
+    /* Navigation */
+    .nav-link { text-align: center; margin-top: 40px; }
+    .nav-link a { 
+      color: #4cc9f0; 
+      text-decoration: none; 
+      font-weight: bold; 
+      margin: 0 15px; 
+      padding: 10px 20px; 
+      border: 1px solid #4cc9f0; 
+      border-radius: 30px; 
+      transition: 0.3s;
     }
-
-    .status.active { background: #00cc00; color: #fff; }
-    .status.returned { background: #ff4d4d; color: #fff; }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(0, 183, 255, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(0, 183, 255, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 183, 255, 0); }
-    }
-
-    .items-grid {
-      display: grid;
-      gap: 15px;
-    }
-
-    .item-card {
-      background: #333;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    .item-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 183, 255, 0.2);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .item-card p {
-      margin: 5px 0;
-      font-size: 0.95rem;
-    }
-
-    .item-card .item-name {
-      font-weight: 600;
-      color: #00b7ff;
-      font-size: 1.1rem;
-    }
-
-    .item-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .item-actions input[type="number"] {
-      width: 60px;
-      padding: 5px;
-      background: #404040;
-      border: 1px solid #404040;
-      border-radius: 5px;
-    }
+    .nav-link a:hover { background: #4cc9f0; color: #000; }
 
     .return-btn {
-      background: #ff4d4d;
+      background: #f87171;
+      width: auto;
       padding: 8px 15px;
-      font-size: 0.9rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .return-btn:hover {
-      background: #e60000;
-    }
-
-    .return-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-
-    .total-section {
-      margin-top: 20px;
-      text-align: right;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #00b7ff;
-      padding-top: 15px;
-      border-top: 1px solid #404040;
-    }
-
-    @media (max-width: 480px) {
-      .bill-header { flex-direction: column; align-items: flex-start; }
-      .bill-header p { font-size: 0.9rem; }
-      .item-card p { font-size: 0.85rem; }
-      .item-actions { flex-direction: column; align-items: flex-start; }
-      .total-section { font-size: 1rem; }
+      font-size: 0.8rem;
     }
   </style>
 </head>
 <body>
-  <h1>View Bill - SPORTS WORLD Shop</h1>
+  <h1>View Bill Details</h1>
   <div class="container">
-    <h2>Enter Serial Number</h2>
+    <h2>Search Bill</h2>
     <input id="serial" placeholder="Enter 10-digit Serial Number" />
-    <button onclick="fetchBill()">View Bill</button>
+    <button onclick="fetchBill()">Find Bill</button>
     <div id="bill-details"></div>
   </div>
+
   <div class="nav-link">
-    <a href="/index.html">Back to Billing</a> |
-    <a href="/add-item.html">Add/Edit Items</a> |
-    <a href="/history.html">Bill History</a>
+    <a href="/index.html">Back to Billing</a>
+    <a href="/history.html">View History</a>
   </div>
+
   <script>
     let currentBill = null;
 
     async function fetchBill() {
       const serial = document.getElementById("serial").value;
-      if (!serial || serial.length !== 10 || isNaN(serial)) {
+      if (!serial || serial.length !== 10) {
         alert("Please enter a valid 10-digit serial number!");
         return;
       }
 
       try {
         const res = await fetch(`/bill/${serial}`);
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const bill = await res.json();
         const div = document.getElementById("bill-details");
         div.innerHTML = "";
+
         if (!bill) {
-          div.innerHTML = "<p>No bill found with this serial number.</p>";
+          div.innerHTML = "<p style='text-align:center;'>No bill found with this serial.</p>";
           return;
         }
 
-        if (!bill.items || !Array.isArray(bill.items)) {
-          throw new Error("Invalid bill data: items array is missing or invalid");
-        }
-
         currentBill = bill;
+        const subtotal = bill.items.reduce((s, i) => s + (i.price * i.qty), 0);
+        const grandTotal = subtotal - (bill.discount || 0);
 
         div.innerHTML = `
-          <div class="bill-header">
+          <div class="bill-info-header">
             <div>
-              <p>Serial Number: ${bill.serialNumber}</p>
-              <p>Customer: ${bill.customer || "N/A"}</p>
-              ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ""}
-              <p>Date: ${new Date(bill.date).toLocaleString()}</p>
+              <p style="color:#4cc9f0; font-weight:bold;">#${bill.serialNumber}</p>
+              <p>${bill.customer || "Walking Customer"}</p>
+              <p style="font-size:0.8rem; color:#888;">${new Date(bill.date).toLocaleString()}</p>
             </div>
-            <div class="status ${bill.returned ? "returned" : "active"}">
-              ${bill.returned ? "Returned" : "Active"}
-            </div>
+            <span class="status-badge ${bill.returned ? 'status-returned' : 'status-active'}">
+              ${bill.returned ? 'Returned' : 'Active'}
+            </span>
           </div>
-          <div class="items-grid">
-            ${bill.items.map((item, index) => {
-              const returnedQty = item.returnedQty || 0;
-              const remainingQty = item.qty - returnedQty;
-              return `
-                <div class="item-card">
-                  <p class="item-name">${item.name || "N/A"}</p>
-                  <p>Qty (Remaining): ${remainingQty} (Originally: ${item.qty}, Returned: ${returnedQty})</p>
-                  <p>Price: ${item.price || "N/A"}</p>
-                  <p>Total: ${item.price && remainingQty ? item.price * remainingQty : "N/A"}</p>
-                  <div class="item-actions">
-                    ${item.returned ? "<p>Returned</p>" : `
-                      <input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" />
-                      <button class="return-btn" onclick="returnItem(${index})">Return</button>
-                    `}
-                  </div>
+
+          <div class="items-list">
+            ${bill.items.map((item, index) => `
+              <div class="item-card">
+                <div>
+                  <p class="item-name">${item.name}</p>
+                  <p class="item-meta">Qty: ${item.qty} | Price: ₹${item.price}</p>
                 </div>
-              `;
-            }).join("")}
+                <div style="text-align:right;">
+                  <p class="price-tag">₹${item.price * item.qty}</p>
+                  ${!bill.returned && !item.returned ? 
+                    `<button class="return-btn" onclick="returnItem(${index})">Return</button>` : 
+                    (item.returned ? '<span style="color:#f87171; font-size:0.8rem;">Returned</span>' : '')}
+                </div>
+              </div>
+            `).join('')}
           </div>
-          <div class="total-section">
-            Total: ${bill.items.reduce((sum, item) => {
-              const returnedQty = item.returnedQty || 0;
-              const remainingQty = item.qty - returnedQty;
-              return sum + (item.price && remainingQty ? item.price * remainingQty : 0);
-            }, 0)}
+
+          <div class="total-area">
+            <p>Subtotal: ₹${subtotal}</p>
+            ${bill.discount > 0 ? `<p class="discount-tag">Discount: -₹${bill.discount}</p>` : ''}
+            <p style="font-size: 1.8rem; color: #4ade80;"><strong>Total: ₹${grandTotal}</strong></p>
           </div>
         `;
       } catch (e) {
-        console.error("Error fetching bill:", e.message);
-        alert(`Failed to fetch bill: ${e.message}`);
+        alert("Error finding bill.");
       }
     }
 
     async function returnItem(itemIndex) {
-      if (!currentBill) {
-        alert("No bill loaded to return!");
-        return;
-      }
-
-      if (currentBill.items[itemIndex].returned) {
-        alert("This item has already been returned!");
-        return;
-      }
-
-      const returnQtyInput = document.getElementById(`return-qty-${itemIndex}`);
-      const returnQty = returnQtyInput ? Number(returnQtyInput.value) : null;
-      const item = currentBill.items[itemIndex];
-      const returnedQty = item.returnedQty || 0;
-      const remainingQty = item.qty - returnedQty;
-
-      if (returnQty !== null && (isNaN(returnQty) || returnQty <= 0 || returnQty > remainingQty)) {
-        alert(`Please enter a valid quantity to return (between 1 and ${remainingQty})!`);
-        return;
-      }
+      if (!confirm("Are you sure you want to return this item?")) return;
 
       try {
-        const markReturnedRes = await fetch(`/bill/${currentBill.serialNumber}/return`, {
+        const res = await fetch(`/bill/${currentBill.serialNumber}/return`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            itemIndex,
-            returnQty: returnQty || remainingQty
-          }),
+          body: JSON.stringify({ itemIndex })
         });
-        if (!markReturnedRes.ok) throw new Error(`HTTP error! Status: ${markReturnedRes.status}`);
-        alert("Item returned successfully! Stock updated.");
-        fetchBill();
+        
+        if (res.ok) {
+          alert("Item returned successfully! Stock updated.");
+          fetchBill();
+        } else {
+          alert("Failed to return item.");
+        }
       } catch (e) {
-        console.error("Error during return:", e.message);
-        alert(`Failed to process return: ${e.message}`);
+        alert("Error processing return.");
       }
     }
   </script>
