@@ -103,7 +103,7 @@
 
     .bill-details {
       margin-top: 20px;
-      padding: 10px;
+      padding: 15px;
       border: 1px solid #404040;
       border-radius: 5px;
       background: #252525;
@@ -212,72 +212,36 @@
       background: #404040;
     }
 
+    .calculation-row {
+      text-align: right;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .discount-text {
+      color: #ff4d4d;
+      font-weight: bold;
+    }
+
     @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-      }
-
-      .filter-section {
-        flex-direction: column;
-      }
-
-      .day-header h3 {
-        font-size: 1rem;
-      }
-
-      .bill-item {
-        font-size: 0.9rem;
-      }
-
-      table {
-        font-size: 0.9rem;
-      }
+      .container { padding: 15px; }
+      .filter-section { flex-direction: column; }
+      .day-header h3 { font-size: 1rem; }
+      .bill-item { font-size: 0.9rem; }
+      table { font-size: 0.9rem; }
     }
 
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.2rem;
-      }
-
-      input, button {
-        font-size: 0.9rem;
-      }
-
-      th, td {
-        padding: 8px;
-        font-size: 0.85rem;
-      }
-
-      .nav-link a {
-        display: block;
-        margin: 10px 0;
-      }
-
-      .day-card {
-        padding: 10px;
-      }
-
-      .day-header h3 {
-        font-size: 0.9rem;
-      }
-
-      .bill-count {
-        font-size: 0.8rem;
-      }
-
-      .total-sales {
-        font-size: 1rem;
-      }
-
-      .bill-item {
-        font-size: 0.8rem;
-        flex-direction: column;
-        gap: 5px;
-      }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.2rem; }
+      input, button { font-size: 0.9rem; }
+      th, td { padding: 8px; font-size: 0.85rem; }
+      .nav-link a { display: block; margin: 10px 0; }
+      .day-card { padding: 10px; }
+      .day-header h3 { font-size: 0.9rem; }
+      .bill-count { font-size: 0.8rem; }
+      .total-sales { font-size: 1rem; }
+      .bill-item { font-size: 0.8rem; flex-direction: column; gap: 5px; }
     }
   </style>
 </head>
@@ -336,7 +300,6 @@
       const dailySummary = document.getElementById('daily-summary');
       dailySummary.innerHTML = '';
 
-      // Group bills by date
       const billsByDate = bills.reduce((acc, bill) => {
         const date = new Date(bill.date).toLocaleDateString('en-GB', {
           day: 'numeric', month: 'long', year: 'numeric'
@@ -344,14 +307,18 @@
         if (!acc[date]) {
           acc[date] = { bills: [], total: 0, count: 0 };
         }
-        const billTotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        
+        // Calculate the actual total including discount for the daily summary
+        const subtotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const discount = bill.discount || 0;
+        const billTotal = subtotal - discount;
+
         acc[date].bills.push(bill);
         acc[date].total += billTotal;
         acc[date].count += 1;
         return acc;
       }, {});
 
-      // Display each day's summary
       Object.keys(billsByDate).sort((a, b) => new Date(b) - new Date(a)).forEach(date => {
         const { total, count, bills } = billsByDate[date];
         const dayDiv = document.createElement('div');
@@ -363,14 +330,18 @@
           </div>
           <p class="total-sales">Total Sales: <strong>₹${total.toLocaleString()}</strong></p>
           <div class="bill-list">
-            ${bills.map(bill => `
-              <div class="bill-item">
-                <span onclick="showBillDetails(${JSON.stringify(bill)})">Serial: ${bill.serialNumber}</span>
-                <span>₹${bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0)}</span>
-                <span style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</span>
-                <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete</button>
-              </div>
-            `).join('')}
+            ${bills.map(bill => {
+                const subtotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                const discount = bill.discount || 0;
+                return `
+                  <div class="bill-item" onclick="showBillDetails(${JSON.stringify(bill).replace(/"/g, '&quot;')})">
+                    <span>Serial: ${bill.serialNumber}</span>
+                    <span>₹${(subtotal - discount).toLocaleString()}</span>
+                    <span style="color: ${bill.returned ? 'red' : 'green'}">${bill.returned ? 'Returned' : 'Active'}</span>
+                    <button class="delete-btn" onclick="event.stopPropagation(); deleteBill('${bill.serialNumber}')">Delete</button>
+                  </div>
+                `;
+            }).join('')}
           </div>
         `;
         dailySummary.appendChild(dayDiv);
@@ -400,7 +371,10 @@
       const existingDetails = document.querySelector('.bill-details');
       if (existingDetails) existingDetails.remove();
 
-      const total = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const subtotal = bill.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const discount = bill.discount || 0;
+      const grandTotal = subtotal - discount;
+
       const div = document.createElement('div');
       div.className = 'bill-details';
       div.innerHTML = `
@@ -429,10 +403,15 @@
             `).join('')}
           </tbody>
         </table>
-        <p><strong>Total: ₹${total.toLocaleString()}</strong></p>
-        <button class="delete-btn" onclick="deleteBill('${bill.serialNumber}')">Delete Bill</button>
+        <div class="calculation-row">
+          <p>Subtotal: ₹${subtotal.toLocaleString()}</p>
+          ${discount > 0 ? `<p class="discount-text">Discount: -₹${discount.toLocaleString()}</p>` : ''}
+          <p><strong>Grand Total: ₹${grandTotal.toLocaleString()}</strong></p>
+        </div>
+        <button class="delete-btn" style="margin-top: 15px;" onclick="deleteBill('${bill.serialNumber}')">Delete Bill</button>
       `;
       document.querySelector('.container').appendChild(div);
+      div.scrollIntoView({ behavior: 'smooth' });
     }
 
     async function deleteBill(serialNumber) {
@@ -444,12 +423,11 @@
           headers: { 'Content-Type': 'application/json' }
         });
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        alert(`Bill with Serial Number ${serialNumber} deleted successfully!`);
+        alert(`Bill ${serialNumber} deleted successfully!`);
         fetchBills();
         const existingDetails = document.querySelector('.bill-details');
         if (existingDetails) existingDetails.remove();
       } catch (e) {
-        console.error('Error deleting bill:', e.message);
         alert(`Failed to delete bill: ${e.message}`);
       }
     }
