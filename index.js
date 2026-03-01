@@ -1,10 +1,12 @@
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// This part stops the browser from blocking your connection
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -12,264 +14,158 @@ app.use((req, res, next) => {
   next();
 });
 
+// Your MongoDB Link
 const uri = 'mongodb+srv://sportsworld009:sportsworld009@sportsworldshop.9krj7vc.mongodb.net/';
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri);
 
 let db;
 
 async function connectDB() {
   try {
     await client.connect();
-    console.log('MongoDB connected successfully');
+    console.log('--- SYSTEM ONLINE: MongoDB Connected ---');
     db = client.db('sportsworldshop');
+    
+    // This makes searching for items and bills very fast
     await db.collection('items').createIndex({ name: 1 }, { unique: true });
     await db.collection('bills').createIndex({ serialNumber: 1 }, { unique: true });
   } catch (e) {
-    console.error('MongoDB connection error:', e.message);
+    console.error('Database error:', e.message);
     process.exit(1);
   }
 }
 
 connectDB().then(() => {
+  
+  // 1. Get all items for the list
   app.get('/items', async (req, res) => {
     try {
       const items = await db.collection('items').find().toArray();
       res.json(items);
     } catch (e) {
-      console.error('Error fetching items:', e.message);
-      res.status(500).send('Error fetching items: ' + e.message);
+      res.status(500).send('Error getting items');
     }
   });
 
+  // 2. Add a new item to the shop
   app.post('/items', async (req, res) => {
     try {
-      const { name, price, stock } = req.body;
-      if (!name || price === undefined || stock === undefined) {
-        return res.status(400).send('All fields (name, price, stock) are required');
-      }
-
-      const existing = await db.collection('items').findOne({ name });
-      if (existing) {
-        return res.status(409).send(`Item with name "${name}" already exists`);
-      }
-
-      await db.collection('items').insertOne({ name, price, stock });
+      await db.collection('items').insertOne(req.body);
       res.sendStatus(200);
     } catch (e) {
-      console.error('Error adding item:', e.message);
-      res.status(500).send('Error adding item: ' + e.message);
+      res.status(500).send('Error adding item');
     }
   });
 
+  // 3. Update stock or price of an item
   app.put('/items/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, price, stock } = req.body;
-
-      const existingItem = await db.collection('items').findOne({ _id: new ObjectId(id) });
-      if (!existingItem) {
-        return res.status(404).send('Item not found');
-      }
-
-      const updateData = {
-        name: name !== undefined ? name : existingItem.name,
-        price: price !== undefined ? price : existingItem.price,
-        stock: stock !== undefined ? stock : existingItem.stock
-      };
-
-      if (!updateData.name || updateData.price === undefined || updateData.stock === undefined) {
-        return res.status(400).send('All fields (name, price, stock) must be provided or unchanged');
-      }
-
-      if (name && name !== existingItem.name) {
-        const duplicate = await db.collection('items').findOne({ name, _id: { $ne: new ObjectId(id) } });
-        if (duplicate) {
-          return res.status(409).send(`Item with name "${name}" already exists`);
-        }
-      }
-
-      const result = await db.collection('items').updateOne(
+      await db.collection('items').updateOne(
         { _id: new ObjectId(id) },
-        { $set: updateData }
+        { $set: req.body }
       );
-
-      if (result.matchedCount === 0) {
-        return res.status(404).send('Item not found');
-      }
-
       res.sendStatus(200);
     } catch (e) {
-      console.error('Error updating item:', e.message);
-      res.status(500).send('Error updating item: ' + e.message);
+      res.status(500).send('Error updating item');
     }
   });
 
+  // 4. Delete an item from the shop
   app.delete('/items/:id', async (req, res) => {
     try {
-      const { id } = req.params;
-      const result = await db.collection('items').deleteOne({ _id: new ObjectId(id) });
-
-      if (result.deletedCount === 0) {
-        return res.status(404).send('Item not found');
-      }
-
+      await db.collection('items').deleteOne({ _id: new ObjectId(req.params.id) });
       res.sendStatus(200);
     } catch (e) {
-      console.error('Error removing item:', e.message);
-      res.status(500).send('Error removing item: ' + e.message);
+      res.status(500).send('Error deleting item');
     }
   });
 
-  // Updated to include discount
+  // 5. Save a new Bill (with customer phone and discount)
   app.post('/bill', async (req, res) => {
     try {
-      const { items, customer, phone, date, serialNumber, discount } = req.body;
-
-      let newSerialNumber = serialNumber;
-      let existing = await db.collection('bills').findOne({ serialNumber: newSerialNumber });
-      while (existing) {
-        newSerialNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-        existing = await db.collection('bills').findOne({ serialNumber: newSerialNumber });
-      }
-
-      const itemsWithReturnStatus = items.map(item => ({
-        ...item,
-        originalQty: item.qty,
-        returnedQty: 0,
+      const billData = {
+        ...req.body,
+        date: new Date(req.body.date),
+        // Add return tracking to each item
+        items: req.body.items.map(item => ({
+          ...item,
+          returnedQty: 0,
+          returned: false
+        })),
         returned: false
-      }));
-
-      await db.collection('bills').insertOne({
-        serialNumber: newSerialNumber,
-        customer: customer || null,
-        phone: phone || null,
-        date: new Date(date),
-        items: itemsWithReturnStatus,
-        discount: Number(discount) || 0,
-        returned: false
-      });
-
+      };
+      await db.collection('bills').insertOne(billData);
       res.sendStatus(200);
     } catch (e) {
-      console.error('Error saving bill:', e.message);
-      res.status(500).send('Error saving bill: ' + e.message);
+      res.status(500).send('Error saving bill');
     }
   });
 
-  app.get('/bill/:serial', async (req, res) => {
-    try {
-      const { serial } = req.params;
-      const bill = await db.collection('bills').findOne({ serialNumber: serial });
-
-      if (!bill) {
-        return res.status(404).json(null);
-      }
-
-      res.json(bill);
-    } catch (e) {
-      console.error('Error fetching bill:', e.message);
-      res.status(500).send('Error fetching bill: ' + e.message);
-    }
-  });
-
-  app.put('/bill/:serial/return', async (req, res) => {
-    try {
-      const { serial } = req.params;
-      const { itemIndex, returnQty } = req.body;
-
-      if (itemIndex === undefined || itemIndex < 0) {
-        return res.status(400).send('Invalid item index');
-      }
-
-      const bill = await db.collection('bills').findOne({ serialNumber: serial });
-      if (!bill) {
-        return res.status(404).send('Bill not found');
-      }
-
-      if (itemIndex >= bill.items.length) {
-        return res.status(400).send('Item index out of range');
-      }
-
-      const billItem = bill.items[itemIndex];
-
-      if (!billItem.hasOwnProperty('returnedQty')) {
-        billItem.returnedQty = 0;
-      }
-
-      if (billItem.returned) {
-        return res.status(400).send('Item already fully returned');
-      }
-
-      const qtyToReturn = returnQty !== undefined && returnQty !== null ? returnQty : billItem.qty;
-
-      if (qtyToReturn <= 0 || qtyToReturn > billItem.qty - billItem.returnedQty) {
-        return res.status(400).send(`Invalid return quantity. You can return between 1 and ${billItem.qty - billItem.returnedQty} items.`);
-      }
-
-      const inventoryItem = await db.collection('items').findOne({ _id: new ObjectId(billItem._id) });
-      if (!inventoryItem) {
-        return res.status(404).send(`Item ${billItem.name} not found in inventory`);
-      }
-
-      inventoryItem.stock += qtyToReturn;
-      await db.collection('items').updateOne(
-        { _id: new ObjectId(billItem._id) },
-        { $set: { stock: inventoryItem.stock } }
-      );
-
-      billItem.returnedQty += qtyToReturn;
-      billItem.returned = billItem.returnedQty >= billItem.qty;
-
-      const allItemsReturned = bill.items.every(item => item.returned);
-
-      const result = await db.collection('bills').updateOne(
-        { serialNumber: serial },
-        {
-          $set: {
-            items: bill.items,
-            returned: allItemsReturned
-          }
-        }
-      );
-
-      if (result.matchedCount === 0) {
-        return res.status(404).send('Bill not found');
-      }
-
-      res.sendStatus(200);
-    } catch (e) {
-      console.error('Error marking item as returned:', e.message);
-      res.status(500).send('Error marking item as returned: ' + e.message);
-    }
-  });
-
-  app.delete('/bill/:serial', async (req, res) => {
-    try {
-      const { serial } = req.params;
-      const result = await db.collection('bills').deleteOne({ serialNumber: serial });
-
-      if (result.deletedCount === 0) {
-        return res.status(404).send('Bill not found');
-      }
-
-      res.sendStatus(200);
-    } catch (e) {
-      console.error('Error deleting bill:', e.message);
-      res.status(500).send('Error deleting bill: ' + e.message);
-    }
-  });
-
+  // 6. Get all bills (This powers your Dashboard and History)
   app.get('/bills', async (req, res) => {
     try {
       const bills = await db.collection('bills').find().sort({ date: -1 }).toArray();
       res.json(bills);
     } catch (e) {
-      console.error('Error fetching bills:', e.message);
-      res.status(500).send('Error fetching bills: ' + e.message);
+      res.status(500).send('Error getting history');
     }
   });
 
-  app.listen(3000, () => console.log('Server running on port 3000'));
-}).catch(err => {
-  console.error('Failed to start server due to database connection error:', err.message);
+  // 7. Find one specific bill by serial number
+  app.get('/bill/:serial', async (req, res) => {
+    try {
+      const bill = await db.collection('bills').findOne({ serialNumber: req.params.serial });
+      res.json(bill);
+    } catch (e) {
+      res.status(500).send('Error finding bill');
+    }
+  });
+
+  // 8. The Return Feature (Restores stock to inventory)
+  app.put('/bill/:serial/return', async (req, res) => {
+    try {
+      const { serial } = req.params;
+      const { itemIndex, returnQty } = req.body;
+
+      const bill = await db.collection('bills').findOne({ serialNumber: serial });
+      if (!bill) return res.status(404).send('Bill not found');
+
+      const item = bill.items[itemIndex];
+
+      // Put the item back in the shop stock
+      await db.collection('items').updateOne(
+        { _id: new ObjectId(item._id) },
+        { $inc: { stock: returnQty } }
+      );
+
+      // Update the bill to show it was returned
+      item.returnedQty = (item.returnedQty || 0) + returnQty;
+      if (item.returnedQty >= item.qty) item.returned = true;
+
+      const allReturned = bill.items.every(i => i.returned);
+      
+      await db.collection('bills').updateOne(
+        { serialNumber: serial },
+        { $set: { items: bill.items, returned: allReturned } }
+      );
+
+      res.sendStatus(200);
+    } catch (e) {
+      res.status(500).send('Return failed');
+    }
+  });
+
+  // 9. Delete a bill permanently
+  app.delete('/bill/:serial', async (req, res) => {
+    try {
+      await db.collection('bills').deleteOne({ serialNumber: req.params.serial });
+      res.sendStatus(200);
+    } catch (e) {
+      res.status(500).send('Error deleting bill');
+    }
+  });
+
+  const PORT = 3000;
+  app.listen(PORT, () => console.log(`--- SPORTS WORLD SERVER RUNNING ON PORT ${PORT} ---`));
 });
