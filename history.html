@@ -3,220 +3,165 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bill History - SPORTS WORLD Shop</title>
+  <title>Sales History | SPORTS WORLD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #080a0c;
+      --card: rgba(17, 25, 40, 0.75);
+      --cyan: #00f3ff;
+      --text: #e0e6ed;
+      --border: rgba(255, 255, 255, 0.1);
+      --red: #ff4d4d;
     }
+
+    /* Stealth Mode Styles */
+    body.stealth-mode {
+      --cyan: #666;
+      --bg: #000;
+      --card: #0a0a0a;
+      background-image: none !important;
+      filter: grayscale(1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
-      color: #e0e0e0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      background-image: radial-gradient(circle at 50% 100%, rgba(0, 243, 255, 0.05) 0%, transparent 50%);
+      color: var(--text);
       padding: 20px;
-      line-height: 1.6;
+      transition: 0.3s;
     }
 
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: #00b7ff;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .panel {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 15px;
       margin-bottom: 20px;
-      font-size: 1.8rem;
     }
 
-    h2 {
-      font-family: 'Roboto', sans-serif;
-      color: #80d4ff;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    input, button {
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #404040;
-      border-radius: 5px;
-      width: 100%;
-      transition: all 0.3s ease;
-      background: #333;
-      color: #e0e0e0;
-    }
-
-    input:focus {
-      border-color: #00b7ff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
-    }
-
-    button {
-      background: #00b7ff;
-      color: #fff;
-      border: none;
+    .stealth-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
       cursor: pointer;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    button:hover {
-      background: #008ecf;
-    }
-
-    .delete-btn {
-      background: #ff4d4d;
-      padding: 5px 10px;
-      font-size: 12px;
-      width: auto;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .delete-btn:hover {
-      background: #e60000;
-    }
-
-    .nav-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .nav-link a {
-      color: #80d4ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin: 0 15px;
-      transition: color 0.3s ease;
-    }
-
-    .nav-link a:hover {
-      color: #00b7ff;
-    }
-
-    .day-card {
-      background: #252525;
-      padding: 15px;
+      background: var(--card);
+      padding: 8px 12px;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      margin-bottom: 20px;
-      border-left: 5px solid #00b7ff;
+      font-size: 0.8rem;
     }
 
-    .day-header {
+    /* Daily Log Cards */
+    .day-group {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border-left: 4px solid var(--cyan);
+    }
+
+    .bill-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .bill-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px;
-      background: #333;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 5px;
-    }
-
-    .bill-item:hover {
-      background: #404040;
-    }
-
-    #bill-details-view {
-      margin-top: 20px;
-      padding: 15px;
-      background: #222;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      display: none;
+      margin-bottom: 8px;
+      cursor: pointer;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 10px 0;
+    .bill-row:hover {
+      border-color: var(--cyan);
+      background: rgba(0, 243, 255, 0.1);
     }
 
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #444;
-    }
+    /* Popup View */
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 1000; }
+    .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1001; width: 500px; border: 1px solid var(--cyan); }
 
-    .total-row {
-      text-align: right;
-      margin-top: 10px;
-    }
+    input { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; color: white; }
+    button { padding: 10px 20px; background: var(--cyan); border: none; border-radius: 8px; color: black; font-weight: bold; cursor: pointer; }
 
-    @media (max-width: 480px) {
-      .nav-link a { display: block; margin: 10px 0; }
-    }
+    .nav { text-align: center; margin-top: 30px; }
+    .nav a { color: #888; text-decoration: none; margin: 0 10px; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <h1>Bill History - SPORTS WORLD Shop</h1>
+
+  <div class="stealth-btn" onclick="toggleStealth()">
+    <i data-lucide="eye-off"></i> STEALTH MODE
+  </div>
+
   <div class="container">
-    <div id="auth-section">
-      <h2>Access Records</h2>
-      <input id="password" type="password" placeholder="Enter Password">
-      <button onclick="checkPassword()">View History</button>
+    <h1 style="text-align: center; font-family: 'Orbitron'; color: var(--cyan); margin-bottom: 30px;">SALES ARCHIVES</h1>
+
+    <div id="auth-box" class="panel" style="max-width: 400px; margin: 50px auto; text-align: center;">
+      <h3 style="margin-bottom: 15px; font-family: 'Orbitron';">ADMIN ACCESS</h3>
+      <input id="history-pass" type="password" placeholder="Enter Key">
+      <button onclick="checkAccess()">VIEW RECORDS</button>
     </div>
 
-    <div id="history-section" style="display: none;">
-      <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-        <input type="date" id="date-filter" onchange="filterByDate()">
-        <button onclick="resetFilter()" style="width: auto; padding: 0 15px;">Reset</button>
+    <div id="history-content" style="display: none;">
+      <div class="panel">
+        <div style="display: flex; gap: 15px; align-items: center;">
+          <span style="font-size: 0.9rem; color: #888;">Filter by Date:</span>
+          <input type="date" id="date-filter" style="margin:0; flex: 1;" onchange="filterData()">
+          <button onclick="resetView()" style="background: #333; color: white;">Clear</button>
+        </div>
       </div>
-      <div id="daily-summary"></div>
-      <div id="bill-details-view"></div>
+
+      <div id="log-container"></div>
     </div>
   </div>
 
-  <div class="nav-link">
-    <a href="/index.html">Back to Billing</a> |
-    <a href="/add-item.html">Add/Edit Items</a> |
-    <a href="/view-bill.html">View Bill</a>
+  <div class="overlay" id="overlay" onclick="closeDetails()"></div>
+  <div id="details-popup" class="panel popup">
+    </div>
+
+  <div class="nav">
+    <a href="/index.html">Billing</a>
+    <a href="/add-item.html">Inventory</a>
+    <a href="/view-bill.html">Find Bill</a>
   </div>
 
   <script>
-    const correctPassword = "gourab009";
+    lucide.createIcons();
+    const adminKey = "gourab009";
 
-    function checkPassword() {
-      const input = document.getElementById('password').value;
-      if (input === correctPassword) {
-        document.getElementById('auth-section').style.display = 'none';
-        document.getElementById('history-section').style.display = 'block';
-        fetchBills();
+    function toggleStealth() {
+      document.body.classList.toggle('stealth-mode');
+    }
+
+    function checkAccess() {
+      if(document.getElementById('history-pass').value === adminKey) {
+        document.getElementById('auth-box').style.display = 'none';
+        document.getElementById('history-content').style.display = 'block';
+        fetchHistory();
       } else {
-        alert("Incorrect password!");
+        alert("WRONG KEY");
       }
     }
 
-    async function fetchBills() {
+    async function fetchHistory() {
       const res = await fetch('/bills');
       const bills = await res.json();
-      displayHistory(bills);
+      renderHistory(bills);
     }
 
-    function displayHistory(bills) {
-      const container = document.getElementById('daily-summary');
+    function renderHistory(bills) {
+      const container = document.getElementById('log-container');
       container.innerHTML = '';
 
+      // Group bills by date
       const grouped = bills.reduce((acc, bill) => {
         const date = new Date(bill.date).toLocaleDateString('en-GB');
         if (!acc[date]) acc[date] = { bills: [], total: 0 };
@@ -228,64 +173,75 @@
       }, {});
 
       Object.entries(grouped).forEach(([date, data]) => {
-        const card = document.createElement('div');
-        card.className = 'day-card';
-        card.innerHTML = `
-          <div class="day-header">
-            <h3>${date}</h3>
-            <span style="color:#00ffcc; font-weight:bold;">Total: ₹${data.total}</span>
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'day-group';
+        groupDiv.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+            <h3 style="font-family:Orbitron; font-size:0.9rem;">${date}</h3>
+            <span style="color:var(--cyan); font-weight:bold;">Total: ₹${data.total}</span>
           </div>
           ${data.bills.map(b => {
-            const bSub = b.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0);
+            const bTotal = b.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0) - (b.discount || 0);
             return `
-              <div class="bill-item" onclick="showDetails(${JSON.stringify(b).replace(/"/g, '&quot;')})">
-                <span>Serial: ${b.serialNumber}</span>
-                <span>₹${bSub - (b.discount || 0)}</span>
+              <div class="bill-row" onclick='showBillDetails(${JSON.stringify(b)})'>
+                <span>#${b.serialNumber}</span>
+                <span style="color:#888;">${b.customer || "Guest"}</span>
+                <span style="color:#00ffcc;">₹${bTotal}</span>
               </div>`;
           }).join('')}
         `;
-        container.appendChild(card);
+        container.appendChild(groupDiv);
       });
     }
 
-    function showDetails(bill) {
-      const view = document.getElementById('bill-details-view');
+    function showBillDetails(bill) {
+      const popup = document.getElementById('details-popup');
       const subtotal = bill.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0);
-      view.style.display = 'block';
-      view.innerHTML = `
-        <div style="display:flex; justify-content:space-between;">
-          <h3>Details: #${bill.serialNumber}</h3>
-          <button onclick="document.getElementById('bill-details-view').style.display='none'" style="width:auto; padding:0 10px;">X</button>
+      
+      document.getElementById('overlay').style.display = 'block';
+      popup.style.display = 'block';
+      
+      popup.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+          <h3 style="font-family:Orbitron; color:var(--cyan); font-size:0.9rem;">BILL #${bill.serialNumber}</h3>
+          <button onclick="closeDetails()" style="padding: 2px 8px; background: red; color: white;">X</button>
         </div>
-        <table>
-          <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
-          <tbody>
-            ${bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty - (i.returnedQty || 0)}</td><td>₹${i.price * (i.qty - (i.returnedQty || 0))}</td></tr>`).join('')}
-          </tbody>
-        </table>
-        <div class="total-row">
-          <p>Subtotal: ₹${subtotal}</p>
-          ${bill.discount > 0 ? `<p style="color:#ff4d4d;">Discount: -₹${bill.discount}</p>` : ''}
-          <p><strong style="color:#00b7ff; font-size:1.2rem;">Grand Total: ₹${subtotal - (bill.discount || 0)}</strong></p>
+        <p style="font-size:0.8rem; color:#888; margin-bottom:10px;">Customer: ${bill.customer || 'N/A'} | Phone: ${bill.phone || 'N/A'}</p>
+        <div style="max-height:200px; overflow-y:auto; border-bottom:1px solid var(--border);">
+          ${bill.items.map(i => `
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding:5px 0;">
+              <span>${i.name} (x${i.qty - (i.returnedQty || 0)})</span>
+              <span>₹${i.price * (i.qty - (i.returnedQty || 0))}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div style="margin-top:10px; text-align:right;">
+          <p style="font-size:0.8rem; color:#888;">Subtotal: ₹${subtotal}</p>
+          <p style="font-size:0.8rem; color:var(--red);">Discount: -₹${bill.discount || 0}</p>
+          <p style="font-family:Orbitron; color:var(--cyan); font-size:1.1rem; margin-top:5px;">Grand Total: ₹${subtotal - (bill.discount || 0)}</p>
         </div>
       `;
-      view.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function filterByDate() {
+    function closeDetails() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('details-popup').style.display = 'none';
+    }
+
+    function filterData() {
       const val = document.getElementById('date-filter').value;
-      if (!val) return fetchBills();
+      if (!val) return fetchHistory();
       const selected = new Date(val).toLocaleDateString('en-GB');
-      const cards = document.querySelectorAll('.day-card');
-      cards.forEach(c => {
-        const d = c.querySelector('h3').textContent;
-        c.style.display = d === selected ? 'block' : 'none';
+      const groups = document.querySelectorAll('.day-group');
+      groups.forEach(g => {
+        const d = g.querySelector('h3').textContent;
+        g.style.display = d === selected ? 'block' : 'none';
       });
     }
 
-    function resetFilter() {
+    function resetView() {
       document.getElementById('date-filter').value = '';
-      fetchBills();
+      fetchHistory();
     }
   </script>
 </body>
