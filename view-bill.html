@@ -3,291 +3,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View Bill - SPORTS WORLD Shop</title>
+  <title>View Bill | SPORTS WORLD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #080a0c;
+      --card: rgba(17, 25, 40, 0.75);
+      --cyan: #00f3ff;
+      --text: #e0e6ed;
+      --border: rgba(255, 255, 255, 0.1);
+      --red: #ff4d4d;
+      --green: #00ffcc;
     }
+
+    body.stealth-mode {
+      --cyan: #666;
+      --bg: #000;
+      --card: #0a0a0a;
+      filter: grayscale(1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
-      color: #e0e0e0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      background-image: radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.05) 0%, transparent 50%);
+      color: var(--text);
       padding: 20px;
-      line-height: 1.6;
+      transition: 0.3s;
     }
 
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: #00b7ff;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+    .container { max-width: 700px; margin: 0 auto; }
+
+    .panel {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 25px;
+      border-radius: 15px;
       margin-bottom: 20px;
-      font-size: 1.8rem;
     }
 
-    h2 {
-      font-family: 'Roboto', sans-serif;
-      color: #80d4ff;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
+    .stealth-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      background: var(--card);
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
     }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    input, button {
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #404040;
-      border-radius: 5px;
+    input {
       width: 100%;
-      transition: all 0.3s ease;
-      background: #333;
-      color: #e0e0e0;
-    }
-
-    input:focus {
-      border-color: #00b7ff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
+      padding: 12px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
     }
 
     button {
-      background: #00b7ff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    button:hover {
-      background: #008ecf;
-    }
-
-    .return-btn {
-      background: #ff4d4d;
-      padding: 5px 10px;
-      font-size: 12px;
-      width: auto;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .return-btn:hover {
-      background: #e60000;
-    }
-
-    .return-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-
-    table {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: #2a2a2a;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    th, td {
       padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #404040;
+      background: var(--cyan);
+      border: none;
+      border-radius: 8px;
+      color: black;
+      font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
     }
 
-    th {
-      background: #004d73;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    tr:hover {
-      background: #333;
-    }
-
-    .nav-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .nav-link a {
-      color: #80d4ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin: 0 15px;
-      transition: color 0.3s ease;
-    }
-
-    .nav-link a:hover {
-      color: #00b7ff;
-    }
-
-    #bill-details {
-      margin-top: 20px;
-      background: #252525;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
-
+    /* Bill Display UI */
     .bill-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
       padding-bottom: 15px;
-      border-bottom: 2px solid #00b7ff;
       margin-bottom: 20px;
     }
 
-    .status {
-      padding: 5px 15px;
+    .status-badge {
+      padding: 4px 12px;
       border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
     }
 
-    .status.active { background: #00cc00; color: #fff; }
-    .status.returned { background: #ff4d4d; color: #fff; }
+    .status-active { background: rgba(0, 255, 204, 0.1); color: var(--green); border: 1px solid var(--green); }
+    .status-returned { background: rgba(255, 77, 77, 0.1); color: var(--red); border: 1px solid var(--red); }
 
-    .items-grid {
-      display: grid;
-      gap: 15px;
-    }
-
-    .item-card {
-      background: #333;
-      padding: 15px;
+    .item-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
       border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
     }
 
-    .total-section {
-      margin-top: 20px;
-      text-align: right;
-      font-size: 1.1rem;
-      padding-top: 15px;
-      border-top: 1px solid #404040;
+    .return-action {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dotted #444;
     }
 
-    .grand-total {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #00b7ff;
-    }
-
-    @media (max-width: 480px) {
-      .bill-header { flex-direction: column; align-items: flex-start; }
-      .nav-link a { display: block; margin: 10px 0; }
-    }
+    .nav { text-align: center; margin-top: 30px; }
+    .nav a { color: #888; text-decoration: none; margin: 0 10px; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <h1>View Bill - SPORTS WORLD Shop</h1>
+
+  <div class="stealth-btn" onclick="toggleStealth()">
+    <i data-lucide="eye-off"></i> STEALTH MODE
+  </div>
+
   <div class="container">
-    <h2>Enter Serial Number</h2>
-    <input id="serial" placeholder="Enter 10-digit Serial Number" />
-    <button onclick="fetchBill()">View Bill</button>
-    <div id="bill-details"></div>
+    <h1 style="text-align: center; font-family: 'Orbitron'; color: var(--cyan); margin-bottom: 25px;">BILL TRACKER</h1>
+
+    <div class="panel">
+      <input id="serial-input" placeholder="ENTER 10-DIGIT SERIAL" maxlength="10">
+      <button onclick="fetchBill()">SEARCH ARCHIVES</button>
+    </div>
+
+    <div id="bill-result" style="display: none;">
+      <div class="panel" id="bill-content">
+        </div>
+    </div>
   </div>
-  <div class="nav-link">
-    <a href="/index.html">Back to Billing</a> |
-    <a href="/add-item.html">Add/Edit Items</a> |
-    <a href="/history.html">Bill History</a>
+
+  <div class="nav">
+    <a href="/index.html">Billing</a>
+    <a href="/add-item.html">Inventory</a>
+    <a href="/history.html">History</a>
   </div>
+
   <script>
+    lucide.createIcons();
     let currentBill = null;
 
+    function toggleStealth() {
+      document.body.classList.toggle('stealth-mode');
+    }
+
     async function fetchBill() {
-      const serial = document.getElementById("serial").value;
-      if (!serial || serial.length !== 10 || isNaN(serial)) {
-        alert("Please enter a valid 10-digit serial number!");
-        return;
-      }
+      const serial = document.getElementById("serial-input").value;
+      if (serial.length !== 10) return alert("Please enter a 10-digit serial number.");
 
       try {
         const res = await fetch(`/bill/${serial}`);
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const bill = await res.json();
-        const div = document.getElementById("bill-details");
-        div.innerHTML = "";
         
-        if (!bill) {
-          div.innerHTML = "<p>No bill found with this serial number.</p>";
-          return;
-        }
+        if (!bill) return alert("Bill not found.");
 
         currentBill = bill;
+        const resultDiv = document.getElementById("bill-result");
+        const content = document.getElementById("bill-content");
+        resultDiv.style.display = 'block';
+        
+        // Original logic: Calculate subtotal from remaining items
         const subtotal = bill.items.reduce((sum, item) => sum + (item.price * (item.qty - (item.returnedQty || 0))), 0);
         const discount = bill.discount || 0;
 
-        div.innerHTML = `
+        content.innerHTML = `
           <div class="bill-header">
             <div>
-              <p>Serial Number: ${bill.serialNumber}</p>
-              <p>Customer: ${bill.customer || "N/A"}</p>
-              ${bill.phone ? `<p>Phone: ${bill.phone}</p>` : ""}
-              <p>Date: ${new Date(bill.date).toLocaleString()}</p>
+              <p style="color:var(--cyan); font-family:Orbitron; font-size:0.8rem;">SERIAL: #${bill.serialNumber}</p>
+              <h2 style="margin:5px 0;">${bill.customer || "Guest"}</h2>
+              <p style="color:#888; font-size:0.75rem;">Phone: ${bill.phone || "N/A"} | ${new Date(bill.date).toLocaleString()}</p>
             </div>
-            <div class="status ${bill.returned ? "returned" : "active"}">
+            <div class="status-badge ${bill.returned ? "status-returned" : "status-active"}">
               ${bill.returned ? "Returned" : "Active"}
             </div>
           </div>
-          <div class="items-grid">
+
+          <div class="items-list">
             ${bill.items.map((item, index) => {
               const remainingQty = item.qty - (item.returnedQty || 0);
               return `
-                <div class="item-card">
-                  <p><strong>${item.name}</strong></p>
-                  <p>Qty: ${remainingQty} (Orig: ${item.qty}, Ret: ${item.returnedQty || 0})</p>
-                  <p>Price: ₹${item.price}</p>
-                  <p>Total: ₹${item.price * remainingQty}</p>
-                  ${!item.returned ? `
-                    <div style="margin-top:10px; display:flex; gap:10px;">
-                      <input type="number" id="return-qty-${index}" min="1" max="${remainingQty}" placeholder="Qty" style="width:60px;"/>
-                      <button class="return-btn" onclick="returnItem(${index})">Return</button>
+                <div class="item-box">
+                  <div style="display:flex; justify-content:space-between;">
+                    <span><strong>${item.name}</strong></span>
+                    <span style="color:var(--cyan);">₹${item.price * remainingQty}</span>
+                  </div>
+                  <p style="font-size:0.75rem; color:#888;">Qty: ${remainingQty} | Price: ₹${item.price}</p>
+                  
+                  ${remainingQty > 0 ? `
+                    <div class="return-action">
+                      <input type="number" id="ret-qty-${index}" min="1" max="${remainingQty}" value="1" 
+                             style="width:60px; margin:0; padding:5px; font-size:0.8rem;">
+                      <button onclick="processReturn(${index})" style="padding:5px; font-size:0.7rem; background:var(--red); color:white;">RETURN ITEM</button>
                     </div>
-                  ` : '<p style="color:#ff4d4d; margin-top:10px;">Returned</p>'}
+                  ` : '<p style="color:var(--red); font-size:0.7rem; margin-top:10px;">Item fully returned</p>'}
                 </div>
               `;
             }).join("")}
           </div>
-          <div class="total-section">
-            <p>Subtotal: ₹${subtotal}</p>
-            ${discount > 0 ? `<p style="color:#ff4d4d;">Discount: -₹${discount}</p>` : ""}
-            <p class="grand-total">Grand Total: ₹${subtotal - discount}</p>
+
+          <div style="margin-top:20px; border-top:2px solid var(--cyan); padding-top:15px; text-align:right;">
+            <p style="color:#888; font-size:0.8rem;">Subtotal: ₹${subtotal + discount}</p>
+            <p style="color:var(--red); font-size:0.8rem;">Discount: -₹${discount}</p>
+            <h2 style="color:var(--cyan); font-family:Orbitron; margin-top:5px;">TOTAL: ₹${subtotal}</h2>
           </div>
         `;
+        lucide.createIcons();
       } catch (e) {
-        alert(`Failed to fetch bill: ${e.message}`);
+        alert("Server error.");
       }
     }
 
-    async function returnItem(itemIndex) {
-      const returnQtyInput = document.getElementById(`return-qty-${itemIndex}`);
-      const returnQty = Number(returnQtyInput.value);
-      const item = currentBill.items[itemIndex];
-      const remainingQty = item.qty - (item.returnedQty || 0);
-
-      if (isNaN(returnQty) || returnQty <= 0 || returnQty > remainingQty) {
-        alert(`Enter quantity between 1 and ${remainingQty}`);
-        return;
-      }
-
+    // Original Return Logic Restored
+    async function processReturn(itemIndex) {
+      const returnQty = Number(document.getElementById(`ret-qty-${itemIndex}`).value);
+      
       try {
         const res = await fetch(`/bill/${currentBill.serialNumber}/return`, {
           method: "PUT",
@@ -295,8 +233,8 @@
           body: JSON.stringify({ itemIndex, returnQty }),
         });
         if (!res.ok) throw new Error("Return failed");
-        alert("Item returned successfully!");
-        fetchBill();
+        alert("Stock restored and bill updated.");
+        fetchBill(); // Refresh view
       } catch (e) {
         alert(e.message);
       }
