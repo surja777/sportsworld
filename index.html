@@ -3,201 +3,364 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPORTS WORLD Shop</title>
+  <title>SPORTS WORLD | Shop Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
+    :root {
+      --bg: #080a0c;
+      --card: rgba(17, 25, 40, 0.75);
+      --cyan: #00f3ff;
+      --glow: rgba(0, 243, 255, 0.3);
+      --text: #e0e6ed;
+      --border: rgba(255, 255, 255, 0.1);
+      --red: #ff4d4d;
+    }
+
+    body.stealth-mode {
+      --cyan: #666;
+      --glow: transparent;
+      --card: #0a0a0a;
+      background-image: none !important;
+      filter: grayscale(1);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: #1a1a1a; color: #e0e0e0; padding: 20px; line-height: 1.6; }
-    h1 { font-family: 'Montserrat', sans-serif; text-align: center; color: #00b7ff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; font-size: 1.8rem; }
-    h2 { font-family: 'Roboto', sans-serif; color: #80d4ff; margin-bottom: 15px; font-size: 1.4rem; }
-    
-    /* Restored Side-by-Side Flex Layout */
-    .container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px; background: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
-    .inventory, .billing { flex: 1; min-width: 300px; padding: 15px; background: #252525; border-radius: 8px; border: 1px solid #404040; }
-    
-    .inventory-table-wrapper { max-height: 400px; overflow-y: auto; border: 1px solid #404040; border-radius: 5px; }
-    input, button { font-family: 'Open Sans', sans-serif; padding: 10px; margin: 5px 0; border: 1px solid #404040; border-radius: 5px; width: 100%; transition: all 0.3s ease; background: #333; color: #e0e0e0; }
-    input:focus { border-color: #00b7ff; outline: none; box-shadow: 0 0 5px rgba(0, 183, 255, 0.3); }
-    button { background: #00b7ff; color: #fff; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; }
-    button:hover { background: #008ecf; }
-    
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #2a2a2a; border-radius: 5px; overflow: hidden; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #404040; }
-    th { background: #004d73; color: #fff; position: sticky; top: 0; z-index: 1; }
 
-    /* Error Notification Style */
-    #error-container { display: none; background: #ff4d4d; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px; position: relative; }
-    #error-container button { position: absolute; right: 5px; top: 5px; width: 25px; height: 25px; padding: 0; background: rgba(0,0,0,0.2); border: none; color: white; cursor: pointer; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      background-image: radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.05) 0%, transparent 40%);
+      color: var(--text);
+      padding: 20px;
+      transition: 0.3s;
+    }
 
-    .nav-link { text-align: center; margin-top: 20px; }
-    .nav-link a { color: #80d4ff; text-decoration: none; font-weight: 600; margin: 0 15px; }
-    
-    #results { margin-top: 5px; background: #2a2a2a; border-radius: 5px; }
-    #results p { padding: 12px; border-bottom: 1px solid #404040; cursor: pointer; }
-    #results p:hover { background: #3d3d3d; }
-    
-    .discount-section { margin-top: 15px; padding-top: 10px; border-top: 1px solid #404040; }
-    .price-tag { color: #00ffcc; font-weight: bold; }
+    /* Top Dashboard */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto 20px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      color: var(--cyan);
+      display: block;
+    }
+
+    /* Low Stock Glow */
+    @keyframes pulse-red {
+      0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.3); border-color: var(--red); }
+      50% { box-shadow: 0 0 15px rgba(255, 77, 77, 0.6); border-color: #ff0000; }
+      100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.3); border-color: var(--red); }
+    }
+
+    .low-stock-alert {
+      animation: pulse-red 2s infinite;
+      background: rgba(255, 77, 77, 0.1) !important;
+    }
+
+    .main-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .stealth-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      background: var(--card);
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      z-index: 100;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--cyan);
+      border: none;
+      border-radius: 8px;
+      color: black;
+      font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+    }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    td, th { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+
+    #search-results {
+      background: #000;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    #search-results p { padding: 10px; cursor: pointer; border-bottom: 1px solid #222; }
+
+    .bill-item-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding: 8px 0;
+      border-bottom: 1px dashed #444;
+    }
+
+    .nav { margin-top: 30px; text-align: center; }
+    .nav a { color: #888; text-decoration: none; margin: 0 10px; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <h1>SPORTS WORLD Shop</h1>
-  <div class="container">
-    <div class="inventory">
-      <h2>Inventory</h2>
-      <div class="inventory-table-wrapper">
-        <table id="items">
-          <thead><tr><th>Name</th><th>Price</th><th>Stock</th></tr></thead>
+
+  <div class="stealth-btn" onclick="toggleStealth()">
+    <i data-lucide="eye-off"></i> STEALTH MODE
+  </div>
+
+  <h1 style="text-align: center; font-family: 'Orbitron'; color: var(--cyan); margin-bottom: 20px;">SPORTS WORLD</h1>
+
+  <div class="dashboard">
+    <div class="stat-box">
+      <span style="font-size: 0.7rem; color: #888;">TODAY'S REVENUE</span>
+      <span class="stat-number" id="today-money">₹0</span>
+    </div>
+    <div class="stat-box">
+      <span style="font-size: 0.7rem; color: #888;">BILLS GENERATED</span>
+      <span class="stat-number" id="today-items">0</span>
+    </div>
+    <div class="stat-box">
+      <span style="font-size: 0.7rem; color: #888;">TERMINAL STATUS</span>
+      <span class="stat-number" style="color: #00ffcc;">ONLINE</span>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="panel">
+      <h2 style="font-family: 'Orbitron'; font-size: 1rem; margin-bottom: 15px;">LIVE STOCK</h2>
+      <div style="max-height: 600px; overflow-y: auto;">
+        <table id="item-table">
+          <thead>
+            <tr><th>Product</th><th>Price</th><th>Stock</th></tr>
+          </thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
-    <div class="billing">
-      <h2>Billing</h2>
-      <div id="error-container">
-        <span id="error-message"></span>
-        <button onclick="closeError()">X</button>
+
+    <div class="panel">
+      <h2 style="font-family: 'Orbitron'; font-size: 1rem; margin-bottom: 15px;">TERMINAL</h2>
+      
+      <input id="cust-name" placeholder="Customer Name">
+      <input id="cust-phone" placeholder="Phone Number">
+      
+      <div style="border-top: 1px solid var(--border); margin: 15px 0; padding-top: 15px;"></div>
+      
+      <input id="search-input" placeholder="Search Item..." oninput="searchItems()">
+      <div id="search-results"></div>
+      <input id="item-qty" type="number" placeholder="Quantity">
+      <button onclick="addToBill()">Add to Bill</button>
+
+      <div id="current-bill-list" style="margin-top: 20px;"></div>
+      
+      <div style="margin-top: 15px;">
+        <input id="bill-discount" type="number" placeholder="Apply Discount (₹)" oninput="showBill()">
       </div>
 
-      <input id="customer" placeholder="Customer Name (Optional)">
-      <input id="phone" placeholder="Customer Phone Number (Optional)">
-      <input id="search" placeholder="Search Items">
-      <div id="results"></div>
-      <input id="qty" type="number" placeholder="Quantity (Default: 1)">
-      <button onclick="addToBill()">Add to Bill</button>
-      <div id="bill"></div>
+      <div id="bill-summary" style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;"></div>
       
-      <div class="discount-section">
-        <input id="discount" type="number" placeholder="Enter Discount Amount" oninput="updateBill()">
-        <div id="summary"></div>
-      </div>
-      <button onclick="printBill()">Print & Save</button>
+      <button onclick="finishBill()" style="background: #00ffcc; margin-top: 15px; color: black;">EXECUTE & SAVE</button>
     </div>
   </div>
-  <div class="nav-link">
-    <a href="/add-item.html">Add/Edit Items</a> |
-    <a href="/view-bill.html">View Bill by Serial</a> |
-    <a href="/history.html">Bill History</a>
+
+  <div class="nav">
+    <a href="/add-item.html">Inventory</a>
+    <a href="/view-bill.html">Track Bill</a>
+    <a href="/history.html">History</a>
   </div>
 
   <script>
-    let bill = [];
-    let selectedItem = null;
-    let errorTimer = null;
+    lucide.createIcons();
+    let currentBill = [];
+    let pickedItem = null;
 
-    async function fetchInventory() {
+    function toggleStealth() {
+      document.body.classList.toggle('stealth-mode');
+    }
+
+    async function loadData() {
       const res = await fetch('/items');
       const items = await res.json();
-      const tbody = document.querySelector('#items tbody');
+      const tbody = document.querySelector('#item-table tbody');
       tbody.innerHTML = '';
+
       items.forEach(item => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${item.name}</td><td>${item.price}</td><td>${item.stock}</td>`;
+        // Feature 1: Low Stock Glow
+        if (item.stock < 5) tr.className = 'low-stock-alert';
+        
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>₹${item.price}</td>
+          <td>${item.stock} left</td>
+        `;
         tbody.appendChild(tr);
       });
+      updateStats();
     }
 
-    function showError(msg) {
-      const errDiv = document.getElementById('error-container');
-      document.getElementById('error-message').textContent = msg;
-      errDiv.style.display = 'block';
-      if (errorTimer) clearTimeout(errorTimer);
-      errorTimer = setTimeout(closeError, 5000);
+    // Feature 2: Dashboard Pulse
+    async function updateStats() {
+      const res = await fetch('/bills');
+      const bills = await res.json();
+      const today = new Date().toLocaleDateString();
+      let money = 0;
+      let count = 0;
+
+      bills.forEach(b => {
+        if(new Date(b.date).toLocaleDateString() === today) {
+          const subtotal = b.items.reduce((s, i) => s + (i.price * (i.qty - (i.returnedQty || 0))), 0);
+          money += (subtotal - (b.discount || 0));
+          count++;
+        }
+      });
+
+      document.getElementById('today-money').textContent = `₹${money}`;
+      document.getElementById('today-items').textContent = count;
     }
 
-    function closeError() { document.getElementById('error-container').style.display = 'none'; }
-
-    document.getElementById('search').oninput = async () => {
-      const query = document.getElementById('search').value.toLowerCase();
+    async function searchItems() {
+      const val = document.getElementById('search-input').value.toLowerCase();
+      if(!val) { document.getElementById('search-results').innerHTML = ''; return; }
       const res = await fetch('/items');
       const items = await res.json();
-      const results = items.filter(item => item.name.toLowerCase().includes(query));
-      const div = document.getElementById('results');
-      div.innerHTML = '';
-      results.forEach(item => {
-        const p = document.createElement('p');
-        p.textContent = `${item.name} (Price: ${item.price}, Stock: ${item.stock})`;
-        p.onclick = () => {
-          document.getElementById('search').value = item.name;
-          div.innerHTML = '';
-          selectedItem = item;
-          closeError();
-        };
-        div.appendChild(p);
-      });
-    };
+      const found = items.filter(i => i.name.toLowerCase().includes(val));
+      
+      const div = document.getElementById('search-results');
+      div.innerHTML = found.map(i => `<p onclick="selectItem(${JSON.stringify(i).replace(/"/g, '&quot;')})">${i.name} - ₹${i.price}</p>`).join('');
+    }
+
+    function selectItem(item) {
+      pickedItem = item;
+      document.getElementById('search-input').value = item.name;
+      document.getElementById('search-results').innerHTML = '';
+    }
 
     function addToBill() {
-      const qtyInput = document.getElementById('qty').value;
-      const qty = qtyInput === "" ? 1 : Number(qtyInput);
-
-      if (!selectedItem) { showError("Please select an item first!"); return; }
-      if (selectedItem.stock <= 0) { showError(`0 stock on this item: ${selectedItem.name}`); return; }
-      if (qty <= 0 || qty > selectedItem.stock) { showError(`Only ${selectedItem.stock} in stock!`); return; }
-
-      bill.push({ ...selectedItem, qty });
-      document.getElementById('search').value = '';
-      document.getElementById('qty').value = '';
-      selectedItem = null;
-      updateBill();
-    }
-
-    function updateBill() {
-      const div = document.getElementById('bill');
-      const summaryDiv = document.getElementById('summary');
-      div.innerHTML = '';
-      if (bill.length === 0) { summaryDiv.innerHTML = ''; return; }
-
-      const table = document.createElement('table');
-      table.innerHTML = `<thead><tr><th>Name</th><th>Qty</th><th>Total</th><th>Action</th></tr></thead>
-        <tbody>${bill.map((item, i) => `<tr><td>${item.name}</td><td>${item.qty}</td><td>${item.price * item.qty}</td>
-        <td><button onclick="removeItem(${i})" style="width: auto; padding: 2px 8px;">X</button></td></tr>`).join('')}</tbody>`;
-      div.appendChild(table);
+      if(!pickedItem) return;
+      const q = Number(document.getElementById('item-qty').value) || 1;
+      if(q > pickedItem.stock) return alert("Not enough stock!");
       
-      const subtotal = bill.reduce((sum, item) => sum + item.price * item.qty, 0);
-      const discount = Number(document.getElementById('discount').value) || 0;
-      summaryDiv.innerHTML = `
-        <p>Subtotal: ₹${subtotal}</p>
-        ${discount > 0 ? `<p style="color: #ff4d4d;">Discount: -₹${discount}</p>` : ''}
-        <p><strong>Grand Total: ₹${subtotal - discount}</strong></p>
+      currentBill.push({...pickedItem, qty: q});
+      pickedItem = null;
+      document.getElementById('search-input').value = '';
+      document.getElementById('item-qty').value = '';
+      showBill();
+    }
+
+    function showBill() {
+      const list = document.getElementById('current-bill-list');
+      const summary = document.getElementById('bill-summary');
+      const discount = Number(document.getElementById('bill-discount').value) || 0;
+      
+      // Feature: Remove Item from Bill Restored
+      list.innerHTML = currentBill.map((i, idx) => `
+        <div class="bill-item-row">
+          <span>${i.name} x${i.qty}</span>
+          <span>₹${i.price * i.qty} <i data-lucide="trash-2" size="14" onclick="removeFromBill(${idx})" style="cursor:pointer; color:red; margin-left:8px;"></i></span>
+        </div>
+      `).join('');
+      
+      const subtotal = currentBill.reduce((s, i) => s + (i.price * i.qty), 0);
+      summary.innerHTML = `
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#888;">
+          <span>Subtotal</span><span>₹${subtotal}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--cyan); font-size:1.1rem; margin-top:5px;">
+          <span>Grand Total</span><span>₹${subtotal - discount}</span>
+        </div>
       `;
+      lucide.createIcons();
     }
 
-    function removeItem(index) { bill.splice(index, 1); updateBill(); }
+    function removeFromBill(index) {
+      currentBill.splice(index, 1);
+      showBill();
+    }
 
-    async function printBill() {
-      if (bill.length === 0) return alert('Bill is empty!');
+    async function finishBill() {
+      if(currentBill.length === 0) return alert("Bill is empty");
       const serial = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-      const discount = Number(document.getElementById('discount').value) || 0;
+      const discount = Number(document.getElementById('bill-discount').value) || 0;
+      
+      await fetch('/bill', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          items: currentBill,
+          customer: document.getElementById('cust-name').value,
+          phone: document.getElementById('cust-phone').value,
+          date: new Date().toISOString(),
+          serialNumber: serial,
+          discount: discount
+        })
+      });
 
-      try {
-        await fetch('/bill', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            items: bill, 
-            customer: document.getElementById('customer').value, 
-            phone: document.getElementById('phone').value, 
-            date: new Date().toISOString(), 
-            serialNumber: serial,
-            discount
-          })
+      for(let item of currentBill) {
+        await fetch(`/items/${item._id}`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ stock: item.stock - item.qty })
         });
+      }
 
-        for (const item of bill) {
-          await fetch(`/items/${item._id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ stock: item.stock - item.qty })
-          });
-        }
-
-        alert(`Bill Processed! Serial: ${serial}`);
-        bill = []; updateBill(); fetchInventory();
-        document.getElementById('discount').value = '';
-      } catch (e) { alert('Error processing bill'); }
+      alert("Bill Saved! Serial: " + serial);
+      currentBill = [];
+      document.getElementById('cust-name').value = '';
+      document.getElementById('cust-phone').value = '';
+      document.getElementById('bill-discount').value = '';
+      showBill();
+      loadData();
     }
 
-    fetchInventory();
+    loadData();
   </script>
 </body>
 </html>
