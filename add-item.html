@@ -3,441 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item - SPORTS WORLD Shop</title>
+    <title>Inventory | SPORTS WORLD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #080a0c;
+            --cyan: #00f3ff;
+            --card: rgba(17, 25, 40, 0.75);
+            --text: #e0e6ed;
+            --border: rgba(255, 255, 255, 0.1);
+            --red: #ff4d4d;
         }
+
+        /* Feature 6: Stealth Mode Styles */
+        body.stealth-mode {
+            --cyan: #666;
+            --bg: #000;
+            --card: #0a0a0a;
+            background-image: none !important;
+            filter: grayscale(1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #1a1a1a;
-            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image: linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text);
             padding: 20px;
-            line-height: 1.6;
-            position: relative;
-            min-height: 100vh;
+            transition: 0.3s;
         }
 
-        h1 {
-            font-family: 'Montserrat', sans-serif;
-            text-align: center;
-            color: #00b7ff;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .panel {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            font-size: 1.8rem;
         }
 
-        h2 {
-            font-family: 'Roboto', sans-serif;
-            color: #80d4ff;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
+        /* Feature 1: Low Stock Glow Alert */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); border: 1px solid var(--red); }
+            50% { box-shadow: 0 0 15px rgba(255, 77, 77, 0.5); border: 1px solid #ff0000; }
+            100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); border: 1px solid var(--red); }
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        .low-stock-row {
+            animation: pulse-red 2s infinite;
+            background: rgba(255, 77, 77, 0.05) !important;
         }
 
-        input, button {
-            font-family: 'Open Sans', sans-serif;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #404040;
-            border-radius: 5px;
+        .stealth-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            background: var(--card);
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 100;
+        }
+
+        input {
             width: 100%;
-            transition: all 0.3s ease;
-            background: #333;
-            color: #e0e0e0;
-        }
-
-        input:focus {
-            border-color: #00b7ff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
         }
 
         button {
-            background: #00b7ff;
-            color: #fff;
+            padding: 12px 20px;
+            background: var(--cyan);
             border: none;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        button:hover {
-            background: #008ecf;
-        }
-
-        button:disabled {
-            background: #555;
-            cursor: not-allowed;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            background: #2a2a2a;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #404040;
-        }
-
-        th {
-            background: #004d73;
-            color: #fff;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        tr:hover {
-            background: #333;
-        }
-
-        .edit-btn {
-            background: #ffaa00;
-            padding: 5px 10px;
-            font-size: 12px;
-            margin-right: 5px;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
+            border-radius: 8px;
+            color: black;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
             cursor: pointer;
         }
 
-        .edit-btn:hover {
-            background: #e69900;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
 
-        .remove-btn {
-            background: #ff4d4d;
-            padding: 5px 10px;
-            font-size: 12px;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-        }
+        /* Popup Styles Restored */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1001; width: 400px; }
 
-        .remove-btn:hover {
-            background: #e60000;
-        }
-
-        .nav-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .nav-link a {
-            color: #80d4ff;
-            text-decoration: none;
-            font-weight: 600;
-            font-family: 'Roboto', sans-serif;
-            margin: 0 15px;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link a:hover {
-            color: #00b7ff;
-        }
-
-        /* Popup Styles */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #2a2a2a;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            width: 400px;
-            border: 1px solid #404040;
-        }
-
-        .popup h3 {
-            color: #80d4ff;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.6rem;
-        }
-
-        .popup input {
-            margin-bottom: 15px;
-            padding: 12px;
-            font-size: 1rem;
-        }
-
-        .popup-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .popup-buttons button {
-            width: 50%;
-            padding: 12px;
-            font-size: 1rem;
-        }
-
-        .cancel-btn {
-            background: #ff4d4d;
-        }
-
-        .cancel-btn:hover {
-            background: #e60000;
-        }
-
-        /* Blur Background */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 999;
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            h2 {
-                font-size: 1.2rem;
-            }
-
-            input, button {
-                font-size: 0.9rem;
-            }
-
-            th, td {
-                padding: 8px;
-                font-size: 0.85rem;
-            }
-
-            .nav-link a {
-                display: block;
-                margin: 10px 0;
-            }
-
-            .popup {
-                width: 90%;
-            }
-        }
+        .nav { text-align: center; margin-top: 20px; }
+        .nav a { color: #888; text-decoration: none; margin: 0 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <h1>Add Item - SPORTS WORLD Shop</h1>
-    <div class="container">
-        <h2>Inventory Management</h2>
-        <div id="auth-section">
-            <input id="password" type="password" placeholder="Enter Password">
-            <button onclick="checkPassword()">Access Inventory</button>
-        </div>
-        <div id="inventory-section" style="display: none;">
-            <input id="name" placeholder="Item Name">
-            <input id="price" type="number" placeholder="Price">
-            <input id="stock" type="number" placeholder="Stock">
-            <button id="add" onclick="addItem()">Add</button>
-            <input id="search" placeholder="Search Items by Name" style="margin-top: 10px;">
-            <table id="items">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
-    <div class="nav-link">
-        <a href="/index.html">Back to Billing</a> |
-        <a href="/view-bill.html">View Bill by Serial</a> |
-        <a href="/history.html">Bill History</a>
+
+    <div class="stealth-btn" onclick="toggleStealth()">
+        <i data-lucide="eye-off"></i> STEALTH MODE
     </div>
 
-    <div class="popup" id="editPopup">
-        <h3>Edit Item</h3>
-        <input id="editName" placeholder="Item Name">
-        <input id="editPrice" type="number" placeholder="Price">
-        <input id="editStock" type="number" placeholder="Stock">
-        <div class="popup-buttons">
-            <button class="cancel-btn" onclick="cancelEdit()">Cancel</button>
-            <button onclick="saveItemFromPopup()">Save</button>
+    <div class="container">
+        <h1 style="text-align: center; font-family: 'Orbitron'; color: var(--cyan); margin-bottom: 25px;">INVENTORY CONTROL</h1>
+
+        <div id="auth-box" class="panel" style="max-width: 400px; margin: 50px auto; text-align: center;">
+            <h3 style="margin-bottom: 15px; font-family: 'Orbitron';">ACCESS REQUIRED</h3>
+            <input id="admin-pass" type="password" placeholder="Enter Security Key">
+            <button onclick="checkAccess()">UNLOCK TERMINAL</button>
+        </div>
+
+        <div id="inventory-main" style="display: none;">
+            <div class="panel">
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px;">
+                    <input id="new-name" placeholder="Gear Name">
+                    <input id="new-price" type="number" placeholder="Price (₹)">
+                    <input id="new-stock" type="number" placeholder="Stock Qty">
+                    <button onclick="addNewItem()">INJECT</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <input id="search-box" placeholder="Search inventory..." oninput="filterTable()">
+                <table id="item-table">
+                    <thead>
+                        <tr><th>Name</th><th>Price</th><th>Stock</th><th>Action</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
+    <div class="popup panel" id="edit-popup">
+        <h3 style="margin-bottom: 15px; color: var(--cyan); font-family: 'Orbitron';">CALIBRATE GEAR</h3>
+        <input id="edit-name" placeholder="Name">
+        <input id="edit-price" type="number" placeholder="Price">
+        <input id="edit-stock" type="number" placeholder="Stock">
+        <div style="display: flex; gap: 10px;">
+            <button onclick="saveEdit()" style="flex: 1;">SAVE</button>
+            <button onclick="closeEdit()" style="flex: 1; background: var(--red);">CANCEL</button>
+        </div>
+    </div>
+
+    <div class="nav">
+        <a href="/index.html">Billing</a>
+        <a href="/view-bill.html">Find Bill</a>
+        <a href="/history.html">Archives</a>
+    </div>
 
     <script>
-        let editingItemId = null;
-        const correctPassword = "gourab009";
+        lucide.createIcons();
         let allItems = [];
+        let editingId = null;
 
-        function checkPassword() {
-            const password = document.getElementById('password').value;
-            if (password === correctPassword) {
-                document.getElementById('inventory-section').style.display = 'block';
-                document.getElementById('auth-section').style.display = 'none';
-                fetchInventory();
+        function toggleStealth() {
+            document.body.classList.toggle('stealth-mode');
+        }
+
+        // Original Password Logic Restored
+        function checkAccess() {
+            if(document.getElementById('admin-pass').value === "gourab009") {
+                document.getElementById('auth-box').style.display = 'none';
+                document.getElementById('inventory-main').style.display = 'block';
+                loadInventory();
             } else {
-                alert('Incorrect password!');
+                alert("ACCESS DENIED");
             }
         }
 
-        async function fetchInventory() {
-            try {
-                const res = await fetch('/items', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-                allItems = await res.json();
-                displayItems(allItems);
-            } catch (e) {
-                console.error('Error fetching inventory:', e.message);
-                alert(`Failed to fetch inventory: ${e.message}`);
-            }
+        async function loadInventory() {
+            const res = await fetch('/items');
+            allItems = await res.json();
+            renderTable(allItems);
         }
 
-        function displayItems(items) {
-            const tbody = document.querySelector('#items tbody');
+        function renderTable(data) {
+            const tbody = document.querySelector('#item-table tbody');
             tbody.innerHTML = '';
-            items.forEach(item => {
+            data.forEach(item => {
                 const tr = document.createElement('tr');
+                // Feature 1: Low Stock Alert
+                if(item.stock < 5) tr.className = 'low-stock-row';
+
                 tr.innerHTML = `
                     <td>${item.name}</td>
-                    <td>${item.price}</td>
-                    <td>${item.stock}</td>
+                    <td>₹${item.price}</td>
+                    <td>${item.stock} pieces</td>
                     <td>
-                        <button class="edit-btn" onclick="editItem('${item._id}', '${item.name}', ${item.price}, ${item.stock})">Edit</button>
-                        <button class="remove-btn" onclick="removeItem('${item._id}', '${item.name}')">Remove</button>
+                        <button onclick="openEdit('${item._id}', '${item.name}', ${item.price}, ${item.stock})" style="padding: 5px 10px; font-size: 0.7rem; background: orange;">Edit</button>
+                        <button onclick="deleteItem('${item._id}')" style="padding: 5px 10px; font-size: 0.7rem; background: var(--red);">Del</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        document.getElementById('search').oninput = () => {
-            const query = document.getElementById('search').value.toLowerCase();
-            const filteredItems = allItems.filter(item =>
-                item.name.toLowerCase().includes(query)
-            );
-            displayItems(filteredItems);
-        };
-
-        function editItem(id, name, price, stock) {
-            editingItemId = id;
-            document.getElementById('editName').value = name;
-            document.getElementById('editPrice').value = price;
-            document.getElementById('editStock').value = stock;
-            document.getElementById('editPopup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
+        function filterTable() {
+            const query = document.getElementById('search-box').value.toLowerCase();
+            const filtered = allItems.filter(i => i.name.toLowerCase().includes(query));
+            renderTable(filtered);
         }
 
-        function cancelEdit() {
-            document.getElementById('editPopup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-            editingItemId = null;
-        }
-
-        async function saveItemFromPopup() {
-            try {
-                if (!editingItemId) {
-                    alert('No item selected for editing!');
-                    return;
-                }
-                const item = {
-                    name: document.getElementById('editName').value,
-                    price: Number(document.getElementById('editPrice').value),
-                    stock: Number(document.getElementById('editStock').value)
-                };
-                if (!item.name || !item.price || !item.stock) {
-                    alert('Please fill in all fields!');
-                    return;
-                }
-
-                const res = await fetch(`/items/${editingItemId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(item)
-                });
-                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-
-                cancelEdit();
-                fetchInventory();
-            } catch (e) {
-                console.error('Error saving item:', e.message);
-                alert(`Failed to save item: ${e.message}`);
-            }
-        }
-
-        async function removeItem(id, name) {
-            if (!confirm(`Are you sure you want to remove "${name}"?`)) return;
-            try {
-                await fetch(`/items/${id}`, {
-                    method: 'DELETE'
-                });
-                fetchInventory();
-            } catch (e) {
-                console.error('Error removing item:', e.message);
-                alert(`Failed to remove item: ${e.message}`);
-            }
-        }
-
-        async function addItem() {
-            const addButton = document.getElementById('add');
-            addButton.disabled = true;
+        async function addNewItem() {
             const item = {
-                name: document.getElementById('name').value,
-                price: Number(document.getElementById('price').value),
-                stock: Number(document.getElementById('stock').value)
+                name: document.getElementById('new-name').value,
+                price: Number(document.getElementById('new-price').value),
+                stock: Number(document.getElementById('new-stock').value)
             };
-            if (!item.name || !item.price || !item.stock) {
-                alert('Please fill in all fields!');
-                addButton.disabled = false;
-                return;
-            }
-            try {
-                const res = await fetch('/items', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(item)
-                });
-                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-                document.getElementById('name').value = '';
-                document.getElementById('price').value = '';
-                document.getElementById('stock').value = '';
-                fetchInventory();
-            } catch (e) {
-                console.error('Error adding item:', e.message);
-                alert(`Failed to add item: ${e.message}`);
-            } finally {
-                addButton.disabled = false;
-            }
+            if(!item.name || !item.price) return alert("Fill Name and Price!");
+
+            await fetch('/items', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(item)
+            });
+            document.getElementById('new-name').value = '';
+            document.getElementById('new-price').value = '';
+            document.getElementById('new-stock').value = '';
+            loadInventory();
+        }
+
+        // Edit Feature Logic Restored
+        function openEdit(id, name, price, stock) {
+            editingId = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-price').value = price;
+            document.getElementById('edit-stock').value = stock;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('edit-popup').style.display = 'block';
+        }
+
+        function closeEdit() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('edit-popup').style.display = 'none';
+        }
+
+        async function saveEdit() {
+            const update = {
+                name: document.getElementById('edit-name').value,
+                price: Number(document.getElementById('edit-price').value),
+                stock: Number(document.getElementById('edit-stock').value)
+            };
+            await fetch(`/items/${editingId}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(update)
+            });
+            closeEdit();
+            loadInventory();
+        }
+
+        async function deleteItem(id) {
+            if(!confirm("Erase this item?")) return;
+            await fetch(`/items/${id}`, { method: 'DELETE' });
+            loadInventory();
         }
     </script>
 </body>
