@@ -5,10 +5,10 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 
-// 1. SERVE STATIC FILES: Allows the browser to find images and CSS
+// Serve images and CSS from your folder
 app.use(express.static(path.join(__dirname, '/')));
 
-// CORS: Prevents the browser from blocking your connection
+// Stop browsers from blocking your shop's connection
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -21,7 +21,6 @@ const uri = 'mongodb+srv://sportsworld009:sportsworld009@sportsworldshop.9krj7vc
 const client = new MongoClient(uri);
 let db;
 
-// DATABASE CONNECTION: Optimized for Vercel
 async function connectDB() {
   try {
     if (!db) {
@@ -35,13 +34,13 @@ async function connectDB() {
   }
 }
 
-// Middleware to ensure DB is ready before any API request
+// Ensure DB is connected before any request
 app.use(async (req, res, next) => {
   await connectDB();
   next();
 });
 
-// --- API ENDPOINTS FOR YOUR BILLING SYSTEM ---
+// --- SHOP API ENDPOINTS ---
 
 app.get('/items', async (req, res) => {
   try {
@@ -64,10 +63,7 @@ app.post('/items', async (req, res) => {
 app.put('/items/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await db.collection('items').updateOne(
-      { _id: new ObjectId(id) },
-      { $set: req.body }
-    );
+    await db.collection('items').updateOne({ _id: new ObjectId(id) }, { $set: req.body });
     res.sendStatus(200);
   } catch (e) {
     res.status(500).send('Error updating item');
@@ -116,29 +112,28 @@ app.get('/bill/:serial', async (req, res) => {
   }
 });
 
-// --- PAGE ROUTING: This fixes the "Cannot GET" error for EVERY page ---
+// --- PAGE ROUTING: This fixes the 404 for /history, /view-bill, etc. ---
 
-// 1. Handle Homepage
+// 1. Show the homepage
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 2. Handle all other pages (view-bill, history, add-item, etc.)
+// 2. Show any other page (like sportsworld.vercel.app/history)
 app.get('/:page', (req, res) => {
   const pageName = req.params.page;
-  // This looks for the .html file matching what you typed in the URL
   res.sendFile(path.join(__dirname, `${pageName}.html`), (err) => {
     if (err) {
-      // If the page doesn't exist, it sends you back to index.html
+      // If page doesn't exist, go back home
       res.sendFile(path.join(__dirname, 'index.html'));
     }
   });
 });
 
-// --- VERCEL EXPORT ---
+// Export for Vercel
 module.exports = app;
 
-// Local testing (ignored by Vercel)
+// Local testing
 if (process.env.NODE_ENV !== 'production') {
   app.listen(3000, () => console.log(`Server running on http://localhost:3000`));
 }
