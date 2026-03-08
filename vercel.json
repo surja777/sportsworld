@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "builds": [
     {
       "src": "index.js",
@@ -8,8 +9,12 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "destination": "index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/$1.html"
     }
   ]
 }
